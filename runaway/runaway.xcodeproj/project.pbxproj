@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F6C7E4AFCE4A479B3121DA2 /* Pods_runaway.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 619025C6DF543CB792AA41A3 /* Pods_runaway.framework */; };
 		ED0EC26725C56D93006382DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0EC26625C56D93006382DC /* AppDelegate.swift */; };
 		ED0EC26925C56D93006382DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0EC26825C56D93006382DC /* SceneDelegate.swift */; };
 		ED0EC26B25C56D93006382DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0EC26A25C56D93006382DC /* ViewController.swift */; };
@@ -16,6 +17,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2E2A03C3753345ECFAB7471F /* Pods-runaway.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-runaway.debug.xcconfig"; path = "Target Support Files/Pods-runaway/Pods-runaway.debug.xcconfig"; sourceTree = "<group>"; };
+		5E939A6900CBE90AB578FBD9 /* Pods-runaway.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-runaway.release.xcconfig"; path = "Target Support Files/Pods-runaway/Pods-runaway.release.xcconfig"; sourceTree = "<group>"; };
+		619025C6DF543CB792AA41A3 /* Pods_runaway.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_runaway.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED0EC26325C56D93006382DC /* runaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = runaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED0EC26625C56D93006382DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ED0EC26825C56D93006382DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -31,17 +35,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F6C7E4AFCE4A479B3121DA2 /* Pods_runaway.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5A457747C6752D2FC0308D29 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A03C3753345ECFAB7471F /* Pods-runaway.debug.xcconfig */,
+				5E939A6900CBE90AB578FBD9 /* Pods-runaway.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		ED0EC25A25C56D93006382DC = {
 			isa = PBXGroup;
 			children = (
 				ED0EC26525C56D93006382DC /* runaway */,
 				ED0EC26425C56D93006382DC /* Products */,
+				5A457747C6752D2FC0308D29 /* Pods */,
+				F817367D472A17ED756CB96A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -67,6 +84,14 @@
 			path = runaway;
 			sourceTree = "<group>";
 		};
+		F817367D472A17ED756CB96A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				619025C6DF543CB792AA41A3 /* Pods_runaway.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,9 +99,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = ED0EC27725C56D94006382DC /* Build configuration list for PBXNativeTarget "runaway" */;
 			buildPhases = (
+				B5650C77D9BAF6EC6C9992E2 /* [CP] Check Pods Manifest.lock */,
 				ED0EC25F25C56D93006382DC /* Sources */,
 				ED0EC26025C56D93006382DC /* Frameworks */,
 				ED0EC26125C56D93006382DC /* Resources */,
+				FF7042083B6415140E67A223 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -132,6 +159,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B5650C77D9BAF6EC6C9992E2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-runaway-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FF7042083B6415140E67A223 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-runaway/Pods-runaway-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-runaway/Pods-runaway-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-runaway/Pods-runaway-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		ED0EC25F25C56D93006382DC /* Sources */ = {
@@ -282,6 +351,7 @@
 		};
 		ED0EC27825C56D94006382DC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2E2A03C3753345ECFAB7471F /* Pods-runaway.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -300,6 +370,7 @@
 		};
 		ED0EC27925C56D94006382DC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5E939A6900CBE90AB578FBD9 /* Pods-runaway.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
