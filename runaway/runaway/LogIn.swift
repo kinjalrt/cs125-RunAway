@@ -29,7 +29,9 @@ class LogIn: UIViewController {
     func loadHomeScreen(){
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let Home = storyBoard.instantiateViewController(withIdentifier: "Home") as! Home
+
         self.present(Home, animated: true, completion: nil)
+
     }
 
     @IBAction func signIn(_ sender: UIButton) {
