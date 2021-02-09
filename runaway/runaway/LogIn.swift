@@ -28,9 +28,11 @@ class LogIn: UIViewController {
     
     func loadHomeScreen(){
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let Home = storyBoard.instantiateViewController(withIdentifier: "Home") as! Home
+        //let Home = storyBoard.instantiateViewController(withIdentifier: "Home") as! Home
+        let tab_control=storyboard?.instantiateViewController(identifier: "myTabBar") as! myTabBar
+        self.present(tab_control, animated: true, completion:nil)
 
-        self.present(Home, animated: true, completion: nil)
+        //self.present(myTabBar, animated: true, completion: nil)
 
     }
 

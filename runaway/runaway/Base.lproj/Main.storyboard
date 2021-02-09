@@ -268,10 +268,10 @@
             </objects>
             <point key="canvasLocation" x="1221.5384615384614" y="-98.104265402843595"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--My Tab Bar-->
         <scene sceneID="spo-V6-rej">
             <objects>
-                <tabBarController storyboardIdentifier="myTabBar" id="Z46-1Z-n1r" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="myTabBar" id="Z46-1Z-n1r" customClass="myTabBar" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="9Jv-Dk-Z1V">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>

@@ -17,6 +17,7 @@
 		ED0EC26B25C56D93006382DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0EC26A25C56D93006382DC /* ViewController.swift */; };
 		ED0EC26E25C56D93006382DC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED0EC26C25C56D93006382DC /* Main.storyboard */; };
 		ED0EC27025C56D94006382DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED0EC26F25C56D94006382DC /* Assets.xcassets */; };
+		EDE812EB25D248160072CA16 /* myTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE812EA25D248160072CA16 /* myTabBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		ED0EC26D25C56D93006382DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		ED0EC26F25C56D94006382DC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ED0EC27425C56D94006382DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EDE812EA25D248160072CA16 /* myTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myTabBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				ED0EC26C25C56D93006382DC /* Main.storyboard */,
 				ED0EC26F25C56D94006382DC /* Assets.xcassets */,
 				ED0EC27425C56D94006382DC /* Info.plist */,
+				EDE812EA25D248160072CA16 /* myTabBar.swift */,
 			);
 			path = runaway;
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 				7E2FEAE525CE706D009A7CE8 /* SignUp.swift in Sources */,
 				7E9E493725CDD292006AE74F /* Extensions.swift in Sources */,
 				7E2FEAE125CE6DAF009A7CE8 /* LogIn.swift in Sources */,
+				EDE812EB25D248160072CA16 /* myTabBar.swift in Sources */,
 				ED0EC26B25C56D93006382DC /* ViewController.swift in Sources */,
 				ED0EC26725C56D93006382DC /* AppDelegate.swift in Sources */,
 				ED0EC26925C56D93006382DC /* SceneDelegate.swift in Sources */,
