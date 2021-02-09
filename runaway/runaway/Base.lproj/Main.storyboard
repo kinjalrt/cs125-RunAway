@@ -99,7 +99,6 @@
                                 </state>
                                 <connections>
                                     <action selector="signIn:" destination="SYE-VD-bpd" eventType="touchUpInside" id="eez-WG-Var"/>
-                                    <segue destination="Z46-1Z-n1r" kind="presentation" id="NNa-xv-d3j"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -246,7 +245,7 @@
                                 </state>
                                 <connections>
                                     <action selector="signUp:" destination="rKj-mH-1An" eventType="touchUpInside" id="3hY-e6-dvh"/>
-                                    <segue destination="4lJ-b1-Far" kind="show" id="ubI-xX-ofg"/>
+                                    <segue destination="Z46-1Z-n1r" kind="modal" id="B14-BQ-1AY"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -446,7 +445,4 @@
             <point key="canvasLocation" x="5200" y="210"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="ubI-xX-ofg"/>
-    </inferredMetricsTieBreakers>
 </document>
