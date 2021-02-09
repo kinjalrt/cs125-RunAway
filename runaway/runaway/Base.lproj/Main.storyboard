@@ -10,9 +10,9 @@
         <!--Welcome-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController title="Welcome" id="BYZ-38-t0r" customClass="ViewController" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="initialPage" title="Welcome" id="BYZ-38-t0r" customClass="ViewController" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kur-p2-NZc">
@@ -44,6 +44,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <navigationItem key="navigationItem" id="Tsa-xW-2wO"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -101,6 +102,19 @@
                                     <action selector="signIn:" destination="SYE-VD-bpd" eventType="touchUpInside" id="eez-WG-Var"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SWU-8G-i6c" userLabel="close">
+                                <rect key="frame" x="0.0" y="9" width="33" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" label="Close">
+                                    <accessibilityTraits key="traits" button="YES" image="YES"/>
+                                </accessibility>
+                                <state key="normal" image="multiply" catalog="system"/>
+                                <connections>
+                                    <action selector="closePage:" destination="rKj-mH-1An" eventType="touchUpInside" id="uix-g8-kAf"/>
+                                    <action selector="signUp:" destination="rKj-mH-1An" eventType="touchUpInside" id="d3h-TR-vVN"/>
+                                    <segue destination="BYZ-38-t0r" kind="presentation" id="QlJ-uT-6MD"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="w3N-0k-AFS"/>
@@ -113,7 +127,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ylV-Z5-NDS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1226" y="694"/>
+            <point key="canvasLocation" x="1224.6376811594205" y="693.75"/>
         </scene>
         <!--SignUp-->
         <scene sceneID="pzF-ic-WX3">
@@ -124,7 +138,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tell me about yourself" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lx3-9D-mk8">
-                                <rect key="frame" x="29" y="-29" width="322" height="175"/>
+                                <rect key="frame" x="26" y="-18" width="322" height="175"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="46"/>
                                 <nil key="textColor"/>
@@ -191,12 +205,6 @@
                                 <rect key="frame" x="29" y="457" width="331" height="68"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             </pickerView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dWR-xa-6O3">
-                                <rect key="frame" x="321" y="907" width="30" height="51"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="32"/>
-                                <state key="normal" title="&gt;"/>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Height (in)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HNx-TL-HXX">
                                 <rect key="frame" x="25" y="520" width="81" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -248,6 +256,18 @@
                                     <segue destination="Z46-1Z-n1r" kind="modal" id="B14-BQ-1AY"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ut8-fc-sb2" userLabel="close">
+                                <rect key="frame" x="5" y="4" width="22" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" label="Close">
+                                    <accessibilityTraits key="traits" button="YES" image="YES"/>
+                                </accessibility>
+                                <state key="normal" image="multiply" catalog="system"/>
+                                <connections>
+                                    <action selector="closePage:" destination="rKj-mH-1An" eventType="touchUpInside" id="3xG-Wm-eBE"/>
+                                    <action selector="signUp:" destination="rKj-mH-1An" eventType="touchUpInside" id="d5f-fX-90L"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="Lgc-7h-SDr"/>
@@ -266,12 +286,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t5e-KV-my5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1221.5384615384614" y="-98.104265402843595"/>
+            <point key="canvasLocation" x="1218.840579710145" y="-98.4375"/>
         </scene>
-        <!--My Tab Bar-->
+        <!--MyT-->
         <scene sceneID="spo-V6-rej">
             <objects>
-                <tabBarController storyboardIdentifier="myTabBar" id="Z46-1Z-n1r" customClass="myTabBar" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="myTabBar" id="Z46-1Z-n1r" customClass="myT" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="9Jv-Dk-Z1V">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -445,4 +465,7 @@
             <point key="canvasLocation" x="5200" y="210"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="multiply" catalog="system" width="64" height="54"/>
+    </resources>
 </document>

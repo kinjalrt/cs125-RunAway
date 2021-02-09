@@ -56,6 +56,16 @@ class SignUp: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return GenderData[row]
     }
+    
+    
+    @IBAction func closePage(_ sender: Any) {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let mainPage = storyBoard.instantiateViewController(withIdentifier: "initialPage") as! ViewController
+        self.present(mainPage, animated: true, completion:nil)
+
+            //self.present(myTabBar, animated: true, completion: nil)
+    }
+    
   
     @IBAction func signUp(_ sender: UIButton) {
         let user = PFUser()
