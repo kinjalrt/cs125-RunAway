@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 import Parse
 import CoreLocation
-import Alamofire
 
 
 class Home: UIViewController, CLLocationManagerDelegate {
