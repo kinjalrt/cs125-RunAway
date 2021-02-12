@@ -18,9 +18,9 @@ class SignUp: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     @IBOutlet weak var signUpPasswordField: UITextField!
     @IBOutlet weak var signUpBirthdayField: UIDatePicker!
     @IBOutlet weak var signUpGenderField: UIPickerView!
+    @IBOutlet weak var signUpExperienceField: UIPickerView!
     var GenderData: [String] = [String]()
-    @IBOutlet weak var signUpHeightField: UITextField!
-    @IBOutlet weak var signUpWeightField: UITextField!
+    var ExperienceData: [String] = [String]()
     
 
     override func viewDidLoad() {
@@ -36,8 +36,10 @@ class SignUp: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
         signUpGenderField.dataSource = self
         GenderData = ["Male", "Female", "Non-Binary"]
         signUpGenderField.selectRow(0, inComponent: 0, animated: true)
-        signUpHeightField.text = ""
-        signUpWeightField.text = ""
+        signUpExperienceField.delegate = self
+        signUpExperienceField.dataSource = self
+        ExperienceData = ["Newbie (1-3 miles/week)", "Beginner (4-8 miles/week)", "Intermediate (8-12 miles/week)", "Advanced (13+ miles/week)"]
+        signUpExperienceField.selectRow(0, inComponent: 0, animated: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,11 +52,21 @@ class SignUp: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     }
         
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return GenderData.count
+        if pickerView.tag == 1 {
+            return GenderData.count
+        } else {
+            print("1111asdlkfjlkasdfj")
+            return ExperienceData.count
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return GenderData[row]
+        if pickerView.tag == 1 {
+            return GenderData[row]
+        } else {
+            print("asdlkfjlkasdfj")
+            return ExperienceData[row]
+        }
     }
     
     
@@ -74,8 +86,7 @@ class SignUp: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
         user.password = signUpPasswordField.text
         user["birthday"] = signUpBirthdayField.date
         user["gender"] = GenderData[signUpGenderField.selectedRow(inComponent: 0)]
-        user["height"] = signUpHeightField.text
-        user["weight"] = signUpWeightField.text
+        user["experienceLevel"] = ExperienceData[signUpExperienceField.selectedRow(inComponent: 0)]
         
         let sv = UIViewController.displaySpinner(onView: self.view)
         user.signUpInBackground { (success, error) in
