@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/MayaSchwarz/Documents/UCI Maya/4Year/COMPSCI125/cs125-RunAway/runaway/runaway/StartRun.swift">
-   </FileRef>
-   <FileRef
       location = "group:runaway.xcodeproj">
    </FileRef>
    <FileRef
