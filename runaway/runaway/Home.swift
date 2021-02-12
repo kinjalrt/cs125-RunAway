@@ -10,19 +10,26 @@ import Foundation
 import UIKit
 import Parse
 import CoreLocation
+import MapKit
 
 
-class Home: UIViewController, CLLocationManagerDelegate {
+
+class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     let LocationManager = CLLocationManager()
     var currentLocation: CLLocation?
+    var suggestedRoutes: [CLLocationCoordinate2D] = []
     @IBOutlet weak var city: UILabel!
     @IBOutlet weak var temperature: UILabel!
     @IBOutlet weak var weatherSummary: UILabel!
+    @IBOutlet weak var map: MKMapView!
+    @IBOutlet weak var routeDistance: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        map.delegate = self
         setUpLocation()
+        
     }
     
     
@@ -39,6 +46,7 @@ class Home: UIViewController, CLLocationManagerDelegate {
             LocationManager.stopUpdatingLocation()
             displayCityForLocation()
             requestWeatherForLocation()
+            displayRoutes()
         }
     }
     
@@ -112,7 +120,62 @@ class Home: UIViewController, CLLocationManagerDelegate {
         }
         task.resume()
         
+    }
+    
+    
+    func displayRoutes(){
+        findRoutes()
         
+        //manually adding destination
+        let sourceCoordinates = CLLocationCoordinate2D(latitude: (currentLocation?.coordinate.latitude)!,longitude: (currentLocation?.coordinate.longitude)!)
+        let destCoordinates = self.suggestedRoutes.first as! CLLocationCoordinate2D
+        
+        let sourcePlacemark = MKPlacemark(coordinate:sourceCoordinates)
+        let destPlacemark = MKPlacemark(coordinate:destCoordinates)
+        
+        let sourceItem = MKMapItem(placemark: sourcePlacemark)
+        let destItem =  MKMapItem(placemark: destPlacemark)
+        
+        let destinationRequest = MKDirections.Request()
+        destinationRequest.source = sourceItem
+        destinationRequest.destination = destItem
+        destinationRequest.transportType = .walking
+        destinationRequest.requestsAlternateRoutes = true
+        
+        let directions = MKDirections(request: destinationRequest)
+        directions.calculate{(response, error) in
+            guard let response = response else{
+                if let error = error{
+                    print("something is wrong ): \(error)")
+                }
+                return
+            }
+            let route = response.routes[0]
+            self.map.addOverlay(route.polyline)
+            self.map.setVisibleMapRect(route.polyline.boundingMapRect, animated:true)
+
+        }
+        
+        //get distance from Strava API
+        self.routeDistance.text = "2 miles"
+        
+    
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        let render = MKPolylineRenderer(overlay: overlay as! MKPolyline)
+        render.lineWidth = 10
+        render.strokeColor = .blue
+        return render
+    }
+    
+    
+    func findRoutes(){
+        //get routes from Strava API
+        //create CLLocationCoordinate2D object for each route and append to self.suggestedRoutes
+        let destCoordinates = CLLocationCoordinate2D(latitude: 37.331193,longitude: -122.031401)
+        self.suggestedRoutes.append(destCoordinates)
+
     }
     
     
