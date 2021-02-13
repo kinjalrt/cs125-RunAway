@@ -387,6 +387,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Loading..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c1R-nx-bzO">
+                                <rect key="frame" x="58" y="718" width="299" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="hgU-lQ-DdR"/>
@@ -396,6 +403,7 @@
                         <outlet property="city" destination="bs5-sO-aQm" id="2Tk-oN-rSy"/>
                         <outlet property="map" destination="Yc5-Ip-l4p" id="Ksp-Qn-n3N"/>
                         <outlet property="routeDistance" destination="cxb-1I-ZYC" id="AIh-iu-ayK"/>
+                        <outlet property="suggestedText" destination="c1R-nx-bzO" id="iNr-GS-hA3"/>
                         <outlet property="temperature" destination="IOY-aQ-98x" id="v3X-ue-ppD"/>
                         <outlet property="weatherSummary" destination="a4j-BV-g7i" id="Rk5-HR-V6r"/>
                     </connections>

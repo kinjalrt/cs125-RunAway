@@ -28,8 +28,8 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         map.delegate = self
-        setUpLocation()
-        
+        //setUpLocation()
+        getSuggestion()
     }
     
     
@@ -180,6 +180,94 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     
     
+    
+    
+    
+    
+    /**** Suggestion Algorithm ****/
+        
+    @IBOutlet weak var suggestedText: UILabel!
+    var suggestions = Array<String>()
+    
+    // Struct used to store useful user data fields
+    // locally into an instance that can be accessed
+    // multiple times
+    struct UserPreferences {
+        var difficultyLevel : Int
+        //var incline : Double
+    }
+    
+    // Function called to get updated preferences
+    func getUserPreferences() -> UserPreferences {
+        
+        var difficulty = 0
+        let currentUser = PFUser.current()
+        if currentUser != nil {
+            difficulty = currentUser?["difficultyLevel"] as! Int
+        } else {
+            print("Error: getUserPreferences()")
+        }
+        
+        // For now, the only preference we're testing
+        // with is users difficultyLevel
+        return UserPreferences(
+            difficultyLevel: difficulty
+        )
+    }
+    
+    // Function uses userPreferences object to
+    // suggest a route
+    func suggestRoute(userPref: UserPreferences) {
+//        guard let currentLocation = currentLocation else{
+//            return
+//        }
+//
+//        let currentPoint = PFGeoPoint(
+//            latitude: currentLocation.coordinate.latitude,
+//            longitude: currentLocation.coordinate.longitude
+//        )
+
+        let query = PFQuery(className: "Route")
+        query.whereKey("difficultyLevel", lessThanOrEqualTo: userPref.difficultyLevel)
+        query.findObjectsInBackground{ (routes, error) in
+            if routes?.count != 0 {
+                for route in routes!{
+                    var s = route["startLocation"] as! String
+                    s += " to "
+                    s += route["endLocation"] as! String
+                    self.suggestions.append(s)
+//                    let startPoint = PFGeoPoint(
+//                        latitude: route["startLat"] as! Double,
+//                        longitude: route["startLng"] as! Double
+//                    )
+//                    if currentPoint.distanceInMiles(to: startPoint) < 0.01 {
+//                        self.suggestions.append(route["endLocation"] as! String)
+//                    }
+                }
+                self.suggestedText.text = "\(self.suggestions[0]) (\(self.suggestions.count-1) others)"
+            }
+        }
+        
+    }
+    
+    func getSuggestion(){
+        
+        self.suggestRoute(userPref: getUserPreferences())
+        
+        // Not sure if this is necessary?
+        DispatchQueue.main.async { [weak self] in
+            self?.updateSuggestion()
+        }
+    }
+
+    func updateSuggestion(){
+        if suggestions.isEmpty{
+            suggestedText.text = "No routes"
+        }
+        else{
+            self.suggestedText.text = "\(self.suggestions[0]) (\(self.suggestions.count-1) others)"
+        }
+    }
     
 }
 
