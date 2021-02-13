@@ -87,6 +87,18 @@ class SignUp: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
         user["birthday"] = signUpBirthdayField.date
         user["gender"] = GenderData[signUpGenderField.selectedRow(inComponent: 0)]
         user["experienceLevel"] = ExperienceData[signUpExperienceField.selectedRow(inComponent: 0)]
+        switch signUpExperienceField.selectedRow(inComponent: 0) {
+        case 0:
+            user["difficultyLevel"] = 1
+        case 1:
+            user["difficultyLevel"] = 2
+        case 2:
+            user["difficultyLevel"] = 4
+        case 3:
+            user["difficultyLevel"] = 6
+        default:
+            user["difficultyLevel"] = 0
+        }
         
         let sv = UIViewController.displaySpinner(onView: self.view)
         user.signUpInBackground { (success, error) in
