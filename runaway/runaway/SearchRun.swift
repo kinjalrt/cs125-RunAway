@@ -54,13 +54,14 @@ class SearchRun : UIViewController {
         testLocation(name: "DiamondJamboree", latitude: 33.688465, longitude: -117.832039),
         testLocation(name: "CostCoTechDr", latitude: 33.66167, longitude: -117.743702),
         testLocation(name: "IrvineSpectrum", latitude: 33.6501049, longitude: -117.7430505),
-        testLocation(name: "SouthCoastPlaza", latitude: 33.690939, longitude: -117.885602)
+        testLocation(name: "SouthCoastPlaza", latitude: 33.690939, longitude: -117.885602),
+        testLocation(name: "DisneyLandResort", latitude: 33.8124524, longitude: -117.9157986)
     ]
     
     /*** Algorithm Members ***/
     var suggestionsList : [Route] = []
     var suggestedIndex : Int = -1
-    let CURRENT_LOCATION : Int = 5
+    let CURRENT_LOCATION : Int = 6
     var currentPoint : CLLocation?
     
     
@@ -112,6 +113,7 @@ class SearchRun : UIViewController {
     // suggest a route
     func suggestRoute(userPref: UserPreferences) {
         let query = PFQuery(className: "Route")
+        query.whereKey("difficultyLevel", lessThanOrEqualTo: userPref.difficultyLevel)
         query.findObjectsInBackground{ (routes, error) in
             if routes?.count != 0 {
                 for route in routes!{
@@ -174,7 +176,7 @@ class SearchRun : UIViewController {
         }
         else
         {
-            self.suggestedCount.text = "( 0 / 0 )"
+            self.suggestedCount.text = "[no suggested routes]"
             self.startLocation.text = "n\\a"
             self.endLocation.text = "n\\a"
             self.distance.text = "n\\a"
