@@ -20,57 +20,97 @@ class Route {
     var endLng: Double
     var difficultyLevel: Int
     
-    // CONSTRUCTOR WITH OBJECTID (if pulled from PARSE)
-    init(objectId: String, distance: Double, startLocation: String, endLocation: String, startLat: Double, startLng: Double, endLat: Double, endLng: Double){
+    // CONSTRUCTOR WITH OBJECTID (pull from PARSE database)
+    init(objectId: String, startLocation: String, endLocation: String, startLat: Double, startLng: Double, endLat: Double, endLng: Double, distance: Double, difficultyLevel: Int){
         self.objectId = objectId
         self.distance = distance
         self.startLocation = startLocation
         self.endLocation = endLocation
-        
-        // Parse only allows 1 geopoint ):
         self.startLat = startLat
         self.startLng = startLng
         self.endLat = endLat
         self.endLng = endLng
-        self.difficultyLevel = 0
-        self.difficultyLevel = calculateDifficulty()
+        self.difficultyLevel = difficultyLevel
     }
-    // CONSTRUCTOR WITHOUT OBJECTID (if pulled from STRAVA)
-    init(distance: Double, startLocation: String, endLocation: String, startLat: Double, startLng: Double, endLat: Double, endLng: Double){
-        self.objectId = ""
-        self.distance = distance
+    
+    // CONSTRUCTOR WITHOUT OBJECTID (manual construction)
+    init(startLocation: String, startLat: Double, startLng: Double, endLocation: String, endLat: Double, endLng: Double){
         self.startLocation = startLocation
-        self.endLocation = endLocation
-        
-        // Parse only allows 1 geopoint ):
         self.startLat = startLat
         self.startLng = startLng
+        self.endLocation = endLocation
         self.endLat = endLat
         self.endLng = endLng
+
+        self.objectId = ""
+        self.distance = 0
         self.difficultyLevel = 0
-        self.difficultyLevel = calculateDifficulty()
+        
+        // generates location Strings, distance, and difficulty
+        generateFieldsForNewInput()
+    }
+    
+    
+    func generateFieldsForNewInput(){
+        let startPoint = getStartPoint()
+        let endPoint = getEndPoint()
+        let meters = startPoint.distance(from: endPoint) // Not sure if route distance or direct distance
+        self.distance = meters * 0.000621371 // in miles
+        self.difficultyLevel = calculateDifficulty(distance: self.distance)
+        //self.startLocation = getLocationString(latitude: self.startLat, longitude: self.startLng)
+        //self.endLocation = getLocationString(latitude: self.endLat, longitude: self.endLng)
+    }
+    
+    // Generates location in City, State format
+    func getLocationString(latitude: Double, longitude: Double) -> String {
+        let geocoder = CLGeocoder()
+        let location = CLLocation()
+        var currentCity = ""
+        var currentState = ""
+        var finalString = ""
+        geocoder.reverseGeocodeLocation(location, completionHandler:
+            {
+                placemarks, error -> Void in
+
+                // Place details
+                guard let placeMark = placemarks?.first else { return }
+
+                // city
+                if (placeMark.locality != nil) {
+                    print(currentCity)
+                    currentCity = placeMark.locality ?? ""
+                }
+                // state
+                if (placeMark.administrativeArea != nil){
+                    currentState = placeMark.administrativeArea ?? ""
+                }
+                
+                finalString = "\(currentCity), \(currentState)"
+                
+        })
+        return finalString
         
     }
     
     // Calculates difficulty of route based on distance
-    func calculateDifficulty() -> Int {
-        if self.distance <= 1.5{
+    func calculateDifficulty(distance: Double) -> Int {
+        if distance <= 1.5{
             // 1.5 miles at 10min/miles = 15 miutes
             return 1
         }
-        else if self.distance <= 3{
+        else if distance <= 3{
             // 3 miles at 10min/miles = 30 miutes
             return 2
         }
-        else if self.distance <= 6{
+        else if distance <= 6{
             // 6 miles at 10min/miles = 60 miutes
             return 3
         }
-        else if self.distance <= 9{
+        else if distance <= 9{
             // 9 miles at 10min/miles = 90 miutes
             return 4
         }
-        else if self.distance <= 12{
+        else if distance <= 12{
             // 12 miles at 10min/miles = 120 miutes
             return 5
         }
@@ -82,7 +122,21 @@ class Route {
 
     func pushToDatabase(){
         if alreadyExists(){
-            return
+            // If manually input start&end LAT/LNG, need to update distance/difficulty
+            let query = PFQuery(className: "Route")
+            query.whereKey("objectId", equalTo: self.objectId)
+            query.findObjectsInBackground{ (routes, error) in
+                if error != nil {
+                    print("Error: Could not update database.")
+                }
+                else if routes?.count != 0 {
+                    routes![0]["startLocation"] = self.startLocation
+                    routes![0]["endLocation"] = self.endLocation
+                    routes![0]["distance"] = self.distance
+                    routes![0]["difficultyLevel"] = self.difficultyLevel
+                    routes![0].saveInBackground()
+                }
+            }
         }
         let parseObject = PFObject(className: "Route")
 
@@ -106,11 +160,11 @@ class Route {
         }
     }
     
-    func getStartGeoPoint() -> PFGeoPoint{
-        return PFGeoPoint(latitude: self.startLat, longitude: startLng)
+    func getStartPoint() -> CLLocation{
+        return CLLocation(latitude: self.startLat, longitude: startLng)
     }
-    func getEndGeoPoint() -> PFGeoPoint{
-        return PFGeoPoint(latitude: self.endLat, longitude: endLng)
+    func getEndPoint() -> CLLocation{
+        return CLLocation(latitude: self.endLat, longitude: endLng)
     }
     func alreadyExists() -> Bool{
         if self.objectId == "" {
