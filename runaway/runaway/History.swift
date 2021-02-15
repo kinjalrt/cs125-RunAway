@@ -33,9 +33,15 @@ class History:UIViewController
         //runs
         var runs=String(currentUser?["totalRuns"] as! Int)
         runs+=" runs completed"
+        runsCompleted.text=runs
         
         var time=String(currentUser?["totalTime"] as! Int)
         time+=" minutes total"
+        timeCompleted.text=time
+        
+        var dist=String(currentUser?["totalMiles"] as! Int)
+        dist+=" miles run"
+        distCompleted.text=dist
         
         
 
