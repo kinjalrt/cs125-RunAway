@@ -28,8 +28,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         map.delegate = self
-        setUpLocation()
-        
+        //setUpLocation()
     }
     
     
@@ -177,6 +176,11 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         self.suggestedRoutes.append(destCoordinates)
 
     }
+    
+    
+    
+    
+    
     
     
     
