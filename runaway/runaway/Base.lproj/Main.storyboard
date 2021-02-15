@@ -582,13 +582,13 @@
         <!--History-->
         <scene sceneID="uiz-3N-hda">
             <objects>
-                <viewController storyboardIdentifier="History" title="History" id="y82-1d-Obi" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="History" title="History" id="y82-1d-Obi" customClass="History" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="K1A-34-Wwq">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GbU-lb-LCz">
-                                <rect key="frame" x="41" y="79" width="94" height="45"/>
+                                <rect key="frame" x="41" y="79" width="353" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="37"/>
                                 <nil key="textColor"/>
@@ -651,6 +651,12 @@
                         <viewLayoutGuide key="safeArea" id="XhX-O6-3R4"/>
                     </view>
                     <navigationItem key="navigationItem" id="Wjg-7c-mLE"/>
+                    <connections>
+                        <outlet property="distCompleted" destination="DmQ-eQ-gth" id="lr2-oB-zHr"/>
+                        <outlet property="runsCompleted" destination="3FA-jo-0mb" id="een-UM-cLj"/>
+                        <outlet property="timeCompleted" destination="JKN-Bz-Tx7" id="igQ-rO-hDM"/>
+                        <outlet property="username" destination="GbU-lb-LCz" id="Q82-9N-nSr"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wRY-R0-cxi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
