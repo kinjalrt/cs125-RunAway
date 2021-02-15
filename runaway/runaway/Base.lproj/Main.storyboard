@@ -604,10 +604,6 @@
             </objects>
             <point key="canvasLocation" x="5267" y="994"/>
         </scene>
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <!--Run-->
-=======
         <!--Item-->
         <scene sceneID="0fu-S0-CKS">
             <objects>
@@ -719,10 +715,6 @@
             <point key="canvasLocation" x="6179.7101449275369" y="993.75"/>
         </scene>
         <!--Item-->
->>>>>>> 9332aace1b92d2f327f84cd8707b673e62ec60f6
-=======
-        <!--Item-->
->>>>>>> parent of 71c04fc... history page
         <scene sceneID="Igj-oM-GYr">
             <objects>
                 <navigationController id="IIY-Wf-pY2" sceneMemberID="viewController">

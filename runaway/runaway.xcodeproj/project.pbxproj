@@ -18,16 +18,9 @@
 		ED0EC26B25C56D93006382DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0EC26A25C56D93006382DC /* ViewController.swift */; };
 		ED0EC26E25C56D93006382DC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED0EC26C25C56D93006382DC /* Main.storyboard */; };
 		ED0EC27025C56D94006382DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED0EC26F25C56D94006382DC /* Assets.xcassets */; };
-<<<<<<< HEAD
-<<<<<<< HEAD
-		ED9A81C125DA4B4B0011DE50 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9A81C025DA4B4B0011DE50 /* History.swift */; };
-=======
 		ED68387725D752AE00D5A561 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED68387625D752AE00D5A561 /* Route.swift */; };
 		ED68387925D7530900D5A561 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED68387825D7530900D5A561 /* User.swift */; };
 		EDA6984C25D8AEA60024A2D9 /* SearchRun.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA6984B25D8AEA60024A2D9 /* SearchRun.swift */; };
->>>>>>> 9332aace1b92d2f327f84cd8707b673e62ec60f6
-=======
->>>>>>> parent of 71c04fc... history page
 		EDE812EB25D248160072CA16 /* myTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE812EA25D248160072CA16 /* myTabBar.swift */; };
 /* End PBXBuildFile section */
 
@@ -49,16 +42,9 @@
 		ED0EC26D25C56D93006382DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		ED0EC26F25C56D94006382DC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ED0EC27425C56D94006382DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-<<<<<<< HEAD
-<<<<<<< HEAD
-		ED9A81C025DA4B4B0011DE50 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
-=======
 		ED68387625D752AE00D5A561 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		ED68387825D7530900D5A561 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		EDA6984B25D8AEA60024A2D9 /* SearchRun.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRun.swift; sourceTree = "<group>"; };
->>>>>>> 9332aace1b92d2f327f84cd8707b673e62ec60f6
-=======
->>>>>>> parent of 71c04fc... history page
 		EDE812EA25D248160072CA16 /* myTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myTabBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
