@@ -388,6 +388,22 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VSU-tF-4c6">
+                                <rect key="frame" x="355" y="697" width="32" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Next"/>
+                                <connections>
+                                    <action selector="displayNextRun:" destination="4lJ-b1-Far" eventType="touchUpInside" id="agv-yT-DEI"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TVX-QF-Y0J">
+                                <rect key="frame" x="28" y="697" width="31" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Prev"/>
+                                <connections>
+                                    <action selector="displayPrevRun:" destination="4lJ-b1-Far" eventType="touchUpInside" id="PdV-L0-fgu"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="hgU-lQ-DdR"/>
@@ -396,6 +412,8 @@
                     <connections>
                         <outlet property="city" destination="bs5-sO-aQm" id="2Tk-oN-rSy"/>
                         <outlet property="map" destination="Yc5-Ip-l4p" id="Ksp-Qn-n3N"/>
+                        <outlet property="nextButton" destination="VSU-tF-4c6" id="eJD-9i-Cmc"/>
+                        <outlet property="prevButton" destination="TVX-QF-Y0J" id="1gS-Qr-9dd"/>
                         <outlet property="routeDistance" destination="cxb-1I-ZYC" id="AIh-iu-ayK"/>
                         <outlet property="temperature" destination="IOY-aQ-98x" id="v3X-ue-ppD"/>
                         <outlet property="weatherSummary" destination="a4j-BV-g7i" id="Rk5-HR-V6r"/>
