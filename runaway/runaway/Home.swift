@@ -19,16 +19,20 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     let LocationManager = CLLocationManager()
     var currentLocation: CLLocation?
     var suggestedRoutes: [CLLocationCoordinate2D] = []
+    var currIndex = 0
     @IBOutlet weak var city: UILabel!
     @IBOutlet weak var temperature: UILabel!
     @IBOutlet weak var weatherSummary: UILabel!
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var routeDistance: UILabel!
+    @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var prevButton: UIButton!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         map.delegate = self
-        //setUpLocation()
+        setUpLocation()
     }
     
     
@@ -45,6 +49,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
             LocationManager.stopUpdatingLocation()
             displayCityForLocation()
             requestWeatherForLocation()
+            findRoutes()
             displayRoutes()
         }
     }
@@ -123,11 +128,10 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     
     func displayRoutes(){
-        findRoutes()
-        
+        print(currIndex)
         //manually adding destination
         let sourceCoordinates = CLLocationCoordinate2D(latitude: (currentLocation?.coordinate.latitude)!,longitude: (currentLocation?.coordinate.longitude)!)
-        let destCoordinates = self.suggestedRoutes.first as! CLLocationCoordinate2D
+        let destCoordinates = self.suggestedRoutes[currIndex] as! CLLocationCoordinate2D
         
         let sourcePlacemark = MKPlacemark(coordinate:sourceCoordinates)
         let destPlacemark = MKPlacemark(coordinate:destCoordinates)
@@ -155,7 +159,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
         }
         
-        //get distance from Strava API
+        //get distance + name of route from Strava API
         self.routeDistance.text = "2 miles"
         
     
@@ -170,12 +174,59 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     
     func findRoutes(){
-        //get routes from Strava API
+        //get routes from Strava API:
+        
         //create CLLocationCoordinate2D object for each route and append to self.suggestedRoutes
-        let destCoordinates = CLLocationCoordinate2D(latitude: 37.331193,longitude: -122.031401)
+        
+        
+        
+        
+        //sample routes:
+        var destCoordinates = CLLocationCoordinate2D(latitude: 37.331193,longitude: -122.031401)
         self.suggestedRoutes.append(destCoordinates)
+        destCoordinates = CLLocationCoordinate2D(latitude: 37.330247,longitude: -122.027774)
+        self.suggestedRoutes.append(destCoordinates)
+        destCoordinates = CLLocationCoordinate2D(latitude: 37.326644,longitude: -122.030186)
+        self.suggestedRoutes.append(destCoordinates)
+        
+        //init navig buttons
+        prevButton.isHidden = true
+        if(self.suggestedRoutes.count==1){
+            prevButton.isHidden = true
+        }
 
     }
+    
+    
+    @IBAction func displayNextRun(_ sender: Any) {
+        if(currIndex<=(self.suggestedRoutes.count-1)){
+            currIndex = currIndex+1
+            prevButton.isHidden = false
+        }
+        if(currIndex==(self.suggestedRoutes.count-1)){
+            nextButton.isHidden = true
+        }
+        map.removeOverlays(map.overlays)
+        displayRoutes()
+        
+    }
+    
+    @IBAction func displayPrevRun(_ sender: Any) {
+        if(currIndex>0){
+            currIndex = currIndex-1
+            nextButton.isHidden = false
+        }
+        if(currIndex==0){
+            prevButton.isHidden = true
+        }
+        map.removeOverlays(map.overlays)
+        displayRoutes()
+        
+    }
+    
+    
+    
+    
     
     
     

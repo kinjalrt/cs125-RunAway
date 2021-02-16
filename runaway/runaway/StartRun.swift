@@ -1,10 +1,9 @@
 //
 //  StartRun.swift
-//  
+//
 //
 //  Created by Maya Schwarz on 2/10/21.
 //
-
 import Foundation
 import UIKit
 import Parse

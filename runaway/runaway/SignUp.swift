@@ -86,6 +86,9 @@ class SignUp: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
         user.password = signUpPasswordField.text
         user["birthday"] = signUpBirthdayField.date
         user["gender"] = GenderData[signUpGenderField.selectedRow(inComponent: 0)]
+        user["totalMiles"]=0
+        user["totalRuns"]=0
+        user["totalTime"]=0
         user["experienceLevel"] = ExperienceData[signUpExperienceField.selectedRow(inComponent: 0)]
         switch signUpExperienceField.selectedRow(inComponent: 0) {
         case 0:
