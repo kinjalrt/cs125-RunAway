@@ -28,6 +28,7 @@ class SearchRun : UIViewController {
     
     /*** UI Memvbers ***/
     @IBOutlet weak var suggestedCount: UILabel!
+    @IBOutlet weak var suggestionDescription: UILabel!
     @IBOutlet weak var startLocation: UILabel!
     @IBOutlet weak var endLocation: UILabel!
     @IBOutlet weak var distance: UILabel!
@@ -162,6 +163,13 @@ class SearchRun : UIViewController {
 
     func updateUI(){
         if !suggestionsList.isEmpty{
+            suggestionsList.sort { (route1, route2) -> Bool in
+                if route1.difficultyLevel > route2.difficultyLevel {
+                    return true
+                }
+                return false
+            }
+            
             if suggestedIndex < 0 {
                 suggestedIndex = 0
             }
@@ -169,6 +177,7 @@ class SearchRun : UIViewController {
                 suggestedIndex = suggestionsList.count-1
             }
             self.suggestedCount.text = "( \(suggestedIndex+1) / \(suggestionsList.count) )"
+            self.suggestionDescription.text = "\(suggestionsList.count) recommended route(s) from your location."
             self.startLocation.text = suggestionsList[suggestedIndex].startLocation
             self.endLocation.text = suggestionsList[suggestedIndex].endLocation
             self.distance.text = String(format: "%.1f miles", suggestionsList[suggestedIndex].distance)
@@ -177,6 +186,7 @@ class SearchRun : UIViewController {
         else
         {
             self.suggestedCount.text = "[no suggested routes]"
+            self.suggestionDescription.text = "There are currently no routes from your location that suit your preferences. (Try a different location)"
             self.startLocation.text = "n\\a"
             self.endLocation.text = "n\\a"
             self.distance.text = "n\\a"
@@ -191,7 +201,10 @@ class SearchRun : UIViewController {
         self.testRoutesLoaded = false
         
         for i in 0...TEST_LOCATIONS.count-1-1{
-            for j in (i+1)...TEST_LOCATIONS.count-1{
+            for j in 0...TEST_LOCATIONS.count-1{
+                if i == j {
+                    continue;
+                }
                 let newRoute = Route(
                     startLocation: TEST_LOCATIONS[i].name,
                     startLat: TEST_LOCATIONS[i].latitude,
