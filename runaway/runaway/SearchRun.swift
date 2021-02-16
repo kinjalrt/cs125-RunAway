@@ -50,20 +50,20 @@ class SearchRun : UIViewController {
         var longitude : Double
     }
     let TEST_LOCATIONS = [
-        testLocation(name: "PaloVerdeHouse", latitude: 33.639881, longitude: -117.830861),
-        testLocation(name: "MesaCourt", latitude: 33.65057, longitude: -117.84589),
-        testLocation(name: "DiamondJamboree", latitude: 33.688465, longitude: -117.832039),
-        testLocation(name: "CostCoTechDr", latitude: 33.66167, longitude: -117.743702),
-        testLocation(name: "IrvineSpectrum", latitude: 33.6501049, longitude: -117.7430505),
-        testLocation(name: "SouthCoastPlaza", latitude: 33.690939, longitude: -117.885602),
-        testLocation(name: "DisneyLandResort", latitude: 33.8124524, longitude: -117.9157986)
+        /* 0 */ testLocation(name: "PaloVerdeHouse", latitude: 33.639881, longitude: -117.830861),
+        /* 1 */ testLocation(name: "MesaCourt", latitude: 33.65057, longitude: -117.84589),
+        /* 2 */ testLocation(name: "DiamondJamboree", latitude: 33.688465, longitude: -117.832039),
+        /* 3 */ testLocation(name: "CostCoTechDr", latitude: 33.66167, longitude: -117.743702),
+        /* 4 */ testLocation(name: "IrvineSpectrum", latitude: 33.6501049, longitude: -117.7430505),
+        /* 5 */ testLocation(name: "SouthCoastPlaza", latitude: 33.690939, longitude: -117.885602),
+        /* 6 */ testLocation(name: "DisneyLandResort", latitude: 33.8124524, longitude: -117.9157986)
     ]
     
     /*** Algorithm Members ***/
+    let CURRENT_LOCATION : Int = 2
+    var currentPoint : CLLocation?
     var suggestionsList : [Route] = []
     var suggestedIndex : Int = -1
-    let CURRENT_LOCATION : Int = 6
-    var currentPoint : CLLocation?
     
     
     override func viewDidLoad() {
@@ -201,7 +201,7 @@ class SearchRun : UIViewController {
         self.testRoutesLoaded = false
         
         for i in 0...TEST_LOCATIONS.count-1-1{
-            for j in 0...TEST_LOCATIONS.count-1{
+            for j in (i+1)...TEST_LOCATIONS.count-1{
                 if i == j {
                     continue;
                 }
