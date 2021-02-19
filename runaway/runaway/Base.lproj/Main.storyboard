@@ -582,12 +582,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="congrats you did it!!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qh8-MO-U2w">
-                                <rect key="frame" x="132" y="246" width="151" height="21"/>
+                                <rect key="frame" x="132" y="246" width="182" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U7B-IN-b5t">
+                                <rect key="frame" x="20" y="43" width="72" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="xmark" catalog="system"/>
+                                <connections>
+                                    <segue destination="Z46-1Z-n1r" kind="presentation" id="Hll-j6-FHA"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="QUf-YU-5Ab"/>
@@ -595,7 +603,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hT8-rx-l7P" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4290" y="2557"/>
+            <point key="canvasLocation" x="4288.4057971014499" y="2556.6964285714284"/>
         </scene>
         <!--History-->
         <scene sceneID="uiz-3N-hda">
@@ -885,5 +893,9 @@
         <image name="house" catalog="system" width="64" height="54"/>
         <image name="map" catalog="system" width="64" height="56"/>
         <image name="multiply" catalog="system" width="64" height="54"/>
+        <image name="xmark" catalog="system" width="64" height="56"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Hll-j6-FHA"/>
+    </inferredMetricsTieBreakers>
 </document>
