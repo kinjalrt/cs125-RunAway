@@ -45,4 +45,7 @@ class Rating {
         return user
     }
     
+    func changeRating(newRating: Int) {
+        rating = newRating
+    }
 }
