@@ -23,6 +23,8 @@ class User {
     var birthday: Date
     var experienceLevel: String
     var difficultyLevel: Int
+    var listOfRuns: [Run]
+    var listOfRatings: [Rating]
     
     init(objectId: String, gender: String, emailVerified: Bool, height: String, weight: String, firstName: String, email: String, password:String, birthday: Date, experienceLevel: String, difficultyLevel: Int) {
         
@@ -37,6 +39,15 @@ class User {
         self.birthday = birthday
         self.experienceLevel = experienceLevel
         self.difficultyLevel = difficultyLevel
+        self.listOfRuns = []
+        self.listOfRatings = []
+    }
+    
+    func recordRun(run: Run){
+        listOfRuns.append(run)
+    }
+    func recordRating(rating: Rating){
+        listOfRatings.append(rating)
     }
         
 }
