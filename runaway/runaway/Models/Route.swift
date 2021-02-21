@@ -185,6 +185,7 @@ class Route {
     func getRating(userLevel: Int) -> Double{
         return ratingByLevel[userLevel-1]
     }
+    
     func newRating(rating: Rating){
         let list = rating.getUser()["difficultyLevel"] as! Int - 1
         
@@ -197,6 +198,17 @@ class Route {
         newRating /= Double(listOfRatings.count) // new average
         
         ratingByLevel[list] = newRating
+    }
+    
+    func updateRatings(level: Int){
+        let list = level - 1
+        
+        var ave = 0.0
+        for rating in listOfRatings[list]{
+            ave += Double(rating.rating)
+        }
+        ave /= Double(listOfRatings[list].count)
+        ratingByLevel[list] = ave
     }
     
 }
