@@ -19,6 +19,8 @@ class Route {
     var endLat: Double
     var endLng: Double
     var difficultyLevel: Int
+    var ratingByLevel: [Double]
+    var listOfRatings: [[Rating]]
     
     // CONSTRUCTOR WITH OBJECTID (pull from PARSE database)
     init(objectId: String, startLocation: String, endLocation: String, startLat: Double, startLng: Double, endLat: Double, endLng: Double, distance: Double, difficultyLevel: Int){
@@ -31,6 +33,9 @@ class Route {
         self.endLat = endLat
         self.endLng = endLng
         self.difficultyLevel = difficultyLevel
+        self.ratingByLevel = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        self.listOfRatings = [[], [], [], [], [], []]
+        
     }
     
     // CONSTRUCTOR WITHOUT OBJECTID (manual construction)
@@ -46,12 +51,14 @@ class Route {
         self.distance = 0
         self.difficultyLevel = 0
         
+        self.ratingByLevel = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        self.listOfRatings = [[], [], [], [], [], []]
         // generates location Strings, distance, and difficulty
         generateFieldsForNewInput()
     }
     
     
-    func generateFieldsForNewInput(){
+    private func generateFieldsForNewInput(){
         let startPoint = getStartPoint()
         let endPoint = getEndPoint()
         let meters = startPoint.distance(from: endPoint) // Not sure if route distance or direct distance
@@ -61,39 +68,9 @@ class Route {
         //self.endLocation = getLocationString(latitude: self.endLat, longitude: self.endLng)
     }
     
-    // Generates location in City, State format
-    func getLocationString(latitude: Double, longitude: Double) -> String {
-        let geocoder = CLGeocoder()
-        let location = CLLocation()
-        var currentCity = ""
-        var currentState = ""
-        var finalString = ""
-        geocoder.reverseGeocodeLocation(location, completionHandler:
-            {
-                placemarks, error -> Void in
-
-                // Place details
-                guard let placeMark = placemarks?.first else { return }
-
-                // city
-                if (placeMark.locality != nil) {
-                    print(currentCity)
-                    currentCity = placeMark.locality ?? ""
-                }
-                // state
-                if (placeMark.administrativeArea != nil){
-                    currentState = placeMark.administrativeArea ?? ""
-                }
-                
-                finalString = "\(currentCity), \(currentState)"
-                
-        })
-        return finalString
-        
-    }
     
     // Calculates difficulty of route based on distance
-    func calculateDifficulty(distance: Double) -> Int {
+    private func calculateDifficulty(distance: Double) -> Int {
         if distance <= 1.5{
             // 1.5 miles at 10min/miles = 15 miutes
             return 1
@@ -119,7 +96,15 @@ class Route {
         return 6
     }
     
+    
+    private func alreadyExists() -> Bool{
+        if self.objectId == "" {
+            return false
+        }
+        return true
+    }
 
+    
     func pushToDatabase(){
         if alreadyExists(){
             // If manually input start&end LAT/LNG, need to update distance/difficulty
@@ -160,16 +145,58 @@ class Route {
         }
     }
     
+    
+    // Generates location in City, State format
+    func getLocationString(latitude: Double, longitude: Double) -> String {
+        let geocoder = CLGeocoder()
+        let location = CLLocation()
+        var currentCity = ""
+        var currentState = ""
+        var finalString = ""
+        geocoder.reverseGeocodeLocation(location, completionHandler:
+            {
+                placemarks, error -> Void in
+
+                // Place details
+                guard let placeMark = placemarks?.first else { return }
+
+                // city
+                if (placeMark.locality != nil) {
+                    print(currentCity)
+                    currentCity = placeMark.locality ?? ""
+                }
+                // state
+                if (placeMark.administrativeArea != nil){
+                    currentState = placeMark.administrativeArea ?? ""
+                }
+                
+                finalString = "\(currentCity), \(currentState)"
+                
+        })
+        return finalString
+        
+    }
     func getStartPoint() -> CLLocation{
         return CLLocation(latitude: self.startLat, longitude: startLng)
     }
     func getEndPoint() -> CLLocation{
         return CLLocation(latitude: self.endLat, longitude: endLng)
     }
-    func alreadyExists() -> Bool{
-        if self.objectId == "" {
-            return false
-        }
-        return true
+    func getRating(userLevel: Int) -> Double{
+        return ratingByLevel[userLevel-1]
     }
+    func newRating(rating: Rating){
+        let list = rating.getUser()["difficultyLevel"] as! Int - 1
+        
+        var oldRating = ratingByLevel[list] // average
+        oldRating *= Double(listOfRatings[list].count) // sum
+        
+        listOfRatings[list].append(rating) // new count
+        
+        var newRating = oldRating + Double(rating.rating) // new sum
+        newRating /= Double(listOfRatings.count) // new average
+        
+        ratingByLevel[list] = newRating
+    }
+    
 }
