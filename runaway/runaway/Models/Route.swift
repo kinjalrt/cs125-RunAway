@@ -119,6 +119,9 @@ class Route {
                     routes![0]["endLocation"] = self.endLocation
                     routes![0]["distance"] = self.distance
                     routes![0]["difficultyLevel"] = self.difficultyLevel
+                    routes![0]["ratingByLevel"] = self.ratingByLevel
+                    routes![0]["listOfRating"] = self.listOfRatings
+                    
                     routes![0].saveInBackground()
                 }
             }
@@ -133,6 +136,8 @@ class Route {
         parseObject["endLng"] = self.endLng
         parseObject["distance"] = self.distance
         parseObject["difficultyLevel"] = self.difficultyLevel
+        parseObject["ratingByLevel"] = self.ratingByLevel
+        parseObject["listOfRating"] = self.listOfRatings
 
         // Saves the new object.
         parseObject.saveInBackground {
