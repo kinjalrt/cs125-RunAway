@@ -7,5 +7,8 @@ target 'runaway' do
 
   # Pods for runaway
 	pod 'Parse'
+  # Pods for Almofire 
+	pod 'Alamofire'
+  
 
 end
