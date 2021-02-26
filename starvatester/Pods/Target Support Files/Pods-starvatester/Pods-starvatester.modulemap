@@ -1,0 +1,6 @@
+framework module Pods_starvatester {
+  umbrella header "Pods-starvatester-umbrella.h"
+
+  export *
+  module * { export * }
+}

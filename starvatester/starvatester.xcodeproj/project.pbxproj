@@ -13,9 +13,13 @@
 		ED82B22E25E728C100E6235F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED82B22C25E728C100E6235F /* Main.storyboard */; };
 		ED82B23025E728C500E6235F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED82B22F25E728C500E6235F /* Assets.xcassets */; };
 		ED82B23325E728C500E6235F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED82B23125E728C500E6235F /* LaunchScreen.storyboard */; };
+		FC3A9D06260BECBE99C13C2D /* Pods_starvatester.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 750FD51E2EB332E2E9A28C83 /* Pods_starvatester.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		10DB1CCB23CDE3E883F1DE98 /* Pods-starvatester.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-starvatester.release.xcconfig"; path = "Target Support Files/Pods-starvatester/Pods-starvatester.release.xcconfig"; sourceTree = "<group>"; };
+		750FD51E2EB332E2E9A28C83 /* Pods_starvatester.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_starvatester.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E607607E16E0AF10719E28EB /* Pods-starvatester.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-starvatester.debug.xcconfig"; path = "Target Support Files/Pods-starvatester/Pods-starvatester.debug.xcconfig"; sourceTree = "<group>"; };
 		ED82B22325E728C100E6235F /* starvatester.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = starvatester.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED82B22625E728C100E6235F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ED82B22825E728C100E6235F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -31,17 +35,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC3A9D06260BECBE99C13C2D /* Pods_starvatester.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4A21890D061D9349CD6B0554 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				750FD51E2EB332E2E9A28C83 /* Pods_starvatester.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6B6C5ED661BD02389FF85A3A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E607607E16E0AF10719E28EB /* Pods-starvatester.debug.xcconfig */,
+				10DB1CCB23CDE3E883F1DE98 /* Pods-starvatester.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		ED82B21A25E728C100E6235F = {
 			isa = PBXGroup;
 			children = (
 				ED82B22525E728C100E6235F /* starvatester */,
 				ED82B22425E728C100E6235F /* Products */,
+				6B6C5ED661BD02389FF85A3A /* Pods */,
+				4A21890D061D9349CD6B0554 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,9 +99,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = ED82B23725E728C500E6235F /* Build configuration list for PBXNativeTarget "starvatester" */;
 			buildPhases = (
+				EF0075F7D165B7B93C549860 /* [CP] Check Pods Manifest.lock */,
 				ED82B21F25E728C100E6235F /* Sources */,
 				ED82B22025E728C100E6235F /* Frameworks */,
 				ED82B22125E728C100E6235F /* Resources */,
+				2AE9DDD5BEE42828517022AB /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -132,6 +159,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2AE9DDD5BEE42828517022AB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-starvatester/Pods-starvatester-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-starvatester/Pods-starvatester-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-starvatester/Pods-starvatester-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EF0075F7D165B7B93C549860 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-starvatester-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		ED82B21F25E728C100E6235F /* Sources */ = {
@@ -282,6 +351,7 @@
 		};
 		ED82B23825E728C500E6235F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E607607E16E0AF10719E28EB /* Pods-starvatester.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -300,6 +370,7 @@
 		};
 		ED82B23925E728C500E6235F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 10DB1CCB23CDE3E883F1DE98 /* Pods-starvatester.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
