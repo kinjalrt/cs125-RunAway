@@ -16,7 +16,7 @@ import MapKit
 class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
     let LocationManager = CLLocationManager()
-    var currentLocation: CLLocation?
+    static var currentLocation: CLLocation?
     @IBOutlet weak var city: UILabel!
     @IBOutlet weak var temperature: UILabel!
     @IBOutlet weak var weatherSummary: UILabel!
@@ -45,8 +45,8 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if !locations.isEmpty, currentLocation==nil{
-            currentLocation = locations.first
+        if !locations.isEmpty, Home.currentLocation==nil{
+            Home.currentLocation = locations.first
             LocationManager.stopUpdatingLocation()
             displayCityForLocation()
             requestWeatherForLocation()
@@ -57,7 +57,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     func displayCityForLocation() {
             // Use the last reported location.
-            guard let currentLocation = currentLocation else{
+        guard let currentLocation = Home.currentLocation else{
                 return
             }
             let long = currentLocation.coordinate.longitude
@@ -92,7 +92,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     }
     
     func requestWeatherForLocation(){
-        guard let currentLocation = currentLocation else{
+        guard let currentLocation = Home.currentLocation else{
             return
         }
         let long = currentLocation.coordinate.longitude

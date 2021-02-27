@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (5.4.1)
   - Bolts/Tasks (1.9.1)
   - Parse (1.19.1):
     - Parse/Core (= 1.19.1)
@@ -7,20 +8,23 @@ PODS:
   - SAConfettiView (0.1.8)
 
 DEPENDENCIES:
+  - Alamofire
   - Parse
   - SAConfettiView
 
 SPEC REPOS:
   trunk:
+    - Alamofire
     - Bolts
     - Parse
     - SAConfettiView
 
 SPEC CHECKSUMS:
+  Alamofire: 2291f7d21ca607c491dd17642e5d40fdcda0e65c
   Bolts: 8c1e8aab2f603387b8b9924f57d1d64f43d3ffdc
   Parse: e40fdb9c7d665823b7fe9865949cac9a53eb2ce7
   SAConfettiView: c87031a2280659261b730fce3669fb10e73636ee
 
-PODFILE CHECKSUM: fa6a2a52f239c3ea19688ba41591da8ec224c025
+PODFILE CHECKSUM: 656f7ed8e19754fb0f71a968421415cb36c6f2b2
 
 COCOAPODS: 1.10.1

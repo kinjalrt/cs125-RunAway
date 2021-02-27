@@ -9,8 +9,13 @@
 import Foundation
 import UIKit
 import Parse
+import Alamofire
+import AuthenticationServices
 
-class SignUp: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class SignUp: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, ASWebAuthenticationPresentationContextProviding {
+    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        return self.view.window ?? ASPresentationAnchor()
+    }
 
     @IBOutlet weak var signUpFirstNameField: UITextField!
     // we will use emails for usernames because they are unique
@@ -21,6 +26,13 @@ class SignUp: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     @IBOutlet weak var signUpExperienceField: UIPickerView!
     var GenderData: [String] = [String]()
     var ExperienceData: [String] = [String]()
+    
+    private var authSession: ASWebAuthenticationSession?
+    private let clientId: String = "61588"
+    private let urlScheme: String = "testerapp"
+    private let fallbackUrl: String = "testerapp.com"
+    private let clientSecret: String = "4c5efd4b78648d6f3f21a4089c54d1bdfb49f8a6"
+    static var accessToken: String = ""
     
 
     override func viewDidLoad() {
@@ -102,12 +114,58 @@ class SignUp: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
         default:
             user["difficultyLevel"] = 0
         }
-        
+        self.presentStrava()
         let sv = UIViewController.displaySpinner(onView: self.view)
         user.signUpInBackground { (success, error) in
             UIViewController.removeSpinner(spinner: sv)
         }
     }
+    
+    private func presentStrava(){
+        
+        let url: String = "https://www.strava.com/oauth/mobile/authorize?client_id=\(clientId)&redirect_uri=\(urlScheme)%3A%2F%2F\(fallbackUrl)&response_type=code&approval_prompt=auto&scope=read"
+        guard let authenticationUrl = URL(string: url) else { return }
+        print(url)
+        
+        authSession = ASWebAuthenticationSession(url: authenticationUrl, callbackURLScheme: "\(urlScheme)") { url, error in
+                   if let error = error {
+                       print(error)
+                   } else {
+                    if let code = self.getCode(from: url) {
+                        print("sasuke")
+                        print(code)
+                        self.requestStravaTokens(with: code)
+                        
+                       }
+                   }
+               }
+        authSession?.presentationContextProvider = self
+        authSession?.start()
+    }
+    
+    private func getCode(from url: URL?) -> String? {
+        guard let url = url?.absoluteString else { return nil }
+        
+        let urlComponents: URLComponents? = URLComponents(string: url)
+        let code: String? = urlComponents?.queryItems?.filter { $0.name == "code" }.first?.value
+        
+        return code
+    }
+    
+    private func requestStravaTokens(with code: String) {
+        let parameters: [String: Any] = ["client_id": clientId, "client_secret": clientSecret, "code": code, "grant_type": "authorization_code"]
+
+        AF.request("https://www.strava.com/oauth/token", method: .post, parameters: parameters).response { response in
+            guard let data = response.data else { return }
+            let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+            print("cat")
+            let accessToken = dataDictionary["access_token"] as! String
+            print(accessToken)
+            LogIn.accessToken = accessToken
+        }
+    }
+    
+    
     @IBOutlet weak var signUp: UIButton!
 
     func displayErrorMessage(message:String) {
@@ -123,3 +181,5 @@ class SignUp: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     }
 
 }
+
+

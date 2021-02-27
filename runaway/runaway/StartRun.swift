@@ -8,6 +8,7 @@ import Foundation
 import UIKit
 import Parse
 import MapKit
+import Alamofire
 
 
 class StartRun: UIViewController {
@@ -138,4 +139,76 @@ class StartRun: UIViewController {
                
             }})
     }
+    
+    
+    @IBAction func startRun(_ sender: Any) {
+        let long = Home.currentLocation!.coordinate.longitude
+        let lat = Home.currentLocation!.coordinate.latitude
+        let accessToken = LogIn.accessToken
+        
+        //retrieve all routes in North-East area relative to current location
+        let NElat = lat+3
+        let NElong = long+3
+        let northeastBounds = "[\(lat),\(long),\(NElat),\(NElong)]"
+        var parameters: [String: Any] = ["access_token": accessToken, "bounds": northeastBounds, "activity_type": "running"]
+        
+        AF.request("https://www.strava.com/api/v3/segments/explore", method: .get, parameters: parameters).response { response in
+            guard let data = response.data else { return }
+            let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+            print("ALL SEGMENTS IN NORTH-EAST AREA: ")
+            print(dataDictionary)
+        }
+        
+        //retrieve all routes in North-West area relative to current location
+        let NWlat = lat-3
+        let NWlong = long+3
+        let NWcurrLat = lat-3
+        let northwestBounds = "[\(NWcurrLat),\(long),\(NWlat),\(NWlong)]"
+        parameters = ["access_token": accessToken, "bounds": northwestBounds, "activity_type": "running"]
+        
+        AF.request("https://www.strava.com/api/v3/segments/explore", method: .get, parameters: parameters).response { response in
+            guard let data = response.data else { return }
+            let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+            print("ALL SEGMENTS IN NORTH-WEST AREA: ")
+            print(dataDictionary)
+        }
+        
+        
+        //retrieve all routes in South-West area relative to current location
+        let SWlat = lat-3
+        let SWlong = long-3
+        let southwestBounds = "[\(SWlat),\(SWlong),\(lat),\(long)]"
+        parameters = ["access_token": accessToken, "bounds": southwestBounds, "activity_type": "running"]
+        
+        AF.request("https://www.strava.com/api/v3/segments/explore", method: .get, parameters: parameters).response { response in
+            guard let data = response.data else { return }
+            let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+            print("ALL SEGMENTS IN SOUTH-WEST AREA: ")
+            print(dataDictionary)
+        }
+        
+        //retrieve all routes in South-East area relative to current location
+        let SElat = lat+3
+        let SElong = long-3
+        let southeastBounds = "[\(lat),\(SElong),\(SElat),\(long)]"
+        parameters = ["access_token": accessToken, "bounds": southeastBounds, "activity_type": "running"]
+        
+        AF.request("https://www.strava.com/api/v3/segments/explore", method: .get, parameters: parameters).response { response in
+            guard let data = response.data else { return }
+            let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+            print("ALL SEGMENTS IN SOUTH-EAST AREA: ")
+            print(dataDictionary)
+        }
+        
+        
+        
+        
+        
+        
+        
+    }
+    
+    
+    
+    
 }
