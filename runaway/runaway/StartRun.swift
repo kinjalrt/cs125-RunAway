@@ -21,7 +21,8 @@ class StartRun: UIViewController {
     @IBOutlet weak var inclineLabel: UILabel!
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var prevButton: UIButton!
-    @IBOutlet weak var routeName: UILabel!
+    @IBOutlet weak var routeNameLabel: UILabel!
+    @IBOutlet weak var routeDistanceLabel: UILabel!
     var suggestedRoutes: [CLLocationCoordinate2D] = []
     var currIndex = 0
     let LocationManager = CLLocationManager()
@@ -167,7 +168,9 @@ class StartRun: UIViewController {
         if(filteredRouteSegments.count == 0){
             return
         }
-        self.routeName.text = filteredRouteSegments[currIndex].routeName
+        self.routeNameLabel.text = filteredRouteSegments[currIndex].routeName
+        self.routeDistanceLabel.text = String(
+            format: "%.2f miles", filteredRouteSegments[currIndex].distance / 1000 * 0.621371)
         
         let sourceCoordinates = CLLocationCoordinate2D(
             latitude: filteredRouteSegments[currIndex].startLoc.coordinate.latitude,

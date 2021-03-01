@@ -565,18 +565,26 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="distance" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D9y-Di-19D">
+                                <rect key="frame" x="20" y="700" width="374" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="12"/>
+                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="8xG-UW-gz3"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="TNe-TH-kYW"/>
                     <connections>
-                        <outlet property="distanceLabel" destination="2WG-z7-b93" id="oPF-RX-omJ"/>
+                        <outlet property="distanceLabel" destination="2WG-z7-b93" id="yko-g6-EmI"/>
                         <outlet property="distanceSlider" destination="UTr-pK-cLw" id="NL6-Q3-g1e"/>
                         <outlet property="map" destination="DNY-AR-2Ec" id="5vH-4g-EEY"/>
                         <outlet property="nextButton" destination="Z5a-Nd-z8L" id="q3y-0I-ax3"/>
                         <outlet property="prevButton" destination="FxM-1a-rDF" id="DAe-2T-LWQ"/>
-                        <outlet property="routeName" destination="OpG-6c-1sk" id="0qw-P5-nDA"/>
+                        <outlet property="routeDistanceLabel" destination="D9y-Di-19D" id="rtM-KP-pYk"/>
+                        <outlet property="routeNameLabel" destination="OpG-6c-1sk" id="0qw-P5-nDA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mHW-kl-wek" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
