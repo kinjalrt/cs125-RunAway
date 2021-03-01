@@ -339,7 +339,7 @@
         <scene sceneID="NJc-Uc-HSP">
             <objects>
                 <navigationController modalPresentationStyle="fullScreen" navigationBarHidden="YES" id="GlI-kP-cNP" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" selectedImage="house" catalog="system" id="Pyq-gb-iv9"/>
+                    <tabBarItem key="tabBarItem" title="Home" image="house.fill" catalog="system" id="Pyq-gb-iv9"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="4PG-Y9-p22">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -928,7 +928,7 @@
         <scene sceneID="Igj-oM-GYr">
             <objects>
                 <navigationController navigationBarHidden="YES" id="IIY-Wf-pY2" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="run" id="bFE-xa-2am"/>
+                    <tabBarItem key="tabBarItem" title="run" image="plus" catalog="system" id="bFE-xa-2am"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="p4l-3G-ces">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -944,7 +944,7 @@
         <scene sceneID="ALo-VE-sxH">
             <objects>
                 <navigationController navigationBarHidden="YES" id="Is6-k8-OOW" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="History" selectedImage="clock" catalog="system" id="ZnD-Q9-Blm"/>
+                    <tabBarItem key="tabBarItem" title="History" image="clock.fill" catalog="system" id="ZnD-Q9-Blm"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="fHc-Rb-M7T">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1013,9 +1013,11 @@
         <image name="arrow.forward" catalog="system" width="128" height="98"/>
         <image name="checkmark" catalog="system" width="128" height="114"/>
         <image name="clock" catalog="system" width="128" height="121"/>
-        <image name="house" catalog="system" width="128" height="106"/>
+        <image name="clock.fill" catalog="system" width="128" height="121"/>
+        <image name="house.fill" catalog="system" width="128" height="106"/>
         <image name="map" catalog="system" width="128" height="110"/>
         <image name="multiply" catalog="system" width="128" height="111"/>
+        <image name="plus" catalog="system" width="128" height="113"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
