@@ -13,6 +13,7 @@ import MapKit
 
 class Segments
 {
+    var stravaDataId: Int
     var distance:Double = 0.0
     //var start_lat: Double = 0.0
     //var start_long: Double = 0.0
@@ -21,14 +22,13 @@ class Segments
     //var end_lat: Double = 0.0
     //var end_long: Double = 0.0
     
-    init(d:Double,start:CLLocation, end:CLLocation) {
-        distance = d
-        startLoc = start
-        endLoc = end
+    init(stravaDataId: Int, distance: Double, start: CLLocation, end:CLLocation) {
+        self.stravaDataId = stravaDataId
+        self.distance = distance
+        self.startLoc = start
+        self.endLoc = end
         //end_long = elong
         //startLoc = startLatLong
-        
-        
        }
 
 }
