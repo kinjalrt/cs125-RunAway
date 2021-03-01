@@ -25,13 +25,14 @@ class StartRun: UIViewController {
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var routeDistance: UILabel!
     
-    var routesSegments: [Segments] = []
+    var routesSegments: [Segments] = [] //array of routes
 
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         getRuns()
+        print(self.routesSegments)
     }
 
     
@@ -165,7 +166,22 @@ class StartRun: UIViewController {
             guard let data = response.data else { return }
             let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
             print("ALL SEGMENTS IN NORTH-EAST AREA: ")
-            print(dataDictionary)
+            var count=0
+            let seg = dataDictionary["segments"] as! [AnyObject]
+                for key in seg{
+
+                    let dist = key["distance"] as! Double
+                    let s = key["start_latlng"] as! NSArray
+                    let e = key["end_latlng"] as! NSArray
+                    let curr_seg = Segments(d:dist, slat: s[0] as! Double, slong: s[1] as! Double, elat: e[0] as! Double, elong: e[1] as! Double)
+                    self.routesSegments.append(curr_seg)
+                    count+=1
+                    
+                    
+                }
+            print(count)
+            print(self.routesSegments)
+            //print(dataDictionary)
             
         }
         
@@ -180,7 +196,21 @@ class StartRun: UIViewController {
             guard let data = response.data else { return }
             let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
             print("ALL SEGMENTS IN NORTH-WEST AREA: ")
-            print(dataDictionary)
+            //print(dataDictionary)
+            var count=0
+            let seg = dataDictionary["segments"] as! [AnyObject]
+                for key in seg{
+
+                    let dist = key["distance"] as! Double
+                    let s = key["start_latlng"] as! NSArray
+                    let e = key["end_latlng"] as! NSArray
+                    let curr_seg = Segments(d:dist, slat: s[0] as! Double, slong: s[1] as! Double, elat: e[0] as! Double, elong: e[1] as! Double)
+                    self.routesSegments.append(curr_seg)
+                    count+=1
+                    
+                    
+                }
+            print(count)
         }
         
         
@@ -194,7 +224,20 @@ class StartRun: UIViewController {
             guard let data = response.data else { return }
             let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
             print("ALL SEGMENTS IN SOUTH-WEST AREA: ")
-            print(dataDictionary)
+            var count=0
+            let seg = dataDictionary["segments"] as! [AnyObject]
+                for key in seg{
+
+                    let dist = key["distance"] as! Double
+                    let s = key["start_latlng"] as! NSArray
+                    let e = key["end_latlng"] as! NSArray
+                    let curr_seg = Segments(d:dist, slat: s[0] as! Double, slong: s[1] as! Double, elat: e[0] as! Double, elong: e[1] as! Double)
+                    self.routesSegments.append(curr_seg)
+                    count+=1
+                    
+                    
+                }
+            //print(dataDictionary)
         }
         
         //retrieve all routes in South-East area relative to current location
@@ -207,7 +250,22 @@ class StartRun: UIViewController {
             guard let data = response.data else { return }
             let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
             print("ALL SEGMENTS IN SOUTH-EAST AREA: ")
-            print(dataDictionary)
+            var count=0
+            let seg = dataDictionary["segments"] as! [AnyObject]
+                for key in seg{
+
+                    let dist = key["distance"] as! Double
+                    let s = key["start_latlng"] as! NSArray
+                    let e = key["end_latlng"] as! NSArray
+                    let curr_seg = Segments(d:dist, slat: s[0] as! Double, slong: s[1] as! Double, elat: e[0] as! Double, elong: e[1] as! Double)
+                    self.routesSegments.append(curr_seg)
+                    count+=1
+                    
+                    
+                }
+            print("SE")
+            print(count)
+            print(self.routesSegments)
         }
         
         
