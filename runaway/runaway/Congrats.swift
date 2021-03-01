@@ -24,8 +24,8 @@ class Congrats: UIViewController {
     @IBAction func leaveButton(_ sender: Any) {
         print("leaving")
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let newViewController = storyBoard.instantiateViewController(withIdentifier: "Home")
-        self.present(newViewController, animated: true, completion: nil)
+        let tab_control=storyboard?.instantiateViewController(identifier: "myTabBar") as! myTabBar
+        self.present(tab_control, animated: true, completion:nil)
     }
 
 }
