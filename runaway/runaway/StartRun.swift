@@ -21,6 +21,7 @@ class StartRun: UIViewController {
     @IBOutlet weak var inclineLabel: UILabel!
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var prevButton: UIButton!
+    @IBOutlet weak var routeName: UILabel!
     var suggestedRoutes: [CLLocationCoordinate2D] = []
     var currIndex = 0
     let LocationManager = CLLocationManager()
@@ -106,6 +107,7 @@ class StartRun: UIViewController {
                     let dist = key["distance"] as! Double
                     let s = key["start_latlng"] as! NSArray
                     let e = key["end_latlng"] as! NSArray
+                    let routeName = key["name"] as! String
                     
                     //making coords for starting and ending point
                     let start_loc = CLLocation(latitude: s[0] as! CLLocationDegrees, longitude: s[1] as! CLLocationDegrees)
@@ -113,7 +115,7 @@ class StartRun: UIViewController {
                     let distanceAway = self.getDistanceAway(location: start_loc)
                     
                     // make segement object
-                    let curr_seg = Segments(stravaDataId: id, distance: dist, distanceAway: distanceAway, start: start_loc, end: end_loc)
+                    let curr_seg = Segments(stravaDataId: id, routeName: routeName, distance: dist, distanceAway: distanceAway, start: start_loc, end: end_loc)
                 
                     //let curr_seg = Segments(d:dist, slat: s[0] as! Double, slong: s[1] as! Double, elat: e[0] as! Double, elong: e[1] as! Double)
                     self.routesSegments.append(curr_seg)
@@ -158,13 +160,14 @@ class StartRun: UIViewController {
     
     
     func displayRoute(){
-        print(currIndex)
+                print(currIndex)
         //manually adding destination
 //        let sourceCoordinates = CLLocationCoordinate2D(latitude: (currentLocation?.coordinate.latitude)!,longitude: (currentLocation?.coordinate.longitude)!)
 //        let destCoordinates = self.suggestedRoutes[currIndex] as! CLLocationCoordinate2D
         if(filteredRouteSegments.count == 0){
             return
         }
+        self.routeName.text = filteredRouteSegments[currIndex].routeName
         
         let sourceCoordinates = CLLocationCoordinate2D(
             latitude: filteredRouteSegments[currIndex].startLoc.coordinate.latitude,
