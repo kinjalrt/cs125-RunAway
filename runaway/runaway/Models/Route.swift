@@ -11,88 +11,104 @@ import Parse
 
 class Route {
     var objectId: String
-    var distance: Double
+    
+    // These gathered from Strava
     var startLocation: String
-    var endLocation: String
     var startLat: Double
     var startLng: Double
+    var endLocation: String
     var endLat: Double
     var endLng: Double
-    var difficultyLevel: Int
-    var ratingByLevel: [Double]
-    var listOfRatings: [[Rating]]
+    var distance: Double
+    var stravaDataId: Int
+    
+    // These generated here
+    var difficultyTier: Int
+    var ratingByTier: [Double]
+    var listsOfRatingsByTier: [[Rating]]
+    
     
     // CONSTRUCTOR WITH OBJECTID (pull from PARSE database)
-    init(objectId: String, startLocation: String, endLocation: String, startLat: Double, startLng: Double, endLat: Double, endLng: Double, distance: Double, difficultyLevel: Int){
-        self.objectId = objectId
-        self.distance = distance
-        self.startLocation = startLocation
-        self.endLocation = endLocation
-        self.startLat = startLat
-        self.startLng = startLng
-        self.endLat = endLat
-        self.endLng = endLng
-        self.difficultyLevel = difficultyLevel
-        self.ratingByLevel = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-        self.listOfRatings = [[], [], [], [], [], []]
+    init(objectId: String){
+        self.objectId = ""
+        self.stravaDataId = 0
+        self.startLocation = ""
+        self.startLat = 0.0
+        self.startLng = 0.0
+        self.endLocation = ""
+        self.endLat = 0.0
+        self.endLng = 0.0
+        self.distance = 0.0
+        self.difficultyTier = 0
+        self.ratingByTier = []
+        self.listsOfRatingsByTier = []
         
+        let query = PFQuery(className: "Route")
+        query.whereKey("objectId", equalTo: objectId)
+        query.findObjectsInBackground{ (routes, error) in
+            if error != nil {
+                print("Error: Could not find route in database.")
+            }
+            else if routes?.count != 0 {
+                self.objectId = routes![0]["objectId"] as! String
+                self.stravaDataId = routes![0]["stravaDataId"] as! Int
+                self.startLocation = routes![0]["startLocation"] as! String
+                self.startLat = routes![0]["startLat"] as! Double
+                self.startLng = routes![0]["startLng"] as! Double
+                self.endLocation = routes![0]["endLocation"] as! String
+                self.endLat = routes![0]["endLat"] as! Double
+                self.endLng = routes![0]["endLng"] as! Double
+                self.distance = routes![0]["distance"] as! Double
+                self.difficultyTier = routes![0]["difficultyTier"] as! Int
+                self.ratingByTier = routes![0]["ratingByLevel"] as! [Double]
+                self.listsOfRatingsByTier = routes![0]["listOfRating"] as! [[Rating]]
+            }
+        }
     }
     
     // CONSTRUCTOR WITHOUT OBJECTID (manual construction)
-    init(startLocation: String, startLat: Double, startLng: Double, endLocation: String, endLat: Double, endLng: Double){
+    init(startLocation: String, startLat: Double, startLng: Double, endLocation: String, endLat: Double, endLng: Double, distance: Double, stravaDataId: Int){
+        
+        // Data from Strava
         self.startLocation = startLocation
         self.startLat = startLat
         self.startLng = startLng
         self.endLocation = endLocation
         self.endLat = endLat
         self.endLng = endLng
-
-        self.objectId = ""
-        self.distance = 0
-        self.difficultyLevel = 0
+        self.distance = distance
+        self.stravaDataId = stravaDataId
         
-        self.ratingByLevel = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-        self.listOfRatings = [[], [], [], [], [], []]
-        // generates location Strings, distance, and difficulty
-        generateFieldsForNewInput()
-    }
-    
-    
-    private func generateFieldsForNewInput(){
-        let startPoint = getStartPoint()
-        let endPoint = getEndPoint()
-        let meters = startPoint.distance(from: endPoint) // Not sure if route distance or direct distance
-        self.distance = meters * 0.000621371 // in miles
-        self.difficultyLevel = calculateDifficulty(distance: self.distance)
-        //self.startLocation = getLocationString(latitude: self.startLat, longitude: self.startLng)
-        //self.endLocation = getLocationString(latitude: self.endLat, longitude: self.endLng)
+        // Initialize other variables
+        self.objectId = ""
+        self.difficultyTier = 0
+        self.ratingByTier = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        self.listsOfRatingsByTier = [[], [], [], [], [], []]
+        
+        // Generated Data
+        self.difficultyTier = calculateDifficulty(distance: distance)
     }
     
     
     // Calculates difficulty of route based on distance
     private func calculateDifficulty(distance: Double) -> Int {
-        if distance <= 1.5{
-            // 1.5 miles at 10min/miles = 15 miutes
-            return 1
-        }
-        else if distance <= 3{
-            // 3 miles at 10min/miles = 30 miutes
-            return 2
-        }
-        else if distance <= 6{
-            // 6 miles at 10min/miles = 60 miutes
-            return 3
-        }
-        else if distance <= 9{
-            // 9 miles at 10min/miles = 90 miutes
-            return 4
-        }
-        else if distance <= 12{
-            // 12 miles at 10min/miles = 120 miutes
-            return 5
-        }
         
-        // TODO: Add more cases later
+        // 1.5 miles at 10min/miles = 15 miutes
+        if distance <= 1.5 { return 1 }
+        
+        // 3 miles at 10min/miles = 30 miutes
+        else if distance <= 3 { return 2 }
+
+        // 6 miles at 10min/miles = 60 miutes
+        else if distance <= 6 { return 3 }
+        
+        // 9 miles at 10min/miles = 90 miutes
+        else if distance <= 9 { return 4}
+        
+        // 12 miles at 10min/miles = 120 miutes
+        else if distance <= 12{ return 5}
+        
+        // TODO: Add more cases later?
         return 6
     }
     
@@ -105,115 +121,72 @@ class Route {
     }
 
     
-    func pushToDatabase(){
-        if alreadyExists(){
-            // If manually input start&end LAT/LNG, need to update distance/difficulty
+    func updateInDatabase(){
+        if alreadyExists() {
             let query = PFQuery(className: "Route")
             query.whereKey("objectId", equalTo: self.objectId)
             query.findObjectsInBackground{ (routes, error) in
                 if error != nil {
-                    print("Error: Could not update database.")
+                    print("Error: Could not update in database.")
                 }
                 else if routes?.count != 0 {
-                    routes![0]["startLocation"] = self.startLocation
-                    routes![0]["endLocation"] = self.endLocation
-                    routes![0]["distance"] = self.distance
-                    routes![0]["difficultyLevel"] = self.difficultyLevel
-                    routes![0]["ratingByLevel"] = self.ratingByLevel
-                    routes![0]["listOfRating"] = self.listOfRatings
-                    
+                    routes![0]["ratingsByTier"] = self.ratingByTier
+                    routes![0]["listsOfRatingsByTier"] = self.listsOfRatingsByTier
                     routes![0].saveInBackground()
                 }
             }
         }
-        let parseObject = PFObject(className: "Route")
+        else{
+            // Create object
+            let parseObject = PFObject(className: "Route")
+            parseObject["startLocation"] = self.startLocation
+            parseObject["endLocation"] = self.endLocation
+            parseObject["startLat"] = self.startLat
+            parseObject["startLng"] = self.startLng
+            parseObject["endLat"] = self.endLat
+            parseObject["endLng"] = self.endLng
+            parseObject["distance"] = self.distance
+            parseObject["stravaDataId"] = self.stravaDataId
+            parseObject["difficultyTier"] = self.difficultyTier
+            parseObject["ratingsByTier"] = self.ratingByTier
+            parseObject["listsOfRatingsByTier"] = self.listsOfRatingsByTier
 
-        parseObject["startLocation"] = self.startLocation
-        parseObject["endLocation"] = self.endLocation
-        parseObject["startLat"] = self.startLat
-        parseObject["startLng"] = self.startLng
-        parseObject["endLat"] = self.endLat
-        parseObject["endLng"] = self.endLng
-        parseObject["distance"] = self.distance
-        parseObject["difficultyLevel"] = self.difficultyLevel
-        parseObject["ratingByLevel"] = self.ratingByLevel
-        parseObject["listOfRating"] = self.listOfRatings
-
-        // Saves the new object.
-        parseObject.saveInBackground {
-          (success: Bool, error: Error?) in
-          if (success) {
-            print("Successfully push to database.")
-          } else {
-            print("Error: Could not push to database.")
-          }
+            // Saves the new object.
+            parseObject.saveInBackground {
+              (success: Bool, error: Error?) in
+              if (success) {
+                print("Successfully saved route to database.")
+              } else {
+                print("Error: Could not save route to database.")
+              }
+            }
         }
     }
     
-    
-    // Generates location in City, State format
-    func getLocationString(latitude: Double, longitude: Double) -> String {
-        let geocoder = CLGeocoder()
-        let location = CLLocation()
-        var currentCity = ""
-        var currentState = ""
-        var finalString = ""
-        geocoder.reverseGeocodeLocation(location, completionHandler:
-            {
-                placemarks, error -> Void in
-
-                // Place details
-                guard let placeMark = placemarks?.first else { return }
-
-                // city
-                if (placeMark.locality != nil) {
-                    print(currentCity)
-                    currentCity = placeMark.locality ?? ""
-                }
-                // state
-                if (placeMark.administrativeArea != nil){
-                    currentState = placeMark.administrativeArea ?? ""
-                }
-                
-                finalString = "\(currentCity), \(currentState)"
-                
-        })
-        return finalString
-        
-    }
     func getStartPoint() -> CLLocation{
         return CLLocation(latitude: self.startLat, longitude: startLng)
     }
+    
     func getEndPoint() -> CLLocation{
         return CLLocation(latitude: self.endLat, longitude: endLng)
     }
-    func getRating(userLevel: Int) -> Double{
-        return ratingByLevel[userLevel-1]
+    
+    func getRatingByTier(tier: Int) -> Double{
+        return ratingByTier[tier-1]
     }
     
-    func newRating(rating: Rating){
-        let list = rating.getUser()["difficultyLevel"] as! Int - 1
+    // Used when User gives a rating
+    func addNewRating(rating: Rating, tier: Int){
+        let tierIndex = tier - 1
+        var oldRating = ratingByTier[tierIndex] // average
+        oldRating *= Double(listsOfRatingsByTier[tierIndex].count) // sum
         
-        var oldRating = ratingByLevel[list] // average
-        oldRating *= Double(listOfRatings[list].count) // sum
-        
-        listOfRatings[list].append(rating) // new count
+        listsOfRatingsByTier[tierIndex].append(rating) // new count
         
         var newRating = oldRating + Double(rating.rating) // new sum
-        newRating /= Double(listOfRatings.count) // new average
+        newRating /= Double(listsOfRatingsByTier.count) // new average
         
-        ratingByLevel[list] = newRating
-    }
-    
-    func updateRatings(level: Int){
-        let list = level - 1
-        
-        var ave = 0.0
-        for rating in listOfRatings[list]{
-            ave += Double(rating.rating)
-        }
-        ave /= Double(listOfRatings[list].count)
-        ratingByLevel[list] = ave
+        ratingByTier[tierIndex] = newRating
     }
     
 }
