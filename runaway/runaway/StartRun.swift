@@ -26,13 +26,13 @@ class StartRun: UIViewController {
     let LocationManager = CLLocationManager()
     var currentLocation: CLLocation?
     @IBOutlet weak var map: MKMapView!
-    @IBOutlet weak var routeDistance: UILabel!
     
     
     // Logic Components
     var routesSegments: [Segments] = [] //array of routes
     var routesSegmentIds: [Int] = []
     var filteredRouteSegments: [Segments] = []
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +46,7 @@ class StartRun: UIViewController {
         distanceLabel.text = "\(currentValue)"
     }
     
+    
     @IBAction func distanceSliderValueChosen(_ sender: UISlider) {
         filterRoutesByDistance(distance: Double(sender.value) )
         print("\nFiltered Routes (Id, TotalDistance, DistanceAway):")
@@ -54,7 +55,10 @@ class StartRun: UIViewController {
             let distanceAway = r.distanceAway / 1000 * 0.621371
             print(String(format: "%10.d \t %8.2f miles \t %8.2f", r.stravaDataId, distanceInMiles, distanceAway))
         }
+        currIndex = 0
+        displayRoute()
     }
+    
     
     @IBAction func inclineSliderValueChanged(_ sender: UISlider) {
         let currentValue = Int(sender.value)
@@ -122,6 +126,7 @@ class StartRun: UIViewController {
         }
     }
     
+    
     func getDistanceAway(location: CLLocation) -> Double{
         let userLoc = CLLocation(
             latitude:Home.currentLocation!.coordinate.latitude,
@@ -130,12 +135,9 @@ class StartRun: UIViewController {
         return location.distance(from: userLoc)
     }
     
+    
     func sortSegments(){
-//        let userLoc: CLLocation = CLLocation(latitude:Home.currentLocation!.coordinate.latitude,longitude:Home.currentLocation!.coordinate.longitude)
-//
-//        let sortedSegs = self.routesSegments.sorted(by: {$0.startLoc.distance(from: userLoc) < $1.startLoc.distance(from: userLoc)})
-//        self.routesSegments = sortedSegs
-        let sortedSegs = self.routesSegments.sorted(by: {$0.distanceAway < $1.distanceAway})
+       let sortedSegs = self.routesSegments.sorted(by: {$0.distanceAway < $1.distanceAway})
         self.routesSegments = sortedSegs
         print("\tsorted count = \(sortedSegs.count) normal count = \(self.routesSegments.count)")
     }
@@ -154,11 +156,24 @@ class StartRun: UIViewController {
         }
     }
     
-    func displayRoutes(){
+    
+    func displayRoute(){
         print(currIndex)
         //manually adding destination
-        let sourceCoordinates = CLLocationCoordinate2D(latitude: (currentLocation?.coordinate.latitude)!,longitude: (currentLocation?.coordinate.longitude)!)
-        let destCoordinates = self.suggestedRoutes[currIndex] as! CLLocationCoordinate2D
+//        let sourceCoordinates = CLLocationCoordinate2D(latitude: (currentLocation?.coordinate.latitude)!,longitude: (currentLocation?.coordinate.longitude)!)
+//        let destCoordinates = self.suggestedRoutes[currIndex] as! CLLocationCoordinate2D
+        if(filteredRouteSegments.count == 0){
+            return
+        }
+        
+        let sourceCoordinates = CLLocationCoordinate2D(
+            latitude: filteredRouteSegments[currIndex].startLoc.coordinate.latitude,
+            longitude: filteredRouteSegments[currIndex].startLoc.coordinate.longitude
+        )
+        let destCoordinates = CLLocationCoordinate2D(
+            latitude: filteredRouteSegments[currIndex].endLoc.coordinate.latitude,
+            longitude: filteredRouteSegments[currIndex].endLoc.coordinate.longitude
+        )
         
         let sourcePlacemark = MKPlacemark(coordinate:sourceCoordinates)
         let destPlacemark = MKPlacemark(coordinate:destCoordinates)
@@ -187,8 +202,9 @@ class StartRun: UIViewController {
         }
         
         //get distance + name of route from Strava API
-        self.routeDistance.text = "2 miles"
+        //self.routeDistance.text = String(format: "\(filteredRouteSegments[currIndex].distance)")
     }
+    
     
     func findRoutes(){
         //get routes from Strava API:
@@ -212,30 +228,30 @@ class StartRun: UIViewController {
     
     
     @IBAction func displayNextRun(_ sender: Any) {
-        if(currIndex<=(self.suggestedRoutes.count-1)){
+        if(currIndex<(self.filteredRouteSegments.count-1)){
             currIndex = currIndex+1
             prevButton.isHidden = false
+            if(currIndex==(self.filteredRouteSegments.count-1)){
+                nextButton.isHidden = true
+            }
+            map.removeOverlays(map.overlays)
+            displayRoute()
         }
-        if(currIndex==(self.suggestedRoutes.count-1)){
-            nextButton.isHidden = true
-        }
-        map.removeOverlays(map.overlays)
-        displayRoutes()
-        
     }
+    
     
     @IBAction func displayPrevRun(_ sender: Any) {
         if(currIndex>0){
             currIndex = currIndex-1
             nextButton.isHidden = false
+            if(currIndex==0){
+                prevButton.isHidden = true
+            }
+            map.removeOverlays(map.overlays)
+            displayRoute()
         }
-        if(currIndex==0){
-            prevButton.isHidden = true
-        }
-        map.removeOverlays(map.overlays)
-        displayRoutes()
-        
     }
+    
     
     @IBAction func logout(_ sender: Any) {
         PFUser.logOutInBackground(block: { (error) in
@@ -250,6 +266,4 @@ class StartRun: UIViewController {
             }})
     }
     
-    
-
 }
