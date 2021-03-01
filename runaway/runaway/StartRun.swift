@@ -11,6 +11,7 @@ import MapKit
 import Alamofire
 
 
+
 class StartRun: UIViewController {
     @IBOutlet weak var distanceSlider: UISlider!
     @IBOutlet weak var inclineSlider: UISlider!
@@ -25,14 +26,18 @@ class StartRun: UIViewController {
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var routeDistance: UILabel!
     
+    
+    
+    
     var routesSegments: [Segments] = [] //array of routes
+    
 
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         getRuns()
-        print(self.routesSegments)
+        
     }
 
     
@@ -173,15 +178,24 @@ class StartRun: UIViewController {
                     let dist = key["distance"] as! Double
                     let s = key["start_latlng"] as! NSArray
                     let e = key["end_latlng"] as! NSArray
-                    let curr_seg = Segments(d:dist, slat: s[0] as! Double, slong: s[1] as! Double, elat: e[0] as! Double, elong: e[1] as! Double)
+                    
+                    //making coords for starting and ending point
+                    let start_loc = CLLocation(latitude: s[0] as! CLLocationDegrees, longitude: s[1] as! CLLocationDegrees)
+                    let end_loc = CLLocation(latitude: e[0] as! CLLocationDegrees, longitude: e[1] as! CLLocationDegrees)
+                    
+                    // make segement object
+                    let curr_seg = Segments(d:dist, start: start_loc, end: end_loc)
+                
+                    //let curr_seg = Segments(d:dist, slat: s[0] as! Double, slong: s[1] as! Double, elat: e[0] as! Double, elong: e[1] as! Double)
                     self.routesSegments.append(curr_seg)
                     count+=1
                     
                     
                 }
-            print(count)
-            print(self.routesSegments)
-            //print(dataDictionary)
+            print("ne",count)
+            self.sortSegments()
+
+            //print(self.routesSegments)
             
         }
         
@@ -204,13 +218,22 @@ class StartRun: UIViewController {
                     let dist = key["distance"] as! Double
                     let s = key["start_latlng"] as! NSArray
                     let e = key["end_latlng"] as! NSArray
-                    let curr_seg = Segments(d:dist, slat: s[0] as! Double, slong: s[1] as! Double, elat: e[0] as! Double, elong: e[1] as! Double)
+                    //making coords for starting and ending point
+                    let start_loc = CLLocation(latitude: s[0] as! CLLocationDegrees, longitude: s[1] as! CLLocationDegrees)
+                    let end_loc = CLLocation(latitude: e[0] as! CLLocationDegrees, longitude: e[1] as! CLLocationDegrees)
+                    
+                    // make segement object
+                    let curr_seg = Segments(d:dist, start: start_loc, end: end_loc)
+                    
+                   // let curr_seg = Segments(d:dist, slat: s[0] as! Double, slong: s[1] as! Double, elat: e[0] as! Double, elong: e[1] as! Double)
                     self.routesSegments.append(curr_seg)
                     count+=1
                     
                     
                 }
-            print(count)
+            print("nw",count)
+            self.sortSegments()
+
         }
         
         
@@ -231,12 +254,22 @@ class StartRun: UIViewController {
                     let dist = key["distance"] as! Double
                     let s = key["start_latlng"] as! NSArray
                     let e = key["end_latlng"] as! NSArray
-                    let curr_seg = Segments(d:dist, slat: s[0] as! Double, slong: s[1] as! Double, elat: e[0] as! Double, elong: e[1] as! Double)
+                    //making coords for starting and ending point
+                    let start_loc = CLLocation(latitude: s[0] as! CLLocationDegrees, longitude: s[1] as! CLLocationDegrees)
+                    let end_loc = CLLocation(latitude: e[0] as! CLLocationDegrees, longitude: e[1] as! CLLocationDegrees)
+                    
+                    //let curr_seg = Segments(d:dist, slat: s[0] as! Double, slong: s[1] as! Double, elat: e[0] as! Double, elong: e[1] as! Double)
+                    
+                    // make segement object
+                    let curr_seg = Segments(d:dist, start: start_loc, end: end_loc)
                     self.routesSegments.append(curr_seg)
                     count+=1
                     
                     
                 }
+            print("sw",count)
+            self.sortSegments()
+
             //print(dataDictionary)
         }
         
@@ -257,17 +290,24 @@ class StartRun: UIViewController {
                     let dist = key["distance"] as! Double
                     let s = key["start_latlng"] as! NSArray
                     let e = key["end_latlng"] as! NSArray
-                    let curr_seg = Segments(d:dist, slat: s[0] as! Double, slong: s[1] as! Double, elat: e[0] as! Double, elong: e[1] as! Double)
+                    //making coords for starting and ending point
+                    let start_loc = CLLocation(latitude: s[0] as! CLLocationDegrees, longitude: s[1] as! CLLocationDegrees)
+                    let end_loc = CLLocation(latitude: e[0] as! CLLocationDegrees, longitude: e[1] as! CLLocationDegrees)
+                    
+                    //let curr_seg = Segments(d:dist, slat: s[0] as! Double, slong: s[1] as! Double, elat: e[0] as! Double, elong: e[1] as! Double)
+                    
+                    // make segement object
+                    let curr_seg = Segments(d:dist, start: start_loc, end: end_loc)
                     self.routesSegments.append(curr_seg)
                     count+=1
                     
                     
                 }
-            print("SE")
-            print(count)
-            print(self.routesSegments)
+            print("se",count)
+            self.sortSegments()
+
+           // print("final",self.routesSegments)
         }
-        
         
         
         
@@ -276,7 +316,16 @@ class StartRun: UIViewController {
         
     }
     
-    
-    
+    func sortSegments(){
+        
+        let userLoc: CLLocation = CLLocation(latitude:Home.currentLocation!.coordinate.latitude,longitude:Home.currentLocation!.coordinate.longitude)
+        
+        let sortedSegs = self.routesSegments.sorted(by: {$0.startLoc.distance(from: userLoc) < $1.endLoc.distance(from: userLoc)})
+        self.routesSegments = sortedSegs
+        print("sorted count = \(sortedSegs.count) normal count = \(self.routesSegments.count)")
+        
+        
+    }
+
     
 }
