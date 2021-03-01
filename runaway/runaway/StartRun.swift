@@ -26,6 +26,9 @@ class StartRun: UIViewController {
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var routeDistance: UILabel!
     
+    
+    
+    
     var routesSegments: [Segments] = [] //array of routes
     
 
@@ -190,6 +193,8 @@ class StartRun: UIViewController {
                     
                 }
             print("ne",count)
+            self.sortSegments()
+
             //print(self.routesSegments)
             
         }
@@ -227,6 +232,8 @@ class StartRun: UIViewController {
                     
                 }
             print("nw",count)
+            self.sortSegments()
+
         }
         
         
@@ -261,6 +268,8 @@ class StartRun: UIViewController {
                     
                 }
             print("sw",count)
+            self.sortSegments()
+
             //print(dataDictionary)
         }
         
@@ -295,7 +304,9 @@ class StartRun: UIViewController {
                     
                 }
             print("se",count)
-            print("final",self.routesSegments)
+            self.sortSegments()
+
+           // print("final",self.routesSegments)
         }
         
         
@@ -305,7 +316,16 @@ class StartRun: UIViewController {
         
     }
     
-    
+    func sortSegments(){
+        
+        let userLoc: CLLocation = CLLocation(latitude:Home.currentLocation!.coordinate.latitude,longitude:Home.currentLocation!.coordinate.longitude)
+        
+        let sortedSegs = self.routesSegments.sorted(by: {$0.startLoc.distance(from: userLoc) < $1.endLoc.distance(from: userLoc)})
+        self.routesSegments = sortedSegs
+        print("sorted count = \(sortedSegs.count) normal count = \(self.routesSegments.count)")
+        
+        
+    }
 
     
 }
