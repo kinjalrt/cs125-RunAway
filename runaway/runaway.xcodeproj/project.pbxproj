@@ -45,6 +45,7 @@
 		EDA6984C25D8AEA60024A2D9 /* SearchRun.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA6984B25D8AEA60024A2D9 /* SearchRun.swift */; };
 		EDE06A2F25E1ACB500ED7648 /* Run.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE06A2E25E1ACB500ED7648 /* Run.swift */; };
 		EDE06A3125E1B9F000ED7648 /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE06A3025E1B9F000ED7648 /* Rating.swift */; };
+		EDE283F625ECC90500217B2A /* Segments.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE283F525ECC90500217B2A /* Segments.swift */; };
 		EDE812EB25D248160072CA16 /* myTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE812EA25D248160072CA16 /* myTabBar.swift */; };
 /* End PBXBuildFile section */
 
@@ -92,6 +93,7 @@
 		EDA6984B25D8AEA60024A2D9 /* SearchRun.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRun.swift; sourceTree = "<group>"; };
 		EDE06A2E25E1ACB500ED7648 /* Run.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Run.swift; sourceTree = "<group>"; };
 		EDE06A3025E1B9F000ED7648 /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
+		EDE283F525ECC90500217B2A /* Segments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Segments.swift; sourceTree = "<group>"; };
 		EDE812EA25D248160072CA16 /* myTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myTabBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -166,6 +168,7 @@
 				7E59559E25E62A94007E2FDD /* Fonts */,
 				ED68387525D7527900D5A561 /* Models */,
 				7E2FEAE025CE6DAF009A7CE8 /* LogIn.swift */,
+				EDE283F525ECC90500217B2A /* Segments.swift */,
 				7E25F3B825CFB9AD00CB1BDC /* Home.swift */,
 				7E2FEAE425CE706D009A7CE8 /* SignUp.swift */,
 				EDA6984B25D8AEA60024A2D9 /* SearchRun.swift */,
@@ -357,6 +360,7 @@
 				ED20AE5225DAAC1200B3BFB8 /* History.swift in Sources */,
 				EDE06A3125E1B9F000ED7648 /* Rating.swift in Sources */,
 				7E25F3B925CFB9AD00CB1BDC /* Home.swift in Sources */,
+				EDE283F625ECC90500217B2A /* Segments.swift in Sources */,
 				EDE06A2F25E1ACB500ED7648 /* Run.swift in Sources */,
 				ED68387925D7530900D5A561 /* User.swift in Sources */,
 			);

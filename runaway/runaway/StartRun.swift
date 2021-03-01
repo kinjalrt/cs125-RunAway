@@ -24,6 +24,15 @@ class StartRun: UIViewController {
     var currentLocation: CLLocation?
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var routeDistance: UILabel!
+    
+    var routesSegments: [Segments] = []
+
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        getRuns()
+    }
 
     
     @IBAction func distanceSliderValueChanged(_ sender: UISlider) {
@@ -141,7 +150,7 @@ class StartRun: UIViewController {
     }
     
     
-    @IBAction func startRun(_ sender: Any) {
+     func getRuns() {
         let long = Home.currentLocation!.coordinate.longitude
         let lat = Home.currentLocation!.coordinate.latitude
         let accessToken = LogIn.accessToken
@@ -157,6 +166,7 @@ class StartRun: UIViewController {
             let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
             print("ALL SEGMENTS IN NORTH-EAST AREA: ")
             print(dataDictionary)
+            
         }
         
         //retrieve all routes in North-West area relative to current location
