@@ -8,21 +8,27 @@
 
 import Foundation
 import UIKit
+import MapKit
+
 
 class Segments
 {
     var distance:Double = 0.0
-    var start_lat: Double = 0.0
-    var start_long: Double = 0.0
-    var end_lat: Double = 0.0
-    var end_long: Double = 0.0
+    //var start_lat: Double = 0.0
+    //var start_long: Double = 0.0
+    var startLoc: CLLocation
+    var endLoc: CLLocation
+    //var end_lat: Double = 0.0
+    //var end_long: Double = 0.0
     
-    init(d:Double,slat: Double,slong: Double,elat: Double, elong:Double) {
+    init(d:Double,start:CLLocation, end:CLLocation) {
         distance = d
-        start_lat = slat
-        start_long = slong
-        end_lat = elat
-        end_long = elong
+        startLoc = start
+        endLoc = end
+        //end_long = elong
+        //startLoc = startLatLong
+        
+        
        }
 
 }
