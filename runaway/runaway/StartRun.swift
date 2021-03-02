@@ -45,6 +45,25 @@ class StartRun: UIViewController {
 
     @IBAction func startButtonPressed(_ sender: UIButton) {
         print("")
+        let runStatusPage = self.storyboard?.instantiateViewController(identifier: "RunStatus" ) as! RunStatus
+        self.present(runStatusPage, animated: true, completion: nil)
+        
+        let s = filteredRouteSegments[currIndex]
+        var objectId = ""
+        let query = PFQuery(className: "Route")
+        query.whereKey("stravaDataId", equalTo: s.stravaDataId)
+        query.findObjectsInBackground{ (routes, error) in
+            if error != nil {
+                print("No duplicate in database. Saving new route...")
+            }
+            else if routes?.count != 0 {
+                objectId = routes![0]["objectId"] as! String
+            }
+        }
+        let r = (objectId == "")
+            ? Route(objectId: objectId)
+            : Route(stravaDataId: s.stravaDataId, routeName: s.routeName, startLat: s.startLoc.coordinate.latitude, startLng: s.startLoc.coordinate.longitude, endLat: s.endLoc.coordinate.latitude, endLng: s.endLoc.coordinate.longitude, distance: s.distance)
+        r.updateInDatabase()
     }
     
     @IBAction func distanceSliderValueChanged(_ sender: UISlider) {
