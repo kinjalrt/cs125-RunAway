@@ -73,9 +73,10 @@ class StartRun: UIViewController {
                 routeId = route.updateInDatabase()
             }
 
-            let vc = RunStatus(nibName: "RunStatus", bundle: nil)
-            vc.routeId = routeId
-            self.navigationController?.pushViewController(vc, animated: true)
+            let runstatus = RunStatus(nibName: "RunStatus", bundle: nil)
+            runstatus.routeId = routeId
+            runstatus.routeName = s.routeName
+            self.navigationController?.pushViewController(runstatus, animated: true)
         }
 
     }
