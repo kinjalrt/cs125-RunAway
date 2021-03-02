@@ -11,42 +11,30 @@ import Parse
 
 
 // Not sure if this is needed? made it just in case
-class User {
-    var objectId: String
-    var gender: String
-    var emailVerified: Bool
-    var height: String
-    var weight: String
-    var firstName: String
-    var email: String
-    var password: String
-    var birthday: Date
-    var experienceLevel: String
-    var difficultyLevel: Int
-    var listOfRuns: [Run]
-    var listOfRatings: [Rating]
+class User : PFUser {
+    //var gender: String = ""
+    //var emailVerified: Bool = false
+    //var height: String = ""
+    //var weight: String = ""
+    //var birthday: NSDate = NSDate()
+    var experienceLevel: String = ""
+    var difficultyTier: Int = 0
+    var listOfRuns: [Run] = []
+    var listOfRatings: [Rating] = []
     
-    init(objectId: String, gender: String, emailVerified: Bool, height: String, weight: String, firstName: String, email: String, password:String, birthday: Date, experienceLevel: String, difficultyLevel: Int) {
+    init(user: PFUser) {
+        super.init()
         
-        self.objectId = objectId
-        self.gender = gender
-        self.emailVerified = emailVerified
-        self.height = height
-        self.weight = weight
-        self.firstName = firstName
-        self.email = email
-        self.password = password
-        self.birthday = birthday
-        self.experienceLevel = experienceLevel
-        self.difficultyLevel = difficultyLevel
-        self.listOfRuns = []
-        self.listOfRatings = []
+        self.experienceLevel = user["experienceLevel"] as! String
+        self.difficultyTier = user["difficultyLevel"] as! Int
+        self.listOfRuns = user["listOfRuns"] as! [Run]
+        self.listOfRatings = user["listOfRatings"] as! [Rating]
     }
     
-    func recordRun(run: Run){
+    func addRun(run: Run){
         listOfRuns.append(run)
     }
-    func recordRating(rating: Rating){
+    func giveRating(rating: Rating){
         listOfRatings.append(rating)
     }
         
