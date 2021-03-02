@@ -13,29 +13,43 @@ class Route {
     var objectId: String
     
     // These gathered from Strava
-    var startLocation: String
+    var stravaDataId: Int
+    var routeName: String
     var startLat: Double
     var startLng: Double
-    var endLocation: String
     var endLat: Double
     var endLng: Double
     var distance: Double
-    var stravaDataId: Int
     
     // These generated here
     var difficultyTier: Int
     var ratingByTier: [Double]
     var listsOfRatingsByTier: [[Rating]]
     
+    // USE CONSTRUCTOR WHEN FOUND IN PARSEQUERY
+    init(objectId: String, stravaDataId: Int, routeName: String, startLat: Double, startLng: Double, endLat: Double, endLng: Double, distance: Double, difficultyTier: Int, ratingByTier: [Double], listsOfRatingsByTier: [[Rating]]){
+        
+        // All variables
+        self.objectId = objectId
+        self.stravaDataId = stravaDataId
+        self.routeName = routeName
+        self.startLat = startLat
+        self.startLng = startLng
+        self.endLat = endLat
+        self.endLng = endLng
+        self.distance = distance
+        self.difficultyTier = difficultyTier
+        self.ratingByTier = ratingByTier
+        self.listsOfRatingsByTier = listsOfRatingsByTier
+    }
     
-    // CONSTRUCTOR WITH OBJECTID (pull from PARSE database)
+    // USE CONSTRUCTOR WHEN GIVEN AN OBJECTID (pull from PARSE database)
     init(objectId: String){
-        self.objectId = ""
         self.stravaDataId = 0
-        self.startLocation = ""
+        self.objectId = ""
+        self.routeName = ""
         self.startLat = 0.0
         self.startLng = 0.0
-        self.endLocation = ""
         self.endLat = 0.0
         self.endLng = 0.0
         self.distance = 0.0
@@ -44,6 +58,7 @@ class Route {
         self.listsOfRatingsByTier = []
         
         let query = PFQuery(className: "Route")
+        
         query.whereKey("objectId", equalTo: objectId)
         query.findObjectsInBackground{ (routes, error) in
             if error != nil {
@@ -52,10 +67,9 @@ class Route {
             else if routes?.count != 0 {
                 self.objectId = routes![0]["objectId"] as! String
                 self.stravaDataId = routes![0]["stravaDataId"] as! Int
-                self.startLocation = routes![0]["startLocation"] as! String
+                self.routeName = routes![0]["routeName"] as! String
                 self.startLat = routes![0]["startLat"] as! Double
                 self.startLng = routes![0]["startLng"] as! Double
-                self.endLocation = routes![0]["endLocation"] as! String
                 self.endLat = routes![0]["endLat"] as! Double
                 self.endLng = routes![0]["endLng"] as! Double
                 self.distance = routes![0]["distance"] as! Double
@@ -66,18 +80,17 @@ class Route {
         }
     }
     
-    // CONSTRUCTOR WITHOUT OBJECTID (manual construction)
-    init(startLocation: String, startLat: Double, startLng: Double, endLocation: String, endLat: Double, endLng: Double, distance: Double, stravaDataId: Int){
+    // USE CONSTRUCTOR WHEN MANUALLY CONSTRUCTING
+    init(stravaDataId: Int, routeName: String, startLat: Double, startLng: Double, endLat: Double, endLng: Double, distance: Double){
         
         // Data from Strava
-        self.startLocation = startLocation
+        self.stravaDataId = stravaDataId
+        self.routeName = routeName
         self.startLat = startLat
         self.startLng = startLng
-        self.endLocation = endLocation
         self.endLat = endLat
         self.endLng = endLng
         self.distance = distance
-        self.stravaDataId = stravaDataId
         
         // Initialize other variables
         self.objectId = ""
@@ -93,20 +106,21 @@ class Route {
     // Calculates difficulty of route based on distance
     private func calculateDifficulty(distance: Double) -> Int {
         
+        let distanceInMiles = distance / 1000 * 0.621371
         // 1.5 miles at 10min/miles = 15 miutes
-        if distance <= 1.5 { return 1 }
+        if distanceInMiles <= 1.5 { return 1 }
         
         // 3 miles at 10min/miles = 30 miutes
-        else if distance <= 3 { return 2 }
+        else if distanceInMiles <= 3 { return 2 }
 
         // 6 miles at 10min/miles = 60 miutes
-        else if distance <= 6 { return 3 }
+        else if distanceInMiles <= 6 { return 3 }
         
         // 9 miles at 10min/miles = 90 miutes
-        else if distance <= 9 { return 4}
+        else if distanceInMiles <= 9 { return 4}
         
         // 12 miles at 10min/miles = 120 miutes
-        else if distance <= 12{ return 5}
+        else if distanceInMiles <= 12{ return 5}
         
         // TODO: Add more cases later?
         return 6
@@ -121,8 +135,9 @@ class Route {
     }
 
     
-    func updateInDatabase(){
+    func updateInDatabase() -> String{
         if alreadyExists() {
+            var id = ""
             let query = PFQuery(className: "Route")
             query.whereKey("objectId", equalTo: self.objectId)
             query.findObjectsInBackground{ (routes, error) in
@@ -130,36 +145,40 @@ class Route {
                     print("Error: Could not update in database.")
                 }
                 else if routes?.count != 0 {
-                    routes![0]["ratingsByTier"] = self.ratingByTier
+                    routes![0]["ratingByTier"] = self.ratingByTier
                     routes![0]["listsOfRatingsByTier"] = self.listsOfRatingsByTier
                     routes![0].saveInBackground()
+                    id = routes![0].objectId!
                 }
             }
+            return id
         }
         else{
             // Create object
             let parseObject = PFObject(className: "Route")
-            parseObject["startLocation"] = self.startLocation
-            parseObject["endLocation"] = self.endLocation
+            parseObject["stravaDataId"] = self.stravaDataId
+            parseObject["routeName"] = self.routeName
             parseObject["startLat"] = self.startLat
             parseObject["startLng"] = self.startLng
             parseObject["endLat"] = self.endLat
             parseObject["endLng"] = self.endLng
             parseObject["distance"] = self.distance
-            parseObject["stravaDataId"] = self.stravaDataId
             parseObject["difficultyTier"] = self.difficultyTier
-            parseObject["ratingsByTier"] = self.ratingByTier
+            parseObject["ratingByTier"] = self.ratingByTier
             parseObject["listsOfRatingsByTier"] = self.listsOfRatingsByTier
 
+            var id = ""
             // Saves the new object.
             parseObject.saveInBackground {
               (success: Bool, error: Error?) in
               if (success) {
+                id = parseObject.objectId!
                 print("Successfully saved route to database.")
               } else {
                 print("Error: Could not save route to database.")
               }
             }
+            return id
         }
     }
     
