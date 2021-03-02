@@ -67,6 +67,10 @@
                                     <segue destination="rKj-mH-1An" kind="showDetail" id="c8e-B9-erq"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ra_logo" translatesAutoresizingMaskIntoConstraints="NO" id="njz-XG-8eN">
+                                <rect key="frame" x="293" y="44" width="101" height="92"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -152,6 +156,10 @@
                                     <segue destination="BYZ-38-t0r" kind="presentation" id="QlJ-uT-6MD"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ra_logo" translatesAutoresizingMaskIntoConstraints="NO" id="FF0-sb-dUJ">
+                                <rect key="frame" x="293" y="20" width="101" height="92"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="w3N-0k-AFS"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -294,6 +302,10 @@
                                     <segue destination="Z46-1Z-n1r" kind="modal" id="B14-BQ-1AY"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ra_logo" translatesAutoresizingMaskIntoConstraints="NO" id="qJv-37-gQQ">
+                                <rect key="frame" x="293" y="20" width="101" height="92"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Lgc-7h-SDr"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -819,6 +831,10 @@
         <image name="house.fill" catalog="system" width="128" height="106"/>
         <image name="map" catalog="system" width="128" height="110"/>
         <image name="multiply" catalog="system" width="128" height="111"/>
+        <image name="ra_logo" width="2048" height="2048"/>
+        <systemColor name="darkTextColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <image name="plus" catalog="system" width="128" height="113"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
