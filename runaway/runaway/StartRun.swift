@@ -23,14 +23,15 @@ class StartRun: UIViewController {
     @IBOutlet weak var prevButton: UIButton!
     @IBOutlet weak var routeNameLabel: UILabel!
     @IBOutlet weak var routeDistanceLabel: UILabel!
-    var suggestedRoutes: [CLLocationCoordinate2D] = []
-    var currIndex = 0
-    let LocationManager = CLLocationManager()
-    var currentLocation: CLLocation?
+    @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var map: MKMapView!
     
     
     // Logic Components
+    var suggestedRoutes: [CLLocationCoordinate2D] = []
+    var currIndex = 0
+    let LocationManager = CLLocationManager()
+    var currentLocation: CLLocation?
     var routesSegments: [Segments] = [] //array of routes
     var routesSegmentIds: [Int] = []
     var filteredRouteSegments: [Segments] = []
@@ -39,9 +40,12 @@ class StartRun: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         getRoutes()
-        //print(self.routesSegments)
+        updateCurrentSegmentUI()
     }
 
+    @IBAction func startButtonPressed(_ sender: UIButton) {
+        print("")
+    }
     
     @IBAction func distanceSliderValueChanged(_ sender: UISlider) {
         let currentValue = Int(sender.value)
@@ -58,7 +62,8 @@ class StartRun: UIViewController {
             print(String(format: "%10.d \t %8.2f miles \t %8.2f", r.stravaDataId, distanceInMiles, distanceAway))
         }
         currIndex = 0
-        displayRoute()
+        
+        updateCurrentSegmentUI()
     }
     
     
@@ -159,19 +164,31 @@ class StartRun: UIViewController {
         }
     }
     
-    
-    func displayRoute(){
-                print(currIndex)
-        //manually adding destination
-//        let sourceCoordinates = CLLocationCoordinate2D(latitude: (currentLocation?.coordinate.latitude)!,longitude: (currentLocation?.coordinate.longitude)!)
-//        let destCoordinates = self.suggestedRoutes[currIndex] as! CLLocationCoordinate2D
+    func updateCurrentSegmentUI(){
+        // No routes
         if(filteredRouteSegments.count == 0){
+            self.map.isHidden = true
+            self.prevButton.isHidden = true
+            self.nextButton.isHidden = true
+            self.routeNameLabel.text = "no routes"
+            self.routeDistanceLabel.isHidden = true
+            self.startButton.isHidden = true
             return
         }
+        // At Last route
+        self.nextButton.isHidden = (self.currIndex == self.filteredRouteSegments.count-1)
+        // At First route
+        self.prevButton.isHidden = (self.currIndex == 0)
+        map.removeOverlays(map.overlays)
+        displayRoute()
         self.routeNameLabel.text = filteredRouteSegments[currIndex].routeName
         self.routeDistanceLabel.text = String(
             format: "%.2f miles", filteredRouteSegments[currIndex].distance / 1000 * 0.621371)
-        
+        self.startButton.isHidden = false
+        self.map.isHidden = false
+    }
+    
+    func displayRoute(){
         let sourceCoordinates = CLLocationCoordinate2D(
             latitude: filteredRouteSegments[currIndex].startLoc.coordinate.latitude,
             longitude: filteredRouteSegments[currIndex].startLoc.coordinate.longitude
@@ -206,9 +223,6 @@ class StartRun: UIViewController {
             self.map.setVisibleMapRect(route.polyline.boundingMapRect, animated:true)
 
         }
-        
-        //get distance + name of route from Strava API
-        //self.routeDistance.text = String(format: "\(filteredRouteSegments[currIndex].distance)")
     }
     
     
@@ -236,12 +250,7 @@ class StartRun: UIViewController {
     @IBAction func displayNextRun(_ sender: Any) {
         if(currIndex<(self.filteredRouteSegments.count-1)){
             currIndex = currIndex+1
-            prevButton.isHidden = false
-            if(currIndex==(self.filteredRouteSegments.count-1)){
-                nextButton.isHidden = true
-            }
-            map.removeOverlays(map.overlays)
-            displayRoute()
+            updateCurrentSegmentUI()
         }
     }
     
@@ -249,12 +258,7 @@ class StartRun: UIViewController {
     @IBAction func displayPrevRun(_ sender: Any) {
         if(currIndex>0){
             currIndex = currIndex-1
-            nextButton.isHidden = false
-            if(currIndex==0){
-                prevButton.isHidden = true
-            }
-            map.removeOverlays(map.overlays)
-            displayRoute()
+            updateCurrentSegmentUI()
         }
     }
     
