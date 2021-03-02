@@ -58,7 +58,6 @@ class Route {
         self.listsOfRatingsByTier = []
         
         let query = PFQuery(className: "Route")
-        
         query.whereKey("objectId", equalTo: objectId)
         query.findObjectsInBackground{ (routes, error) in
             if error != nil {
