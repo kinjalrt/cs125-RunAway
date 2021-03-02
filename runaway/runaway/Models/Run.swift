@@ -16,8 +16,8 @@ class Run : PFObject, PFSubclassing{
     }
     
     //var objectId: String
-    @NSManaged var routeId: String
-    @NSManaged var userId: String
+    @NSManaged var route: Route
+    @NSManaged var user: User
     @NSManaged var startTimeStamp: NSDate
     @NSManaged var totalDistance: Double
     @NSManaged var elapsedTime: Double
@@ -29,11 +29,11 @@ class Run : PFObject, PFSubclassing{
     }
     
     // Run object should created only AFTER run is complete
-    init(routeId: String, userId: String, startTimeStamp: NSDate, endTimeStamp: NSDate, runName: String){
+    init(route: Route, user: User, startTimeStamp: NSDate, endTimeStamp: NSDate, runName: String){
         super.init()
         
-        self.routeId = routeId
-        self.userId = userId
+        self.route = route
+        self.user = user
         self.startTimeStamp = startTimeStamp
         self.runName = runName
         self.saveInBackground {
@@ -64,8 +64,8 @@ class Run : PFObject, PFSubclassing{
             }
             else if runs?.count != 0 {
                 //self.objectId = runs![0]["objectId"] as! String
-                self.routeId = runs![0]["routeId"] as! String
-                self.userId = runs![0]["userId"] as! String
+                self.route = runs![0]["route"] as! Route
+                self.user = runs![0]["user"] as! User
                 self.startTimeStamp = runs![0]["startTimeStamp"] as! NSDate
                 self.runName = runs![0]["runName"] as! String
             }
@@ -97,17 +97,17 @@ class Run : PFObject, PFSubclassing{
     }
     
     
-    func getRoute() -> PFObject? {
-        var route = PFObject()
-        let query = PFQuery(className: "Route")
-        query.whereKey("objectId", equalTo: self.routeId)
-        do{
-            route = try query.findObjects()[0]
-        } catch {
-            print(error)
-        }
-        return route
-    }
+//    func getRoute() -> PFObject? {
+//        var route = PFObject()
+//        let query = PFQuery(className: "Route")
+//        query.whereKey("objectId", equalTo: self.routeId)
+//        do{
+//            route = try query.findObjects()[0]
+//        } catch {
+//            print(error)
+//        }
+//        return route
+//    }
     
     
 }

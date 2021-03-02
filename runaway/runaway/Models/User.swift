@@ -18,13 +18,14 @@ class User : PFUser  {
     //var weight: String = ""
     //var birthday: NSDate = NSDate()
     //var objectId: String
-    var experienceLevel: String = ""
-    var difficultyTier: Int = 0
-    var totalRuns: Int = 0
-    var totalTime: Double = 0.0
-    var totalMiles: Double = 0.0
-    var listOfRuns: [Run] = []
-    var listOfRatings: [Rating] = []
+    @NSManaged var firstName: String
+    @NSManaged var experienceLevel: String
+    @NSManaged var difficultyTier: Int
+    @NSManaged var totalRuns: Int
+    @NSManaged var totalTime: TimeInterval
+    @NSManaged var totalMiles: Double
+    @NSManaged var listOfRuns: [Run]
+    //@NSManaged var listOfRatings: [Rating]
     
     override init(){
         super.init()
@@ -33,10 +34,14 @@ class User : PFUser  {
     init(user: PFUser) {
         super.init()
         //self.objectId = user.objectId!
+        self.firstName = user["firstname"] as! String
         self.experienceLevel = user["experienceLevel"] as! String
         self.difficultyTier = user["difficultyLevel"] as! Int
         self.listOfRuns = user["listOfRuns"] as! [Run]
-        self.listOfRatings = user["listOfRatings"] as! [Rating]
+        self.totalRuns = user["totalRuns"] as! Int
+        self.totalTime = user["totalTime"] as! TimeInterval
+        self.totalMiles = user["totalMiles"] as! Double
+        //self.listOfRatings = user["listOfRatings"] as! [Rating]
         print(self)
     }
     
@@ -55,7 +60,15 @@ class User : PFUser  {
           }
     }
     func giveRating(rating: Rating){
-        listOfRatings.append(rating)
+        //listOfRatings.append(rating)
+    }
+    func getListOfRuns() -> [Run] {
+        var l : [Run] = []
+        for run in listOfRuns{
+            let r = Run(objectId: run.objectId!)
+            l.append(r)
+        }
+        return l
     }
         
 }
