@@ -39,6 +39,7 @@ class StartRun: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         getRoutes()
         updateCurrentSegmentUI()
     }
@@ -49,21 +50,34 @@ class StartRun: UIViewController {
         self.present(runStatusPage, animated: true, completion: nil)
         
         let s = filteredRouteSegments[currIndex]
-        var objectId = ""
         let query = PFQuery(className: "Route")
         query.whereKey("stravaDataId", equalTo: s.stravaDataId)
         query.findObjectsInBackground{ (routes, error) in
+            var routeId = ""
             if error != nil {
-                print("No duplicate in database. Saving new route...")
+                print(error)
+                return
             }
-            else if routes?.count != 0 {
-                objectId = routes![0]["objectId"] as! String
+            if routes?.count != 0 {
+                routeId = routes![0].objectId!
             }
+            else{
+                let route = Route(
+                    stravaDataId: s.stravaDataId,
+                    routeName: s.routeName,
+                    startLat: s.startLoc.coordinate.latitude,
+                    startLng: s.startLoc.coordinate.longitude,
+                    endLat: s.endLoc.coordinate.latitude,
+                    endLng: s.endLoc.coordinate.longitude,
+                    distance: s.distance)
+                routeId = route.updateInDatabase()
+            }
+
+            let vc = RunStatus(nibName: "RunStatus", bundle: nil)
+            vc.routeId = routeId
+            self.navigationController?.pushViewController(vc, animated: true)
         }
-        let r = (objectId == "")
-            ? Route(objectId: objectId)
-            : Route(stravaDataId: s.stravaDataId, routeName: s.routeName, startLat: s.startLoc.coordinate.latitude, startLng: s.startLoc.coordinate.longitude, endLat: s.endLoc.coordinate.latitude, endLng: s.endLoc.coordinate.longitude, distance: s.distance)
-        r.updateInDatabase()
+
     }
     
     @IBAction func distanceSliderValueChanged(_ sender: UISlider) {
