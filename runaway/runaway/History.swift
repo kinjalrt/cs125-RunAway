@@ -27,7 +27,7 @@ class History:UIViewController
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         let currentUser = User(user: PFUser.current()!)
-        let listOfruns = currentUser["listOfRuns"] as! [Run]
+//        let listOfruns = currentUser["listOfRuns"] as! [Run]
 //        for run in listOfruns{
 //            let r = Run(objectId: run.objectId!)
 //
