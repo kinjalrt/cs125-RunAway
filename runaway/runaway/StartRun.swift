@@ -45,38 +45,29 @@ class StartRun: UIViewController {
     }
 
     @IBAction func startButtonPressed(_ sender: UIButton) {
-        print("")
-        let runStatusPage = self.storyboard?.instantiateViewController(identifier: "RunStatus" ) as! RunStatus
-        self.present(runStatusPage, animated: true, completion: nil)
         
         let s = filteredRouteSegments[currIndex]
+        var route = PFObject(className: "Route")
         let query = PFQuery(className: "Route")
         query.whereKey("stravaDataId", equalTo: s.stravaDataId)
         query.findObjectsInBackground{ (routes, error) in
-            var routeId = ""
+            //var routeId = ""
             if error != nil {
-                print(error)
+                print(error!)
                 return
             }
+            
             if routes?.count != 0 {
-                routeId = routes![0].objectId!
+                route = routes![0]
             }
             else{
-                let route = Route(
-                    stravaDataId: s.stravaDataId,
-                    routeName: s.routeName,
-                    startLat: s.startLoc.coordinate.latitude,
-                    startLng: s.startLoc.coordinate.longitude,
-                    endLat: s.endLoc.coordinate.latitude,
-                    endLng: s.endLoc.coordinate.longitude,
-                    distance: s.distance)
-                routeId = route.updateInDatabase()
+                let r = Route(stravaDataId: s.stravaDataId, routeName: s.routeName, startLat: s.startLoc.coordinate.latitude, startLng: s.startLoc.coordinate.longitude, endLat: s.endLoc.coordinate.latitude, endLng: s.endLoc.coordinate.longitude, distance: s.distance)
+                route = r
             }
-
-            let runstatus = RunStatus(nibName: "RunStatus", bundle: nil)
-            runstatus.routeId = routeId
-            runstatus.routeName = s.routeName
-            self.navigationController?.pushViewController(runstatus, animated: true)
+            let runStatusPage = self.storyboard?.instantiateViewController(identifier: "RunStatus" ) as! RunStatus
+            runStatusPage.route = route
+            runStatusPage.routeName = s.routeName
+            self.present(runStatusPage, animated: true, completion: nil)
         }
 
     }
@@ -218,6 +209,7 @@ class StartRun: UIViewController {
         self.routeNameLabel.text = filteredRouteSegments[currIndex].routeName
         self.routeDistanceLabel.text = String(
             format: "%.2f miles", filteredRouteSegments[currIndex].distance / 1000 * 0.621371)
+        self.routeDistanceLabel.isHidden = false
         self.startButton.isHidden = false
         self.map.isHidden = false
     }
