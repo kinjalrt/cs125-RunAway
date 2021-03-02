@@ -9,28 +9,41 @@
 import Foundation
 import Parse
 
-class Route {
-    var objectId: String
+class Route : PFObject, PFSubclassing{
+    static func parseClassName() -> String {
+        return "Route"
+    }
+    
+    //var objectId: String
     
     // These gathered from Strava
-    var stravaDataId: Int
-    var routeName: String
-    var startLat: Double
-    var startLng: Double
-    var endLat: Double
-    var endLng: Double
-    var distance: Double
+    @NSManaged var stravaDataId: Int
+    @NSManaged var routeName: String
+    @NSManaged var startLat: Double
+    @NSManaged var startLng: Double
+    @NSManaged var endLat: Double
+    @NSManaged var endLng: Double
+    @NSManaged var distance: Double
     
     // These generated here
-    var difficultyTier: Int
-    var ratingByTier: [Double]
-    var listsOfRatingsByTier: [[Rating]]
+    @NSManaged var totalRuns: Int
+    @NSManaged var difficultyTier: Int
+    @NSManaged var ratingByTier: [Double]
+    //var listsOfRatingsByTier: [[Rating]]
+    
+    override init(){
+        
+        //listsOfRatingsByTier = [[], [], [], [], [], []]
+        super.init()
+    }
     
     // USE CONSTRUCTOR WHEN FOUND IN PARSEQUERY
-    init(objectId: String, stravaDataId: Int, routeName: String, startLat: Double, startLng: Double, endLat: Double, endLng: Double, distance: Double, difficultyTier: Int, ratingByTier: [Double], listsOfRatingsByTier: [[Rating]]){
+    init(objectId: String, stravaDataId: Int, routeName: String, startLat: Double, startLng: Double, endLat: Double, endLng: Double, distance: Double, totalRuns: Int, difficultyTier: Int, ratingByTier: [Double]){
         
+        //self.listsOfRatingsByTier = [[], [], [], [], [], []]
+        super.init()
         // All variables
-        self.objectId = objectId
+        //self.objectId = objectId
         self.stravaDataId = stravaDataId
         self.routeName = routeName
         self.startLat = startLat
@@ -38,24 +51,15 @@ class Route {
         self.endLat = endLat
         self.endLng = endLng
         self.distance = distance
+        self.totalRuns = totalRuns
         self.difficultyTier = difficultyTier
         self.ratingByTier = ratingByTier
-        self.listsOfRatingsByTier = listsOfRatingsByTier
     }
     
     // USE CONSTRUCTOR WHEN GIVEN AN OBJECTID (pull from PARSE database)
     init(objectId: String){
-        self.stravaDataId = 0
-        self.objectId = ""
-        self.routeName = ""
-        self.startLat = 0.0
-        self.startLng = 0.0
-        self.endLat = 0.0
-        self.endLng = 0.0
-        self.distance = 0.0
-        self.difficultyTier = 0
-        self.ratingByTier = []
-        self.listsOfRatingsByTier = []
+        //listsOfRatingsByTier = [[], [], [], [], [], []]
+        super.init()
         
         let query = PFQuery(className: "Route")
         query.whereKey("objectId", equalTo: objectId)
@@ -64,7 +68,6 @@ class Route {
                 print("Error: Could not find route in database.")
             }
             else if routes?.count != 0 {
-                self.objectId = routes![0]["objectId"] as! String
                 self.stravaDataId = routes![0]["stravaDataId"] as! Int
                 self.routeName = routes![0]["routeName"] as! String
                 self.startLat = routes![0]["startLat"] as! Double
@@ -72,15 +75,19 @@ class Route {
                 self.endLat = routes![0]["endLat"] as! Double
                 self.endLng = routes![0]["endLng"] as! Double
                 self.distance = routes![0]["distance"] as! Double
+                self.totalRuns = routes![0]["totalRuns"] as! Int
                 self.difficultyTier = routes![0]["difficultyTier"] as! Int
                 self.ratingByTier = routes![0]["ratingByLevel"] as! [Double]
-                self.listsOfRatingsByTier = routes![0]["listOfRating"] as! [[Rating]]
+                //self.listsOfRatingsByTier = routes![0]["listOfRating"] as! [[Rating]]
             }
         }
     }
     
     // USE CONSTRUCTOR WHEN MANUALLY CONSTRUCTING
     init(stravaDataId: Int, routeName: String, startLat: Double, startLng: Double, endLat: Double, endLng: Double, distance: Double){
+        
+        //self.listsOfRatingsByTier = [[], [], [], [], [], []]
+        super.init()
         
         // Data from Strava
         self.stravaDataId = stravaDataId
@@ -92,13 +99,20 @@ class Route {
         self.distance = distance
         
         // Initialize other variables
-        self.objectId = ""
+        self.totalRuns = 0
         self.difficultyTier = 0
         self.ratingByTier = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-        self.listsOfRatingsByTier = [[], [], [], [], [], []]
         
         // Generated Data
         self.difficultyTier = calculateDifficulty(distance: distance)
+        self.saveInBackground{
+            (success: Bool, error: Error?) in
+            if (success) {
+              print("Successfully pushed ROUTE to database.")
+            } else {
+              print("Error: Could not push ROUTE to database.")
+            }
+        }
     }
     
     
@@ -138,14 +152,14 @@ class Route {
         if alreadyExists() {
             var id = ""
             let query = PFQuery(className: "Route")
-            query.whereKey("objectId", equalTo: self.objectId)
+            query.whereKey("objectId", equalTo: self.objectId!)
             query.findObjectsInBackground{ (routes, error) in
                 if error != nil {
                     print("Error: Could not update in database.")
                 }
                 else if routes?.count != 0 {
                     routes![0]["ratingByTier"] = self.ratingByTier
-                    routes![0]["listsOfRatingsByTier"] = self.listsOfRatingsByTier
+                    //routes![0]["listsOfRatingsByTier"] = self.listsOfRatingsByTier
                     routes![0].saveInBackground()
                     id = routes![0].objectId!
                 }
@@ -162,9 +176,10 @@ class Route {
             parseObject["endLat"] = self.endLat
             parseObject["endLng"] = self.endLng
             parseObject["distance"] = self.distance
+            parseObject["totalRuns"] = self.totalRuns
             parseObject["difficultyTier"] = self.difficultyTier
             parseObject["ratingByTier"] = self.ratingByTier
-            parseObject["listsOfRatingsByTier"] = self.listsOfRatingsByTier
+            //parseObject["listsOfRatingsByTier"] = self.listsOfRatingsByTier
 
             var id = ""
             // Saves the new object.
@@ -194,17 +209,17 @@ class Route {
     }
     
     // Used when User gives a rating
-    func addNewRating(rating: Rating, tier: Int){
-        let tierIndex = tier - 1
-        var oldRating = ratingByTier[tierIndex] // average
-        oldRating *= Double(listsOfRatingsByTier[tierIndex].count) // sum
-        
-        listsOfRatingsByTier[tierIndex].append(rating) // new count
-        
-        var newRating = oldRating + Double(rating.rating) // new sum
-        newRating /= Double(listsOfRatingsByTier.count) // new average
-        
-        ratingByTier[tierIndex] = newRating
-    }
+//    func addNewRating(rating: Rating, tier: Int){
+//        let tierIndex = tier - 1
+//        var oldRating = ratingByTier[tierIndex] // average
+//        oldRating *= Double(listsOfRatingsByTier[tierIndex].count) // sum
+//
+//        listsOfRatingsByTier[tierIndex].append(rating) // new count
+//
+//        var newRating = oldRating + Double(rating.rating) // new sum
+//        newRating /= Double(listsOfRatingsByTier.count) // new average
+//
+//        ratingByTier[tierIndex] = newRating
+//    }
     
 }
