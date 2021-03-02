@@ -9,36 +9,52 @@
 import Foundation
 import Parse
 
+/* CURRENTLY NOT BEING USED. FOUND WAY WITHOUT HAVING TO USE */
+class Run : PFObject, PFSubclassing{
+    static func parseClassName() -> String {
+        return "Run"
+    }
+    
+    //var objectId: String
+    @NSManaged var routeId: String
+    @NSManaged var userId: String
+    @NSManaged var startTimeStamp: NSDate
+    @NSManaged var totalDistance: Double
+    @NSManaged var elapsedTime: Double
+    @NSManaged var runName: String
 
-class Run {
-    var objectId: String
-    var routeId: String
-    var userId: String
-    var startTimeStamp: NSDate
-    var endTimeStamp: NSDate
-    var runName = String()
-
+    //idky but this is required
+    override init(){
+        super.init()
+    }
     
     // Run object should created only AFTER run is complete
     init(routeId: String, userId: String, startTimeStamp: NSDate, endTimeStamp: NSDate, runName: String){
-        self.objectId = ""
+        super.init()
+        
         self.routeId = routeId
         self.userId = userId
         self.startTimeStamp = startTimeStamp
-        self.endTimeStamp = endTimeStamp
         self.runName = runName
-        
-        self.objectId = self.pushToDatabase()
+        self.saveInBackground {
+          (success: Bool, error: Error?) in
+          if (success) {
+            print("Successfully pushed RUN to database.")
+          } else {
+            print("Error: Could not push RUN to database.")
+          }
+        }
     }
     
     
     init(objectId: String){
-        self.objectId = ""
-        self.routeId = ""
-        self.userId = ""
-        self.startTimeStamp = NSDate()
-        self.endTimeStamp = NSDate()
-        self.runName = ""
+        super.init()
+//        self.objectId = ""
+//        self.routeId = ""
+//        self.userId = ""
+//        self.startTimeStamp = NSDate()
+//        self.endTimeStamp = NSDate()
+//        self.runName = ""
         
         let query = PFQuery(className: "Run")
         query.whereKey("objectId", equalTo: objectId)
@@ -47,11 +63,10 @@ class Run {
                 print("Error: Could not find route in database.")
             }
             else if runs?.count != 0 {
-                self.objectId = runs![0]["objectId"] as! String
+                //self.objectId = runs![0]["objectId"] as! String
                 self.routeId = runs![0]["routeId"] as! String
                 self.userId = runs![0]["userId"] as! String
                 self.startTimeStamp = runs![0]["startTimeStamp"] as! NSDate
-                self.endTimeStamp = runs![0]["endTimeStamp"] as! NSDate
                 self.runName = runs![0]["runName"] as! String
             }
         }
@@ -59,21 +74,21 @@ class Run {
     
     
     private func pushToDatabase() -> String{
-        let parseObject = PFObject(className: "Run")
-
-        parseObject["routeId"] = self.routeId
-        parseObject["userId"] = self.userId
-        parseObject["startTimeStamp"] = self.startTimeStamp
-        parseObject["endTimeStamp"] = self.endTimeStamp
-        parseObject["runName"] = self.runName
+//        let parseObject = PFObject(className: "Run")
+//
+//        parseObject["routeId"] = self.routeId
+//        parseObject["userId"] = self.userId
+//        parseObject["startTimeStamp"] = self.startTimeStamp
+//        parseObject["endTimeStamp"] = self.endTimeStamp
+//        parseObject["runName"] = self.runName
         
         // Saves the new object.
-        var id = self.objectId
-        parseObject.saveInBackground {
+        var id = ""
+        self.saveInBackground {
           (success: Bool, error: Error?) in
           if (success) {
             print("Successfully pushed RUN to database.")
-            id = parseObject.objectId!
+            id = self.objectId!
           } else {
             print("Error: Could not push RUN to database.")
           }
