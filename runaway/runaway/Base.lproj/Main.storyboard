@@ -595,7 +595,7 @@
         <!--Run Status-->
         <scene sceneID="G7m-cM-O6V">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="O59-3y-13r" customClass="RunStatus" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RunStatus" modalPresentationStyle="fullScreen" id="O59-3y-13r" customClass="RunStatus" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fOg-4a-oie">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -608,8 +608,8 @@
                                     <color key="titleColor" red="0.2274509804" green="0.71739477039999999" blue="0.58561862239999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
                                 <connections>
-                                    <action selector="pauseTimer:" destination="O59-3y-13r" eventType="touchUpInside" id="XkN-9h-NN9"/>
-                                    <segue destination="MIU-mS-P19" kind="showDetail" id="A4k-9G-FDG"/>
+                                    <action selector="stopTimer:" destination="O59-3y-13r" eventType="touchUpInside" id="qPt-uO-4DB"/>
+                                    <segue destination="MIU-mS-P19" kind="showDetail" id="qPf-Cr-h8C"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VyZ-5I-sqE">
@@ -624,7 +624,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <connections>
-                        <outlet property="pauseButton" destination="bVv-W2-PIC" id="TP7-UK-u1F"/>
+                        <outlet property="stopButton" destination="bVv-W2-PIC" id="tKZ-3x-jWr"/>
                         <outlet property="timeLabel" destination="VyZ-5I-sqE" id="jIs-zB-Imk"/>
                     </connections>
                 </viewController>
