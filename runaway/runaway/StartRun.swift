@@ -12,7 +12,7 @@ import Alamofire
 
 
 
-class StartRun: UIViewController {
+class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     // UI Components
     @IBOutlet weak var distanceSlider: UISlider!
@@ -35,11 +35,14 @@ class StartRun: UIViewController {
     var routesSegments: [Segments] = [] //array of routes
     var routesSegmentIds: [Int] = []
     var filteredRouteSegments: [Segments] = []
+    var userDifficulty = 0
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        map.delegate = self
+        let currentUser = User(user: PFUser.current()!)
+        self.userDifficulty = currentUser.difficultyTier
         getRoutes()
         updateCurrentSegmentUI()
     }
@@ -86,15 +89,21 @@ class StartRun: UIViewController {
             let distanceAway = r.distanceAway / 1000 * 0.621371
             print(String(format: "%10.d \t %8.2f miles \t %8.2f", r.stravaDataId, distanceInMiles, distanceAway))
         }
+        self.sortClimbPriority()
         currIndex = 0
         
         updateCurrentSegmentUI()
     }
     
+    func sortClimbPriority(){
+        let sortedSegs = self.filteredRouteSegments.sorted(by: { $0.climbPriority < $1.climbPriority })
+        self.filteredRouteSegments = sortedSegs
+        
+    }
+    
     
     @IBAction func inclineSliderValueChanged(_ sender: UISlider) {
         let currentValue = Int(sender.value)
-            
         inclineLabel.text = "\(currentValue)"
     }
     
@@ -105,9 +114,9 @@ class StartRun: UIViewController {
         
         // Not sure how the bounds are supposed to be (fix this if needed)
         let northeastBounds = "[\(lat),\(long),\(lat+3),\(long+3)]"
-        let northwestBounds = "[\(lat),\(long-3),\(lat+3),\(long)]"
+        let northwestBounds = "[\(lat-3),\(long),\(lat),\(long+3)]"
         let southwestBounds = "[\(lat-3),\(long-3),\(lat),\(long)]"
-        let southeastBounds = "[\(lat-3),\(long),\(lat),\(long+3)]"
+        let southeastBounds = "[\(lat),\(long-3),\(lat+3),\(long)]"
         
         print("\n")
         getRoutesFromBounds(bounds: northeastBounds, directionString: "NORTH_EAST")
@@ -118,6 +127,7 @@ class StartRun: UIViewController {
     
     
     func getRoutesFromBounds(bounds: String, directionString: String){
+        
         let accessToken = LogIn.accessToken
         let parameters: [String: Any] = ["access_token": accessToken, "bounds": bounds, "activity_type": "running"]
         AF.request("https://www.strava.com/api/v3/segments/explore", method: .get, parameters: parameters).response { response in
@@ -139,6 +149,8 @@ class StartRun: UIViewController {
                     let s = key["start_latlng"] as! NSArray
                     let e = key["end_latlng"] as! NSArray
                     let routeName = key["name"] as! String
+                    let climb = key["climb_category"] as! Int
+                    var climbPriority = self.convertClimbCategory(climbCat: climb) as! Int
                     
                     //making coords for starting and ending point
                     let start_loc = CLLocation(latitude: s[0] as! CLLocationDegrees, longitude: s[1] as! CLLocationDegrees)
@@ -146,7 +158,7 @@ class StartRun: UIViewController {
                     let distanceAway = self.getDistanceAway(location: start_loc)
                     
                     // make segement object
-                    let curr_seg = Segments(stravaDataId: id, routeName: routeName, distance: dist, distanceAway: distanceAway, start: start_loc, end: end_loc)
+                    let curr_seg = Segments(stravaDataId: id, routeName: routeName, distance: dist, distanceAway: distanceAway, start: start_loc, end: end_loc, climb: climbPriority)
                 
                     //let curr_seg = Segments(d:dist, slat: s[0] as! Double, slong: s[1] as! Double, elat: e[0] as! Double, elong: e[1] as! Double)
                     self.routesSegments.append(curr_seg)
@@ -155,8 +167,37 @@ class StartRun: UIViewController {
                     
                 }
             self.sortSegments()
-            //print(self.routesSegments)
         }
+    }
+    
+    func convertClimbCategory(climbCat: Int) -> Int{
+        
+        if self.userDifficulty==1 {
+            return (climbCat+1)
+        }
+        else if self.userDifficulty==2 {
+            if climbCat==0 {
+                return 3
+            }
+            else if climbCat>=3 {
+                return climbCat+1
+            } else{
+                return climbCat
+            }
+        }
+        else if self.userDifficulty==4 {
+            if climbCat<=3 {
+                return (climbCat-4) * -1
+            }
+            else{
+                return (climbCat+1)
+            }
+        }
+        else {
+            //self.userDifficulty==6
+            return (climbCat-6) * -1
+        }
+        
     }
     
     
@@ -249,6 +290,13 @@ class StartRun: UIViewController {
             self.map.setVisibleMapRect(route.polyline.boundingMapRect, animated:true)
 
         }
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+             let render = MKPolylineRenderer(overlay: overlay as! MKPolyline)
+             render.lineWidth = 10
+             render.strokeColor = .blue
+             return render
     }
     
     
