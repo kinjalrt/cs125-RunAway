@@ -15,8 +15,8 @@ class RunStatus: UIViewController {
     var routeName = ""
     var counter = 0.0
     var timer = Timer()
-    var isPlaying = true
     var startTime = NSDate()
+    var elapsedTime = 0.0
     var breaks = 0
     var (minutes,seconds,frac)=(0,0,0)
     
@@ -32,19 +32,29 @@ class RunStatus: UIViewController {
         
         self.stopButton.isEnabled = true
         self.resumeButton.isHidden = true
-        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(RunStatus.UpdateTimer), userInfo: nil, repeats: true)
-        
-        
+        self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(RunStatus.UpdateTimer), userInfo: nil, repeats: true)
         
     }
         
     @IBAction func stopTimer(_ sender: AnyObject) {
         timer.invalidate()
         print(self.breaks)
+        let endTime = NSDate()
+
+        self.elapsedTime = endTime.timeIntervalSince(self.startTime as Date)
+
+        performSegue(withIdentifier: "runComplete", sender: self)
+
         /*createRun()
         stopButton.isEnabled = false
         timer.invalidate()
         isPlaying = false*/
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        var vc = segue.destination as! PostRunSurvey
+        vc.breaks = self.breaks
+        vc.totaltime = self.elapsedTime
     }
     
     @objc func UpdateTimer() {
@@ -63,8 +73,6 @@ class RunStatus: UIViewController {
         let minstr = minutes > 9 ? "\(minutes)" : "0\(minutes)"
 
         timeLabel.text="\(minstr) : \(secstr) : \(frac)"
-    
-        
      
     }
     
@@ -84,7 +92,7 @@ class RunStatus: UIViewController {
 
 
     }
-    func createRun() {
+    /*func createRun() {
         self.route.incrementKey("totalRuns")
         let endTime = NSDate()
         let elapsedTime = endTime.timeIntervalSince(self.startTime as Date)
@@ -117,6 +125,6 @@ class RunStatus: UIViewController {
               print("Error: Could not push RUN to database.")
             }
           }
-    }
+    }*/
 }
 

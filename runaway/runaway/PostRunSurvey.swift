@@ -1,21 +1,57 @@
 //
-//  runSurvey.swift
+//  PostRunSurvey.swift
 //  runaway
 //
-//  Created by Kay Lab on 3/6/21.
+//  Created by Vinita Santhosh on 3/6/21.
 //  Copyright © 2021 Vinis Prjs. All rights reserved.
 //
+
 
 import Foundation
 import UIKit
 import Parse
 
-class RunSurvey: UIViewController {
+
+class PostRunSurvey: UIViewController {
     var route = PFObject(className: "Route")
     var routeName = ""
     var startTime = NSDate()
+   var heartRate = "0"
+    var calories = "0"
+    var totaltime = 0.0
+    var breaks=0
 
 
+    
+    @IBOutlet weak var ratingUp: UIButton!
+    @IBOutlet weak var ratingDown: UIButton!
+    
+    @IBOutlet weak var heartRateField: UITextField!
+    @IBOutlet weak var caloriesField: UITextField!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        heartRateField.text = " "
+        caloriesField.text = " "
+        print("breaks = \(self.breaks)")
+        print("total time = \(self.totaltime)")
+    }
+    
+    
+    @IBAction func goHome(_ sender: Any) {
+        heartRate = heartRateField.text ?? "0"
+        calories = caloriesField.text ?? "0"
+        
+        print("hr = \(self.heartRate)")
+        print("total time = \(self.calories)")
+        
+    }
+    
+    
+    
+    
+    
+    
     func createRun() {
         self.route.incrementKey("totalRuns")
         let endTime = NSDate()

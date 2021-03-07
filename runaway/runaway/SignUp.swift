@@ -76,7 +76,6 @@ class SignUp: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, AS
         if pickerView.tag == 1 {
             return GenderData[row]
         } else {
-            print("asdlkfjlkasdfj")
             return ExperienceData[row]
         }
     }
