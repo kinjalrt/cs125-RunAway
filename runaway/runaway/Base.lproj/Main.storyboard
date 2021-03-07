@@ -723,6 +723,9 @@
                                 <state key="normal" title="Button">
                                     <imageReference key="image" image="hand.thumbsup.fill" catalog="system" symbolScale="large"/>
                                 </state>
+                                <connections>
+                                    <action selector="runLiked:" destination="bVh-Vk-aIv" eventType="touchUpInside" id="UbY-nK-LCh"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ro-VV-3jw">
                                 <rect key="frame" x="253" y="207" width="80" height="25"/>
@@ -730,6 +733,9 @@
                                 <state key="normal" title="Button">
                                     <imageReference key="image" image="hand.thumbsdown.fill" catalog="system" symbolScale="large"/>
                                 </state>
+                                <connections>
+                                    <action selector="runDisliked:" destination="bVh-Vk-aIv" eventType="touchUpInside" id="Gay-N3-PJo"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Avg Heart Rate:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Obg-IX-s4H">
                                 <rect key="frame" x="73" y="332" width="119" height="21"/>

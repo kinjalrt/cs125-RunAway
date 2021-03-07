@@ -16,10 +16,12 @@ class PostRunSurvey: UIViewController {
     var route = PFObject(className: "Route")
     var routeName = ""
     var startTime = NSDate()
-   var heartRate = "0"
+    var heartRate = "0"
     var calories = "0"
     var totaltime = 0.0
     var breaks=0
+    var liked = true
+    var unlike = false
 
 
     
@@ -36,6 +38,31 @@ class PostRunSurvey: UIViewController {
         print("breaks = \(self.breaks)")
         print("total time = \(self.totaltime)")
     }
+    
+    
+    
+  
+    
+    @IBAction func runLiked(_ sender: Any) {
+        self.liked = true
+        self.unlike = false
+        ratingUp.isEnabled = false
+        ratingDown.isEnabled = true
+    }
+    
+    @IBAction func runDisliked(_ sender: Any) {
+        self.liked = false
+        self.unlike = true
+        ratingUp.isEnabled = true
+        ratingDown.isEnabled = false
+    }
+    
+    
+    
+    
+    
+    
+    
     
     
     @IBAction func goHome(_ sender: Any) {
