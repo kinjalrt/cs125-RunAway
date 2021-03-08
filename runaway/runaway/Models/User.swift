@@ -25,6 +25,7 @@ class User : PFUser  {
     @NSManaged var totalTime: TimeInterval
     @NSManaged var totalMiles: Double
     @NSManaged var listOfRuns: [Run]
+    @NSManaged var birthday: Date
     //@NSManaged var listOfRatings: [Rating]
     
     override init(){
@@ -41,6 +42,7 @@ class User : PFUser  {
         self.totalRuns = user["totalRuns"] as! Int
         self.totalTime = user["totalTime"] as! TimeInterval
         self.totalMiles = user["totalMiles"] as! Double
+        self.birthday = user["birthday"] as! Date
         //self.listOfRatings = user["listOfRatings"] as! [Rating]
         print(self)
     }
