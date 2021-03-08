@@ -15,34 +15,84 @@ class RunStatus: UIViewController {
     var routeName = ""
     var counter = 0.0
     var timer = Timer()
-    var isPlaying = true
     var startTime = NSDate()
+    var elapsedTime = 0.0
+    var breaks = 0
+    var (minutes,seconds,frac)=(0,0,0)
+    
+
     
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var stopButton: UIButton!
+    @IBOutlet weak var pauseButton: UIButton!
+    @IBOutlet weak var resumeButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.stopButton.isEnabled = true
-        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(UpdateTimer), userInfo: nil, repeats: true)
-        isPlaying = true
-        timeLabel.text = String(counter)
+        self.resumeButton.isHidden = true
+        self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(RunStatus.UpdateTimer), userInfo: nil, repeats: true)
+        
     }
         
     @IBAction func stopTimer(_ sender: AnyObject) {
-        createRun()
+        timer.invalidate()
+        print(self.breaks)
+        let endTime = NSDate()
+
+        self.elapsedTime = endTime.timeIntervalSince(self.startTime as Date)
+
+        performSegue(withIdentifier: "runComplete", sender: self)
+
+        /*createRun()
         stopButton.isEnabled = false
         timer.invalidate()
-        isPlaying = false
+        isPlaying = false*/
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        var vc = segue.destination as! PostRunSurvey
+        vc.breaks = self.breaks
+        vc.totaltime = self.elapsedTime
     }
     
     @objc func UpdateTimer() {
-        counter = counter + 0.1
-        timeLabel.text = String(format: "%.1f", counter)
+        frac+=1
+        if frac > 99 {
+            seconds+=1
+            frac=0
+        }
+        
+        if seconds==60{
+            minutes+=1
+            seconds=0
+        }
+        
+        let secstr = seconds > 9 ? "\(seconds)" : "0\(seconds)"
+        let minstr = minutes > 9 ? "\(minutes)" : "0\(minutes)"
+
+        timeLabel.text="\(minstr) : \(secstr) : \(frac)"
+     
     }
     
-    func createRun() {
+    @IBAction func PauseTimer(_ sender: Any) {
+        timer.invalidate()
+        breaks+=1
+        self.resumeButton.isHidden = false
+        self.pauseButton.isHidden = true
+        
+        
+    }
+    
+    @IBAction func ResumeTimer(_ sender: Any) {
+        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(RunStatus.UpdateTimer), userInfo: nil, repeats: true)
+        self.pauseButton.isHidden = false
+        self.resumeButton.isHidden = true
+
+
+    }
+    /*func createRun() {
         self.route.incrementKey("totalRuns")
         let endTime = NSDate()
         let elapsedTime = endTime.timeIntervalSince(self.startTime as Date)
@@ -75,6 +125,6 @@ class RunStatus: UIViewController {
               print("Error: Could not push RUN to database.")
             }
           }
-    }
+    }*/
 }
 

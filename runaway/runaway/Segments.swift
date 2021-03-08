@@ -23,14 +23,16 @@ class Segments
     var endLoc: CLLocation
     //var end_lat: Double = 0.0
     //var end_long: Double = 0.0
+    var climbPriority: Int
     
-    init(stravaDataId: Int, routeName: String, distance: Double, distanceAway: Double, start: CLLocation, end:CLLocation) {
+    init(stravaDataId: Int, routeName: String, distance: Double, distanceAway: Double, start: CLLocation, end:CLLocation, climb: Int) {
         self.stravaDataId = stravaDataId
         self.routeName = routeName
         self.distance = distance
         self.distanceAway = distanceAway
         self.startLoc = start
         self.endLoc = end
+        self.climbPriority = climb
         //end_long = elong
         //startLoc = startLatLong
        }
