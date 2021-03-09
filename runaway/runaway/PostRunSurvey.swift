@@ -129,18 +129,11 @@ class PostRunSurvey: UIViewController {
         // calculate score based on how often they run the route
         //calculate score based on if they user liked the run
         
+        
     }
     
     func updateScore() {
-        var currRuns=1
-        let rank = PFObject(className: "Ranking")
-        rank["route"] = self.route
-        rank["user"] = PFUser.current()
-        rank["liked"] = self.liked
-        rank["score"] = self.score
-        //rank.incrementKey("numRuns")
-        
-        
+       
         let query = PFQuery(className: "Ranking")
         query.whereKey("route",equalTo:self.route)
         query.whereKey("user",equalTo:PFUser.current())
@@ -155,30 +148,39 @@ class PostRunSurvey: UIViewController {
                 // if object does not exist create new rank
                 if objects.count == 0 {
                     print("rank not found, create new")
-                    
+                    let rank = PFObject(className: "Ranking")
+                    rank["route"] = self.route
+                    rank["user"] = PFUser.current()
+                    rank["liked"] = self.liked
+                    rank["score"] = self.score
+                    rank.incrementKey("numRuns")
+                    rank.saveInBackground{
+                        (success: Bool, error: Error?) in
+                        if (success){
+                            print("Successfully pushed rank to database.")
+                        }
+                        else {
+                          print("Error: Could not push RUN to database.")
+                        }
+                        
+                    }
+                        
                 }
                 else{
                     print("rank already exists ")
-                    for object in objects {
-                        print("deleting rank")
-                        currRuns+=object.object(forKey: "numRuns") as! Int
-                        object.deleteEventually()
+                    for object in objects{
+                        object.incrementKey("numRuns")
+                        object["liked"] = self.liked
+                        let oldScore = object["score"] as! Double
+                        let totalruns = Double(object["numRuns"] as! Int)
+                        object["score"] =  ((oldScore + self.score) / totalruns)
+                        object.saveInBackground()
+
                     }
                 }
             }
         }
-        print("query done")
-        rank["numRuns"] = currRuns
-        rank.saveInBackground{
-            (success: Bool, error: Error?) in
-            if (success){
-                print("Successfully pushed rank to database.")
-            }
-            else {
-              print("Error: Could not push RUN to database.")
-            }
-            
-        }
+        
         
         
     }
