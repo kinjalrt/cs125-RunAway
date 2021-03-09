@@ -120,7 +120,6 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         let southwestBounds = "[\(lat-3),\(long-3),\(lat),\(long)]"
         let southeastBounds = "[\(lat),\(long-3),\(lat+3),\(long)]"
         
-        print("\n")
         getRoutesFromBounds(bounds: northeastBounds, directionString: "NORTH_EAST")
         getRoutesFromBounds(bounds: northwestBounds, directionString: "NORTH_WEST" )
         getRoutesFromBounds(bounds: southwestBounds, directionString: "SOUTH_WEST")

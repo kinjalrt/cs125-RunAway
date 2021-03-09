@@ -20,7 +20,7 @@ class PostRunSurvey: UIViewController {
     
     var startTime = NSDate()
     var heartRate = 0
-    var calories = "0"
+    var calories = 0.0
     var totaltime = 0.0
     var breaks = 0
     var liked = true
@@ -71,7 +71,7 @@ class PostRunSurvey: UIViewController {
     
     @IBAction func goHome(_ sender: Any) {
         self.heartRate = Int(heartRateField.text ??  "0") ?? 0
-        calories = caloriesField.text ?? "0"
+        calories = Double(caloriesField.text ?? "0") ?? 0.0
         calculateScore()
         
         print("hr = \(self.heartRate)")
@@ -84,7 +84,7 @@ class PostRunSurvey: UIViewController {
         
         //calculate time score
         let avgTime = self.routeDist * 10
-        let timediff = self.totaltime / avgTime
+        let timediff = avgTime/self.totaltime
         self.score += timediff
         print( " avg time is \(avgTime) and users time is \(totaltime) hence score is \(score)")
         
@@ -94,6 +94,7 @@ class PostRunSurvey: UIViewController {
         let calender = Calendar.current
         let dateComponent = calender.dateComponents([.year, .month, .day], from:birthDate, to: Date())
         let age = dateComponent.year!
+        
         //values based on american heeart association recommendations for max target heart rate for age groups
         var targetHR = 0
         if age < 30 { targetHR = 170}
@@ -104,8 +105,22 @@ class PostRunSurvey: UIViewController {
         if age >= 50 && age<60 { targetHR=145}
         if age >= 60 { targetHR=136}
         
-        if heartRate>targetHR{score+=1}
+        if heartRate<=targetHR{score+=2}
+        if heartRate>targetHR{score-=2}
         print( " avg hr ifor age \(age) and users time is \(self.heartRate) hence score is \(score)")
+        
+        // calculate score based on calories burnt per mile
+        let calPerMile = self.calories / self.routeDist
+        score+=calPerMile
+        
+        print( " avg cal \(calPerMile) and users cak is \(self.calories) hence score is \(score)")
+        
+        // calculate score based on how often they run the route
+        //calculate score based on if they user liked the run
+
+        
+        
+        
 
         
     }
