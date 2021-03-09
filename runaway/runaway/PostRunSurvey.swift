@@ -13,15 +13,19 @@ import Parse
 
 
 class PostRunSurvey: UIViewController {
+    //route info
     var route = PFObject(className: "Route")
     var routeName = ""
+    var routeDist = 0.0
+    
     var startTime = NSDate()
-    var heartRate = "0"
+    var heartRate = 0
     var calories = "0"
     var totaltime = 0.0
-    var breaks=0
+    var breaks = 0
     var liked = true
     var unlike = false
+    var score = 0.0
 
 
     
@@ -33,10 +37,10 @@ class PostRunSurvey: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        heartRateField.text = " "
-        caloriesField.text = " "
+        self.routeDist = routeDist / 1609.34
         print("breaks = \(self.breaks)")
         print("total time = \(self.totaltime)")
+        print("dist = \(self.routeDist)")
     }
     
     
@@ -66,8 +70,9 @@ class PostRunSurvey: UIViewController {
     
     
     @IBAction func goHome(_ sender: Any) {
-        heartRate = heartRateField.text ?? "0"
+        self.heartRate = Int(heartRateField.text ??  "0") ?? 0
         calories = caloriesField.text ?? "0"
+        calculateScore()
         
         print("hr = \(self.heartRate)")
         print("total time = \(self.calories)")
@@ -75,6 +80,35 @@ class PostRunSurvey: UIViewController {
     }
     
     
+    func calculateScore(){
+        
+        //calculate time score
+        let avgTime = self.routeDist * 10
+        let timediff = self.totaltime / avgTime
+        self.score += timediff
+        print( " avg time is \(avgTime) and users time is \(totaltime) hence score is \(score)")
+        
+        //calculate heart rate score
+        let currentUser = PFUser.current() as! User
+        let birthDate = currentUser.birthday
+        let calender = Calendar.current
+        let dateComponent = calender.dateComponents([.year, .month, .day], from:birthDate, to: Date())
+        let age = dateComponent.year!
+        //values based on american heeart association recommendations for max target heart rate for age groups
+        var targetHR = 0
+        if age < 30 { targetHR = 170}
+        if age >= 30 && age<35 { targetHR=162}
+        if age >= 35 && age < 40 { targetHR=157}
+        if age >= 40 && age < 45 { targetHR=153}
+        if age >= 45 && age < 50 { targetHR=149}
+        if age >= 50 && age<60 { targetHR=145}
+        if age >= 60 { targetHR=136}
+        
+        if heartRate>targetHR{score+=1}
+        print( " avg hr ifor age \(age) and users time is \(self.heartRate) hence score is \(score)")
+
+        
+    }
     
     
     

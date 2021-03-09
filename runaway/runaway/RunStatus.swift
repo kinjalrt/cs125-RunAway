@@ -13,6 +13,7 @@ import Parse
 class RunStatus: UIViewController {
     var route = PFObject(className: "Route")
     var routeName = ""
+    var routeDist = 0.0
     var counter = 0.0
     var timer = Timer()
     var startTime = NSDate()
@@ -55,6 +56,10 @@ class RunStatus: UIViewController {
         var vc = segue.destination as! PostRunSurvey
         vc.breaks = self.breaks
         vc.totaltime = self.elapsedTime
+        vc.routeName = self.routeName
+        vc.route = self.route
+        vc.routeDist = self.routeDist
+        
     }
     
     @objc func UpdateTimer() {
@@ -86,7 +91,7 @@ class RunStatus: UIViewController {
     }
     
     @IBAction func ResumeTimer(_ sender: Any) {
-        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(RunStatus.UpdateTimer), userInfo: nil, repeats: true)
+        self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(RunStatus.UpdateTimer), userInfo: nil, repeats: true)
         self.pauseButton.isHidden = false
         self.resumeButton.isHidden = true
 

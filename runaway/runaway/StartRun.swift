@@ -70,6 +70,8 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
             let runStatusPage = self.storyboard?.instantiateViewController(identifier: "RunStatus" ) as! RunStatus
             runStatusPage.route = route
             runStatusPage.routeName = s.routeName
+            runStatusPage.routeDist = (s.distance)
+            
             self.present(runStatusPage, animated: true, completion: nil)
         }
 
