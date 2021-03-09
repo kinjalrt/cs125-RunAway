@@ -36,6 +36,11 @@ class RunStatus: UIViewController {
         self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(RunStatus.UpdateTimer), userInfo: nil, repeats: true)
         
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = true
+    }
         
     @IBAction func stopTimer(_ sender: AnyObject) {
         timer.invalidate()
@@ -44,23 +49,33 @@ class RunStatus: UIViewController {
 
         self.elapsedTime = endTime.timeIntervalSince(self.startTime as Date)
 
-        performSegue(withIdentifier: "runComplete", sender: self)
+        
+        let vc = self.storyboard?.instantiateViewController(identifier: "PostRunSurvey" ) as! PostRunSurvey
 
+        vc.breaks = self.breaks
+        vc.totaltime = self.elapsedTime
+        vc.routeName = self.routeName
+        vc.route = self.route
+        vc.routeDist = self.routeDist
+
+        self.navigationController?.pushViewController(vc, animated: true)
+        
+        //performSegue(withIdentifier: "runComplete", sender: self)
         /*createRun()
         stopButton.isEnabled = false
         timer.invalidate()
         isPlaying = false*/
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        var vc = segue.destination as! PostRunSurvey
-        vc.breaks = self.breaks
-        vc.totaltime = self.elapsedTime
-        vc.routeName = self.routeName
-        vc.route = self.route
-        vc.routeDist = self.routeDist
-        
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        var vc = segue.destination as! PostRunSurvey
+//        vc.breaks = self.breaks
+//        vc.totaltime = self.elapsedTime
+//        vc.routeName = self.routeName
+//        vc.route = self.route
+//        vc.routeDist = self.routeDist
+//        
+//    }
     
     @objc func UpdateTimer() {
         frac+=1

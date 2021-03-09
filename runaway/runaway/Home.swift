@@ -35,7 +35,10 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 //        yellowRect.layer.cornerRadius = 15.0
 //        yellowRect.clipsToBounds = true
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+    }
     
     // Location
     func setUpLocation() {

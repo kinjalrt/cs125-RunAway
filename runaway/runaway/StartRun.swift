@@ -46,6 +46,11 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         getRoutes()
         updateCurrentSegmentUI()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+    }
 
     @IBAction func startButtonPressed(_ sender: UIButton) {
         
@@ -71,8 +76,9 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
             runStatusPage.route = route
             runStatusPage.routeName = s.routeName
             runStatusPage.routeDist = (s.distance)
+
+            self.navigationController?.pushViewController(runStatusPage, animated: true)
             
-            self.present(runStatusPage, animated: true, completion: nil)
         }
 
     }

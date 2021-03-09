@@ -43,7 +43,10 @@ class PostRunSurvey: UIViewController {
         print("dist = \(self.routeDist)")
     }
     
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = true
+    }
     
   
     
@@ -69,15 +72,18 @@ class PostRunSurvey: UIViewController {
     
     
     
-    @IBAction func goHome(_ sender: Any) {
+    @IBAction func completeSurvey(_ sender: Any) {
         self.heartRate = Int(heartRateField.text ??  "0") ?? 0
         calories = Double(caloriesField.text ?? "0") ?? 0.0
         calculateScore()
         
-        print("hr = \(self.heartRate)")
-        print("total time = \(self.calories)")
+        print("Ave heartrate = \(self.heartRate)")
+        print("Burnt calories = \(self.calories)")
         
+        let vc = self.storyboard?.instantiateViewController(identifier: "Congrats" ) as! Congrats
+        self.navigationController?.pushViewController(vc, animated: true)
     }
+    
     
     
     func calculateScore(){

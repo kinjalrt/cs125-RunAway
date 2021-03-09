@@ -49,6 +49,10 @@ class History:UIViewController
         distCompleted.text = String(format: "%.2f  miles", currentUser.totalMiles)
         
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+    }
 
     @IBAction func logout(_ sender: Any) {
         PFUser.logOutInBackground(block: { (error) in

@@ -20,6 +20,10 @@ class Congrats: UIViewController {
         confettiView.startConfetti()
         confettiView.isUserInteractionEnabled = false
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = true
+    }
     
     @IBAction func leaveButton(_ sender: Any) {
         print("leaving")
@@ -27,5 +31,14 @@ class Congrats: UIViewController {
         let tab_control=storyboard?.instantiateViewController(identifier: "myTabBar") as! myTabBar
         self.present(tab_control, animated: true, completion:nil)
     }
-
+    
+    @IBAction func returnHome(_ sender: Any) {
+        self.navigationController?.popToRootViewController(animated: true)
+        let resetStartRun = self.navigationController?.topViewController as! StartRun
+        resetStartRun.distanceSlider.setValue(0.0, animated: false)
+        resetStartRun.distanceSliderValueChanged(resetStartRun.distanceSlider)
+        resetStartRun.distanceSliderValueChosen(resetStartRun.distanceSlider)
+    }
+    
+    
 }
