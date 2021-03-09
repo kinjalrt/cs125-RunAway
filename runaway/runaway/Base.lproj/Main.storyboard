@@ -352,6 +352,7 @@
                 <navigationController modalPresentationStyle="fullScreen" navigationBarHidden="YES" id="GlI-kP-cNP" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Home" image="house.fill" catalog="system" id="Pyq-gb-iv9"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="4PG-Y9-p22">
+                        <rect key="frame" x="0.0" y="-54" width="0.0" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -367,7 +368,7 @@
             <objects>
                 <viewController storyboardIdentifier="Home" title="Home" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4lJ-b1-Far" customClass="Home" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="U6E-WJ-Vqq">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="HomeWallpaper" translatesAutoresizingMaskIntoConstraints="NO" id="jeP-3A-eRX">
@@ -464,7 +465,7 @@
             <objects>
                 <viewController storyboardIdentifier="Start run" title="Start Run" modalPresentationStyle="fullScreen" id="vIW-ng-Y1l" customClass="StartRun" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mLd-PH-lux">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="StartRunWallpaper" translatesAutoresizingMaskIntoConstraints="NO" id="l3N-2P-0ye">
@@ -688,9 +689,12 @@
                                 <rect key="frame" x="91" y="763" width="233" height="39"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="22"/>
-                                <state key="normal" title="complete survey">
+                                <state key="normal" title="Take me home">
                                     <color key="titleColor" red="0.2274509804" green="0.71739477039999999" blue="0.58561862239999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
+                                <connections>
+                                    <segue destination="Z46-1Z-n1r" kind="showDetail" id="2YE-5s-ZMz"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="QUf-YU-5Ab"/>
@@ -901,6 +905,7 @@
                 <navigationController navigationBarHidden="YES" id="IIY-Wf-pY2" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="run" image="plus" catalog="system" id="bFE-xa-2am"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="p4l-3G-ces">
+                        <rect key="frame" x="0.0" y="-54" width="0.0" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -917,6 +922,7 @@
                 <navigationController navigationBarHidden="YES" id="Is6-k8-OOW" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="History" image="clock.fill" catalog="system" id="ZnD-Q9-Blm"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="fHc-Rb-M7T">
+                        <rect key="frame" x="0.0" y="-54" width="0.0" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -928,6 +934,9 @@
             <point key="canvasLocation" x="5200" y="210"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="2YE-5s-ZMz"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="HomeWallpaper" width="316" height="683"/>
         <image name="Screen Shot 2021-02-23 at 10.07.07 PM" width="526" height="1182"/>
