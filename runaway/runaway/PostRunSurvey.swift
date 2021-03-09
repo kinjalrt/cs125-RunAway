@@ -65,13 +65,6 @@ class PostRunSurvey: UIViewController {
     }
     
     
-    
-    
-    
-    
-    
-    
-    
     @IBAction func completeSurvey(_ sender: Any) {
         self.heartRate = Int(heartRateField.text ??  "0") ?? 0
         calories = Double(caloriesField.text ?? "0") ?? 0.0
@@ -79,11 +72,11 @@ class PostRunSurvey: UIViewController {
         
         print("Ave heartrate = \(self.heartRate)")
         print("Burnt calories = \(self.calories)")
+        //createRun()
         
         let vc = self.storyboard?.instantiateViewController(identifier: "Congrats" ) as! Congrats
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
     
     
     func calculateScore(){
@@ -146,6 +139,8 @@ class PostRunSurvey: UIViewController {
         run["totalDistance"] = self.route["distance"] as! Double
         run["elapsedTime"] = elapsedTime
         run["runName"] = self.routeName
+        //run["averageHeartRate"] = self.heartRate
+        //run["caloriesBurnt"] = self.calories
         run.saveInBackground{
             (success: Bool, error: Error?) in
             if (success) {
