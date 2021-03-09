@@ -10,12 +10,40 @@ import Foundation
 import UIKit
 import Parse
 
-class History:UIViewController
+class History : UIViewController, UITableViewDelegate, UITableViewDataSource
 {
+    @IBOutlet weak var runTable: UITableView!
+    @IBOutlet weak var username: UILabel!
+    @IBOutlet weak var runsCompleted: UILabel!
+    @IBOutlet weak var timeCompleted: UILabel!
+    @IBOutlet weak var distCompleted: UILabel!
+    @IBOutlet var tableView: UITableView!
+    
+    var sample = ["this", "is", "a", "sample", "list"]
+    var userRunHistory : [PFObject] = []
+    let currentUser = PFUser.current()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        getRunHistory()
+        //getRunHistory()
+        tableView.delegate = self
+        tableView.dataSource = self
     }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        //return sample.count
+        print(userRunHistory.count)
+        return userRunHistory.count
+        
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        
+//        cell.textLabel?.text = sample[indexPath.row]
+        cell.textLabel?.text = userRunHistory[indexPath.row]["runName"] as! String
+        return cell
+    }
+    
 //    override func viewDidAppear(_ animated: Bool) {
 //        super.viewDidAppear(animated)
 //        updateUIComponents()
@@ -23,17 +51,8 @@ class History:UIViewController
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
+        getRunHistory()
     }
-    
-    
-    @IBOutlet weak var runTable: UITableView!
-    @IBOutlet weak var username: UILabel!
-    @IBOutlet weak var runsCompleted: UILabel!
-    @IBOutlet weak var timeCompleted: UILabel!
-    @IBOutlet weak var distCompleted: UILabel!
-    
-    var userRunHistory : [PFObject] = []
-    let currentUser = PFUser.current()
     
     func getRunHistory(){
         userRunHistory = []
@@ -54,6 +73,7 @@ class History:UIViewController
         }
     }
     func updateUIComponents(){
+        self.tableView.reloadData()
         print(userRunHistory)
         
         //set up greeting
