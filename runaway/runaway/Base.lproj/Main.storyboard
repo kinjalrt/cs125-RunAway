@@ -662,6 +662,7 @@
                         <outlet property="resumeButton" destination="DcE-Ba-H2a" id="X00-MT-wZK"/>
                         <outlet property="stopButton" destination="bVv-W2-PIC" id="tKZ-3x-jWr"/>
                         <outlet property="timeLabel" destination="VyZ-5I-sqE" id="jIs-zB-Imk"/>
+                        <segue destination="bVh-Vk-aIv" kind="show" identifier="runComplete" id="gZR-h2-4er"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9oQ-vQ-rUm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -780,6 +781,7 @@
                         <viewLayoutGuide key="safeArea" id="125-qI-rVF"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="at4-Vi-DST"/>
                     <connections>
                         <outlet property="caloriesField" destination="4qI-s4-D7v" id="NaL-hS-cBA"/>
                         <outlet property="heartRateField" destination="529-cC-F82" id="XkW-0n-oF9"/>

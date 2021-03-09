@@ -50,32 +50,29 @@ class RunStatus: UIViewController {
         self.elapsedTime = endTime.timeIntervalSince(self.startTime as Date)
 
         
-        let vc = self.storyboard?.instantiateViewController(identifier: "PostRunSurvey" ) as! PostRunSurvey
+        /*let vc = self.storyboard?.instantiateViewController(identifier: "PostRunSurvey" ) as! PostRunSurvey
 
         vc.breaks = self.breaks
         vc.totaltime = self.elapsedTime
         vc.routeName = self.routeName
         vc.route = self.route
-        vc.routeDist = self.routeDist
+        vc.routeDist = self.routeDist*/
 
-        self.navigationController?.pushViewController(vc, animated: true)
+        //self.navigationController?.pushViewController(vc, animated: true)
         
-        //performSegue(withIdentifier: "runComplete", sender: self)
-        /*createRun()
-        stopButton.isEnabled = false
-        timer.invalidate()
-        isPlaying = false*/
+        performSegue(withIdentifier: "runComplete", sender: self)
+       
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        var vc = segue.destination as! PostRunSurvey
-//        vc.breaks = self.breaks
-//        vc.totaltime = self.elapsedTime
-//        vc.routeName = self.routeName
-//        vc.route = self.route
-//        vc.routeDist = self.routeDist
-//        
-//    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        var vc = segue.destination as! PostRunSurvey
+        vc.breaks = self.breaks
+        vc.totaltime = self.elapsedTime
+        vc.routeName = self.routeName
+        vc.route = self.route
+        vc.routeDist = self.routeDist
+        
+    }
     
     @objc func UpdateTimer() {
         frac+=1

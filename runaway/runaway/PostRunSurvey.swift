@@ -18,14 +18,17 @@ class PostRunSurvey: UIViewController {
     var routeName = ""
     var routeDist = 0.0
     
+    
     var startTime = NSDate()
     var heartRate = 0
     var calories = 0.0
     var totaltime = 0.0
     var breaks = 0
     var liked = true
-    var unlike = false
+    //var unlike = false
     var score = 0.0
+    
+    
 
 
     
@@ -52,14 +55,14 @@ class PostRunSurvey: UIViewController {
     
     @IBAction func runLiked(_ sender: Any) {
         self.liked = true
-        self.unlike = false
+        //self.unlike = false
         ratingUp.isEnabled = false
         ratingDown.isEnabled = true
     }
     
     @IBAction func runDisliked(_ sender: Any) {
         self.liked = false
-        self.unlike = true
+        //self.unlike = true
         ratingUp.isEnabled = true
         ratingDown.isEnabled = false
     }
@@ -75,7 +78,9 @@ class PostRunSurvey: UIViewController {
     @IBAction func completeSurvey(_ sender: Any) {
         self.heartRate = Int(heartRateField.text ??  "0") ?? 0
         calories = Double(caloriesField.text ?? "0") ?? 0.0
+        createRun()
         calculateScore()
+        updateScore()
         
         print("Ave heartrate = \(self.heartRate)")
         print("Burnt calories = \(self.calories)")
@@ -116,20 +121,69 @@ class PostRunSurvey: UIViewController {
         print( " avg hr ifor age \(age) and users time is \(self.heartRate) hence score is \(score)")
         
         // calculate score based on calories burnt per mile
-        let calPerMile = self.calories / self.routeDist
+        let calPerMile = (self.calories / self.routeDist) / 100
         score+=calPerMile
         
         print( " avg cal \(calPerMile) and users cak is \(self.calories) hence score is \(score)")
         
         // calculate score based on how often they run the route
         //calculate score based on if they user liked the run
-
-        
-        
-        
-
         
     }
+    
+    func updateScore() {
+        var currRuns=1
+        let rank = PFObject(className: "Ranking")
+        rank["route"] = self.route
+        rank["user"] = PFUser.current()
+        rank["liked"] = self.liked
+        rank["score"] = self.score
+        //rank.incrementKey("numRuns")
+        
+        
+        let query = PFQuery(className: "Ranking")
+        query.whereKey("route",equalTo:self.route)
+        query.whereKey("user",equalTo:PFUser.current())
+        query.findObjectsInBackground{ (objects: [PFObject]?, error: Error?) in
+            if let error = error {
+                print("error: \(error)")
+                
+            } else if let objects = objects {
+                // The find succeeded.
+                print("Successfully retrieved \(objects.count) scores.")
+                
+                // if object does not exist create new rank
+                if objects.count == 0 {
+                    print("rank not found, create new")
+                    
+                }
+                else{
+                    print("rank already exists ")
+                    for object in objects {
+                        print("deleting rank")
+                        currRuns+=object.object(forKey: "numRuns") as! Int
+                        object.deleteEventually()
+                    }
+                }
+            }
+        }
+        print("query done")
+        rank["numRuns"] = currRuns
+        rank.saveInBackground{
+            (success: Bool, error: Error?) in
+            if (success){
+                print("Successfully pushed rank to database.")
+            }
+            else {
+              print("Error: Could not push RUN to database.")
+            }
+            
+        }
+        
+        
+    }
+    
+    
     
     
     

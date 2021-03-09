@@ -13,12 +13,15 @@ import Parse
 class Rating {
     private var routeId: String
     private var userId: String
-    var rating: Int
+    var score: Int
+    var numRuns: Int
     
-    init(routeId: String, userId: String, rating: Int){
+    init(routeId: String, userId: String, rating: Int, numRuns: Int){
         self.routeId = routeId
         self.userId = userId
-        self.rating = rating
+        self.score = rating
+        self.numRuns = numRuns
+        
     }
     
     func getRoute() -> PFObject{
@@ -45,7 +48,9 @@ class Rating {
         return user
     }
     
+   
+    
     func changeRating(newRating: Int) {
-        rating = newRating
+        score = newRating
     }
 }
