@@ -634,8 +634,8 @@
                                     <action selector="stopTimer:" destination="O59-3y-13r" eventType="touchUpInside" id="qPt-uO-4DB"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="50" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VyZ-5I-sqE">
-                                <rect key="frame" x="33" y="191" width="348" height="168"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00:00:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="50" translatesAutoresizingMaskIntoConstraints="NO" id="VyZ-5I-sqE">
+                                <rect key="frame" x="8" y="215" width="285" height="132"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="100"/>
                                 <nil key="textColor"/>
@@ -664,11 +664,19 @@
                                     <action selector="ResumeTimer:" destination="O59-3y-13r" eventType="touchUpInside" id="0q7-iA-ozb"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="50" translatesAutoresizingMaskIntoConstraints="NO" id="MEM-EI-fTs">
+                                <rect key="frame" x="309" y="215" width="80" height="132"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="100"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="dLE-lW-Url"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <connections>
+                        <outlet property="fracLabel" destination="MEM-EI-fTs" id="Mwp-sL-aZB"/>
                         <outlet property="pauseButton" destination="Lul-f9-DeY" id="nQg-GT-bdA"/>
                         <outlet property="resumeButton" destination="DcE-Ba-H2a" id="X00-MT-wZK"/>
                         <outlet property="stopButton" destination="bVv-W2-PIC" id="tKZ-3x-jWr"/>
