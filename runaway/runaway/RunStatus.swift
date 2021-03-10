@@ -23,6 +23,7 @@ class RunStatus: UIViewController {
     
 
     
+    @IBOutlet weak var fracLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var stopButton: UIButton!
     @IBOutlet weak var pauseButton: UIButton!
@@ -33,6 +34,7 @@ class RunStatus: UIViewController {
         
         self.stopButton.isEnabled = true
         self.resumeButton.isHidden = true
+        //update time every 0.01 seconds using the update timer function
         self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(RunStatus.UpdateTimer), userInfo: nil, repeats: true)
         
     }
@@ -43,41 +45,29 @@ class RunStatus: UIViewController {
     }
         
     @IBAction func stopTimer(_ sender: AnyObject) {
+        //stop the timer and switch to post survey page
         timer.invalidate()
         print(self.breaks)
         let endTime = NSDate()
-
         self.elapsedTime = endTime.timeIntervalSince(self.startTime as Date)
-
         
-        let vc = self.storyboard?.instantiateViewController(identifier: "PostRunSurvey" ) as! PostRunSurvey
-
+        performSegue(withIdentifier: "runComplete", sender: self)
+       
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        //send data from this page to post survey page to calculate score
+        var vc = segue.destination as! PostRunSurvey
         vc.breaks = self.breaks
         vc.totaltime = self.elapsedTime
         vc.routeName = self.routeName
         vc.route = self.route
         vc.routeDist = self.routeDist
-
-        self.navigationController?.pushViewController(vc, animated: true)
         
-        //performSegue(withIdentifier: "runComplete", sender: self)
-        /*createRun()
-        stopButton.isEnabled = false
-        timer.invalidate()
-        isPlaying = false*/
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        var vc = segue.destination as! PostRunSurvey
-//        vc.breaks = self.breaks
-//        vc.totaltime = self.elapsedTime
-//        vc.routeName = self.routeName
-//        vc.route = self.route
-//        vc.routeDist = self.routeDist
-//        
-//    }
-    
     @objc func UpdateTimer() {
+        //update time and format for user display
         frac+=1
         if frac > 99 {
             seconds+=1
@@ -92,13 +82,16 @@ class RunStatus: UIViewController {
         let secstr = seconds > 9 ? "\(seconds)" : "0\(seconds)"
         let minstr = minutes > 9 ? "\(minutes)" : "0\(minutes)"
 
-        timeLabel.text="\(minstr) : \(secstr) : \(frac)"
+        timeLabel.text="\(minstr) : \(secstr) : "
+        fracLabel.text="\(frac)"
      
     }
     
     @IBAction func PauseTimer(_ sender: Any) {
+        //each time user pauses the timer, it counts as a break
         timer.invalidate()
         breaks+=1
+        //enable resume button so user can continue when ready
         self.resumeButton.isHidden = false
         self.pauseButton.isHidden = true
         
@@ -106,45 +99,13 @@ class RunStatus: UIViewController {
     }
     
     @IBAction func ResumeTimer(_ sender: Any) {
+        //restart timer from where it was stopped
         self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(RunStatus.UpdateTimer), userInfo: nil, repeats: true)
         self.pauseButton.isHidden = false
         self.resumeButton.isHidden = true
 
 
     }
-    /*func createRun() {
-        self.route.incrementKey("totalRuns")
-        let endTime = NSDate()
-        let elapsedTime = endTime.timeIntervalSince(self.startTime as Date)
-        
-        let run = PFObject(className: "Run")
-        run["route"] = self.route
-        run["user"] = PFUser.current()!
-        run["startTimeStamp"] = self.startTime
-        run["totalDistance"] = self.route["distance"] as! Double
-        run["elapsedTime"] = elapsedTime
-        run["runName"] = self.routeName
-        run.saveInBackground{
-            (success: Bool, error: Error?) in
-            if (success) {
-              print("Successfully pushed RUN to database.")
-                let user = PFUser.current() as! User
-                user.add(run, forKey: "listOfRuns")
-                user.incrementKey("totalRuns")
-                user.incrementKey("totalTime", byAmount: elapsedTime as NSNumber)
-                user.incrementKey("totalMiles", byAmount: (self.route["distance"] as! Double / 1000 * 0.621371) as NSNumber)
-                user.saveInBackground {
-                  (success: Bool, error: Error?) in
-                  if (success) {
-                    print("Successfully added RUN to USER.listOfRuns in database.")
-                  } else {
-                    print("Error: Could not add RUN to USER.listOfRuns in database.")
-                  }
-                }
-            } else {
-              print("Error: Could not push RUN to database.")
-            }
-          }
-    }*/
+    
 }
 

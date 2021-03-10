@@ -13,10 +13,11 @@ import Parse
 
 
 class PostRunSurvey: UIViewController {
-    //route info
+    //route info passed from start run page
     var route = PFObject(className: "Route")
     var routeName = ""
     var routeDist = 0.0
+    
     
     var startTime = NSDate()
     var heartRate = 0
@@ -24,11 +25,10 @@ class PostRunSurvey: UIViewController {
     var totaltime = 0.0
     var breaks = 0
     var liked = true
-    var unlike = false
     var score = 0.0
-
-
     
+    
+
     @IBOutlet weak var ratingUp: UIButton!
     @IBOutlet weak var ratingDown: UIButton!
     
@@ -37,6 +37,7 @@ class PostRunSurvey: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //convert distance from meters to miles
         self.routeDist = routeDist / 1609.34
         print("breaks = \(self.breaks)")
         print("total time = \(self.totaltime)")
@@ -51,29 +52,38 @@ class PostRunSurvey: UIViewController {
   
     
     @IBAction func runLiked(_ sender: Any) {
+        //if the user click the thumbs up button set liked to true
+        // disable the like button to let user no this was selected
+        //enable unlike button so they can chnage option of needed
         self.liked = true
-        self.unlike = false
         ratingUp.isEnabled = false
         ratingDown.isEnabled = true
     }
     
     @IBAction func runDisliked(_ sender: Any) {
+        //if the user click the thumbs down button set liked to true
+        // disable the unlike button to let user no this was selected
+        //enable like button so they can chnage option of needed
         self.liked = false
-        self.unlike = true
         ratingUp.isEnabled = true
         ratingDown.isEnabled = false
     }
     
     
     @IBAction func completeSurvey(_ sender: Any) {
+        //get heart rate and calories from user import
         self.heartRate = Int(heartRateField.text ??  "0") ?? 0
         calories = Double(caloriesField.text ?? "0") ?? 0.0
-        calculateScore()
+        
+        createRun() // add run to users history
+        calculateScore() //calculate score of the current run
+        updateScore() // update score in the database
         
         print("Ave heartrate = \(self.heartRate)")
         print("Burnt calories = \(self.calories)")
         createRun()
         
+        //exit page
         let vc = self.storyboard?.instantiateViewController(identifier: "Congrats" ) as! Congrats
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -81,13 +91,13 @@ class PostRunSurvey: UIViewController {
     
     func calculateScore(){
         
-        //calculate time score
-        let avgTime = self.routeDist * 10
+        //calculate score based how long it took the user to run route based on the average time it takes
+        let avgTime = self.routeDist * 10         // average time to run 1 mile is 10 minutes
         let timediff = avgTime/self.totaltime
         self.score += timediff
         print( " avg time is \(avgTime) and users time is \(totaltime) hence score is \(score)")
         
-        //calculate heart rate score
+        //calculate heart rate score based on users age
         let currentUser = PFUser.current() as! User
         let birthDate = currentUser.birthday
         let calender = Calendar.current
@@ -104,25 +114,79 @@ class PostRunSurvey: UIViewController {
         if age >= 50 && age<60 { targetHR=145}
         if age >= 60 { targetHR=136}
         
+        //if heart rate is below max then move up else move score down
         if heartRate<=targetHR{score+=2}
         if heartRate>targetHR{score-=2}
         print( " avg hr ifor age \(age) and users time is \(self.heartRate) hence score is \(score)")
         
-        // calculate score based on calories burnt per mile
-        let calPerMile = self.calories / self.routeDist
+        // calculate score based on calories % burnt per mile
+        //
+        let calPerMile = (self.calories / self.routeDist) / 100
         score+=calPerMile
-        
         print( " avg cal \(calPerMile) and users cak is \(self.calories) hence score is \(score)")
         
         // calculate score based on how often they run the route
-        //calculate score based on if they user liked the run
-
         
-        
-        
-
         
     }
+    
+    func updateScore() {
+       
+        //check if user has already run this route
+        let query = PFQuery(className: "Ranking")
+        query.whereKey("route",equalTo:self.route)
+        query.whereKey("user",equalTo:PFUser.current())
+        query.findObjectsInBackground{ (objects: [PFObject]?, error: Error?) in
+            if let error = error {
+                print("error: \(error)")
+                
+            } else if let objects = objects {
+                // The find succeeded.
+                
+                // if object does not exist create new rank
+                if objects.count == 0 {
+                    print("rank not found, create new")
+                    let rank = PFObject(className: "Ranking")
+                    rank["route"] = self.route
+                    rank["routeName"] = self.routeName
+                    rank["user"] = PFUser.current()
+                    rank["liked"] = self.liked
+                    rank["score"] = self.score
+
+                    rank.incrementKey("numRuns")
+                    rank.saveInBackground{
+                        (success: Bool, error: Error?) in
+                        if (success){
+                            print("Successfully pushed rank to database.")
+                        }
+                        else {
+                          print("Error: Could not push RUN to database.")
+                        }
+                        
+                    }
+                        
+                }
+                else{
+                    //object already exists, update scores with new average score
+                    print("rank already exists ")
+                    for object in objects{
+                        object["liked"] = self.liked
+                        let totalruns = Double(object["numRuns"] as! Int)
+                        let oldScore = (object["score"] as! Double) * Double(totalruns)
+                        object["score"] =  ((oldScore + self.score) / (totalruns+1))
+                        object.incrementKey("numRuns")
+                        object.saveInBackground()
+
+                    }
+                }
+            }
+        }
+        
+        
+        
+    }
+    
+    
     
     
     
