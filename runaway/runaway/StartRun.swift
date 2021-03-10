@@ -27,10 +27,18 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var routeRatingLabel: UILabel!
     @IBOutlet weak var starImg: UIImageView!
-    
-    
+    @IBOutlet weak var oldMap: MKMapView!
+    @IBOutlet weak var oldNextButton: UIButton!
+    @IBOutlet weak var oldPrevButton: UIButton!
+    @IBOutlet weak var oldRouteNameLabel: UILabel!
+    @IBOutlet weak var oldRouteDistanceLabel: UILabel!
     
     // Logic Components
+    var currIndexOldMap = 0
+    var oldRoutesNames : [String] = []
+    var oldRoutesDistances : [Double] = []
+    var oldRoutes: [[CLLocationCoordinate2D]] = []
+    
     var suggestedRoutes: [CLLocationCoordinate2D] = []
     var currIndex = 0
     let LocationManager = CLLocationManager()
@@ -47,8 +55,11 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         map.delegate = self
+        oldMap.delegate = self
+        
         let currentUser = User(user: PFUser.current()!)
         self.userDifficulty = currentUser.difficultyTier
+        getOldRoutes()
         getRoutes()
         updateCurrentSegmentUI()
     }
@@ -108,7 +119,9 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         updateCurrentSegmentUI()
     }
     
+    
     func sortClimbPriority(){
+        // sort routes by difficulty (climb category)
         let sortedSegs = self.filteredRouteSegments.sorted(by: { $0.climbPriority < $1.climbPriority })
         self.filteredRouteSegments = sortedSegs
         
@@ -121,11 +134,12 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     }
     
     
+    
     func getRoutes() {
+        // retrieve routes in all directions based on user current location
         let long = Home.currentLocation!.coordinate.longitude
         let lat = Home.currentLocation!.coordinate.latitude
         
-        // Not sure how the bounds are supposed to be (fix this if needed)
         let northeastBounds = "[\(lat),\(long),\(lat+3),\(long+3)]"
         let northwestBounds = "[\(lat-3),\(long),\(lat),\(long+3)]"
         let southwestBounds = "[\(lat-3),\(long-3),\(lat),\(long)]"
@@ -138,8 +152,121 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     }
     
     
+    func getOldRoutes(){
+        // fetch current user's old runs from database and rank them by score
+        let query = PFQuery(className:"Ranking")
+        query.whereKey("user", equalTo: PFUser.current())
+        query.order(byDescending: "score")
+        query.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+            if let error = error {
+                print(error.localizedDescription)
+            } else if let objects = objects {
+                
+                for object in objects{
+                    let route = object["route"] as? PFObject
+                    do {
+                        try route!.fetchIfNeeded()
+                    } catch _ {
+                       print("There was an error ):")
+                    }
+                    
+                    // append each route to oldRoutes array in correct order
+                    let sourceLat = route!["startLat"] as! Double
+                    let sourceLng = route!["startLng"] as! Double
+                    let destLat = route!["endLat"] as! Double
+                    let destLong = route!["endLng"] as! Double
+                    let name = route!["routeName"] as! String
+                    let distanceInMeters = route!["distance"] as! Double
+                    let distanceInMiles = distanceInMeters / 1000 * 0.621371
+                    let sourceCoordinates = CLLocationCoordinate2D(latitude: sourceLat,longitude: sourceLng)
+                    let destCoordinates = CLLocationCoordinate2D(latitude: destLat,longitude: destLong)
+                    self.oldRoutes.append([sourceCoordinates,destCoordinates])
+                    self.oldRoutesNames.append(name)
+                    self.oldRoutesDistances.append(distanceInMiles)
+                    
+                    
+                }
+
+                self.oldPrevButton.isHidden = true
+                if(self.oldRoutes.count==1){
+                    self.oldPrevButton.isHidden = true
+                }
+                self.displayOldRoutes()
+
+                }
+            }
+    }
+    
+    
+    func displayOldRoutes(){
+        //display user's ranked, old runs on upper map
+        let sourceCoordinates = self.oldRoutes[currIndexOldMap][0] as CLLocationCoordinate2D
+        let destCoordinates = self.oldRoutes[currIndexOldMap][1] as CLLocationCoordinate2D
+
+        let sourcePlacemark = MKPlacemark(coordinate:sourceCoordinates)
+        let destPlacemark = MKPlacemark(coordinate:destCoordinates)
+
+        let sourceItem = MKMapItem(placemark: sourcePlacemark)
+        let destItem =  MKMapItem(placemark: destPlacemark)
+
+        let destinationRequest = MKDirections.Request()
+        destinationRequest.source = sourceItem
+        destinationRequest.destination = destItem
+        destinationRequest.transportType = .walking
+        destinationRequest.requestsAlternateRoutes = true
+
+        let directions = MKDirections(request: destinationRequest)
+        directions.calculate{(response, error) in
+            guard let response = response else{
+                if let error = error{
+                    print("something is wrong ): \(error)")
+                }
+                return
+            }
+            let route = response.routes[0]
+            self.oldMap.addOverlay(route.polyline)
+            self.oldMap.setVisibleMapRect(route.polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15), animated: true)
+            
+            // set labels for current old route name and distance
+            self.oldRouteNameLabel.text = self.oldRoutesNames[self.currIndexOldMap]
+            self.oldRouteDistanceLabel.text = String(
+                format: "%.2f miles", self.oldRoutesDistances[self.currIndexOldMap])
+
+        }
+    }
+    
+    
+    @IBAction func nextOldRoute(_ sender: Any) {
+        //next button for upper map
+        if(currIndexOldMap<=(self.oldRoutes.count-1)){
+            currIndexOldMap = currIndexOldMap+1
+             oldPrevButton.isHidden = false
+         }
+         if(currIndexOldMap==(self.oldRoutes.count-1)){
+             oldNextButton.isHidden = true
+         }
+         oldMap.removeOverlays(oldMap.overlays)
+         displayOldRoutes()
+    }
+    
+    
+    @IBAction func prevOldRoute(_ sender: Any) {
+        //prev button for upper map
+        if(currIndexOldMap>0){
+             currIndexOldMap = currIndexOldMap-1
+             oldNextButton.isHidden = false
+         }
+         if(currIndexOldMap==0){
+             oldPrevButton.isHidden = true
+         }
+         oldMap.removeOverlays(oldMap.overlays)
+         displayOldRoutes()
+    }
+    
+    
+    
     func getRoutesFromBounds(bounds: String, directionString: String){
-        
+        // call to strava api to retrieve all routes in a specific area
         let accessToken = LogIn.accessToken
         let parameters: [String: Any] = ["access_token": accessToken, "bounds": bounds, "activity_type": "running"]
         AF.request("https://www.strava.com/api/v3/segments/explore", method: .get, parameters: parameters).response { response in
@@ -186,7 +313,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     }
     
     func convertClimbCategory(climbCat: Int) -> Int{
-        
+        // map route's climb categoy to current user's fitness level
         if self.userDifficulty==1 {
             return (climbCat+1)
         }
@@ -354,7 +481,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
             }
             let route = response.routes[0]
             self.map.addOverlay(route.polyline)
-            self.map.setVisibleMapRect(route.polyline.boundingMapRect, animated:true)
+            self.map.setVisibleMapRect(route.polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15), animated:true)
 
         }
     }
@@ -367,25 +494,6 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     }
     
     
-    func findRoutes(){
-        //get routes from Strava API:
-        
-        //create CLLocationCoordinate2D object for each route and append to self.suggestedRoutes
-
-        //sample routes:
-        var destCoordinates = CLLocationCoordinate2D(latitude: 37.331193,longitude: -122.031401)
-        self.suggestedRoutes.append(destCoordinates)
-        destCoordinates = CLLocationCoordinate2D(latitude: 37.330247,longitude: -122.027774)
-        self.suggestedRoutes.append(destCoordinates)
-        destCoordinates = CLLocationCoordinate2D(latitude: 37.326644,longitude: -122.030186)
-        self.suggestedRoutes.append(destCoordinates)
-
-        //init navig buttons
-        prevButton.isHidden = true
-        if(self.suggestedRoutes.count==1){
-            prevButton.isHidden = true
-        }
-    }
     
     
     @IBAction func displayNextRun(_ sender: Any) {

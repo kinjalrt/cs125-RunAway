@@ -23,6 +23,8 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     @IBOutlet weak var temperature: UILabel!
     @IBOutlet weak var weatherSummary: UILabel!
     @IBOutlet weak var map: MKMapView!
+    @IBOutlet weak var suggestedRouteNameLabel: UILabel!
+    @IBOutlet weak var suggestedRouteDistanceLabel: UILabel!
     var suggestedRoute: [String: CLLocationCoordinate2D] = [:]
     
     
@@ -179,7 +181,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         let query = PFQuery(className:"Ranking")
         query.whereKey("user", equalTo: PFUser.current())
         query.order(byDescending: "score")
-        query.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+        query.findObjectsInBackground { [self] (objects: [PFObject]?, error: Error?) in
             if let error = error {
                 print(error.localizedDescription)
             } else if let objects = objects {
@@ -195,10 +197,18 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                 let sourceLng = bestRoute!["startLng"] as! Double
                 let destLat = bestRoute!["endLat"] as! Double
                 let destLong = bestRoute!["endLng"] as! Double
+                let name = bestRoute!["routeName"] as! String
+                let distance = bestRoute!["distance"] as! Double
                 let sourceCoordinates = CLLocationCoordinate2D(latitude: sourceLat,longitude: sourceLng)
                 let destCoordinates = CLLocationCoordinate2D(latitude: destLat,longitude: destLong)
                 self.suggestedRoute["source"] = sourceCoordinates
                 self.suggestedRoute["dest"] = destCoordinates
+                
+                //display name and distance labels
+                self.suggestedRouteNameLabel.text = name
+                self.suggestedRouteDistanceLabel.text = String(
+                    format: "%.2f miles", distance / 1000 * 0.621371)
+
                 // display retrived route on map
                 self.displayRoutes()
 
