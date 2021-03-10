@@ -228,8 +228,8 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                     self.basisLabel.text = "No past runs. Checkout a new run to get started ! :)"
                     self.suggestedRouteNameLabel.isHidden = true
                     self.suggestedRouteDistanceLabel.isHidden = true
-                    //self.startRunBtn.isHidden = true
-                    //self.startRunBtn.isEnabled = false
+                    self.startRunBtn.isHidden = true
+                    self.startRunBtn.isEnabled = false
                 }
                 else{
                     let object = objects[0]
