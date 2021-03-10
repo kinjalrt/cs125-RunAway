@@ -25,13 +25,17 @@ class History : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //getRunHistory()
         tableView.delegate = self
         tableView.dataSource = self
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+        getRunHistory()
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return sample.count
-        print(userRunHistory.count)
+        //print(userRunHistory.count)
         return userRunHistory.count
         
     }
@@ -48,11 +52,7 @@ class History : UIViewController, UITableViewDelegate, UITableViewDataSource
 //        super.viewDidAppear(animated)
 //        updateUIComponents()
 //    }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = false
-        getRunHistory()
-    }
+    
     
     func getRunHistory(){
         userRunHistory = []
@@ -66,6 +66,11 @@ class History : UIViewController, UITableViewDelegate, UITableViewDataSource
                 else {
 //                    print(run!)
                     self.userRunHistory.append(run!)
+                    self.userRunHistory.sort { (run1, run2) -> Bool in
+                        let d1 = run1["startTimeStamp"] as! Date
+                        let d2 = run2["startTimeStamp"] as! Date
+                        return d1.compare(d2) == .orderedDescending
+                    }
                     self.updateUIComponents()
                 }
             })
