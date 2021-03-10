@@ -51,7 +51,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     var userExperience = "Newbie (1-3 miles/week)"
     
     //dictionary for routes and their ratings to keep data in sync
-    var routePopularity = [String : Bool]()
+    var routePopularity = [String : Int]()
     
 
         
@@ -128,7 +128,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     func sortClimbPriority(){
         // sort routes by difficulty (climb category)
-        let sortedSegs = self.filteredRouteSegments.sorted(by: { $0.climbPriority < $1.climbPriority })
+        let sortedSegs = self.filteredRouteSegments.sorted(by: { ($0.climbPriority,$1.popularity) < ($1.climbPriority,$0.popularity) })
         self.filteredRouteSegments = sortedSegs
         
     }
@@ -313,8 +313,6 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                     let climb = key["climb_category"] as! Int
                     var climbPriority = self.convertClimbCategory(climbCat: climb) as! Int
                     
-                    //update route popularity
-                    self.getPopularity(routeName: routeName)
                     
                     //making coords for starting and ending point
                     let start_loc = CLLocation(latitude: s[0] as! CLLocationDegrees, longitude: s[1] as! CLLocationDegrees)
@@ -323,6 +321,9 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                     
                     // make segement object
                     let curr_seg = Segments(stravaDataId: id, routeName: routeName, distance: dist, distanceAway: distanceAway, start: start_loc, end: end_loc, climb: climbPriority)
+                    //update route popularity
+                    self.getPopularity(routeName: routeName, seg: curr_seg)
+
                 
                     //let curr_seg = Segments(d:dist, slat: s[0] as! Double, slong: s[1] as! Double, elat: e[0] as! Double, elong: e[1] as! Double)
                     self.routesSegments.append(curr_seg)
@@ -375,6 +376,10 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     
     func sortSegments(){
+//        contacts.sort {
+//          ($1.lastName, $0.firstName) <
+//            ($0.lastName, $1.firstName)
+//        }
        let sortedSegs = self.routesSegments.sorted(by: {$0.distanceAway < $1.distanceAway})
         self.routesSegments = sortedSegs
         print("\tsorted count = \(sortedSegs.count) normal count = \(self.routesSegments.count)")
@@ -388,7 +393,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
             
             //convert meters to miles
             let distanceInMiles = r.distance / 1000 * 0.621371
-            if distance > 2{
+            if distance >= 3{
                 
                 if (distanceInMiles > Double(distance - 2))
                 {
@@ -399,14 +404,14 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
             }
             else{
-            if distanceInMiles <= distance{
-                filteredRouteSegments.append(r)
-            }
+                if distanceInMiles <= distance{
+                    filteredRouteSegments.append(r)
+                }
             }
         }
     }
     
-    func getPopularity(routeName: String){
+    func getPopularity(routeName: String, seg: Segments){
             var numUsers=0
             var totalLikes=0
             
@@ -444,15 +449,11 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                     //if route has more than 75% likes then it is considered a popular run
                     if(numUsers > 0){
                         let pop_score = (totalLikes/numUsers) * 100
-                        if(pop_score >= 75)
-                        {
-                            self.routePopularity[routeName] = true
-                        }
-                        else {
-                            self.routePopularity[routeName] = false
-
-                        }
+                        self.routePopularity[routeName] = pop_score
+                        seg.setPopularity(pop: pop_score)
+                        print("curr seg pop \(seg.routeName) is \(seg.popularity)")
                     }
+                    
                 }
             }
         
@@ -481,7 +482,9 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         self.routeDistanceLabel.text = String(
             format: "%.2f miles", filteredRouteSegments[currIndex].distance / 1000 * 0.621371)
         //add popularity label
-        if (self.routePopularity[currRoute] == true){
+      
+
+        if (self.routePopularity[currRoute] ?? 0 >= 75){
             self.routeRatingLabel.text = " Users in your level like this route"
             self.routeRatingLabel.isHidden = false
             self.starImg.isHidden = false

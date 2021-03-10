@@ -181,6 +181,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         // fetch current user's highest scored run from database
         let query = PFQuery(className:"Ranking")
         query.whereKey("user", equalTo: PFUser.current())
+        query.whereKey("liked", equalTo: true)
         query.order(byDescending: "score")
         query.findObjectsInBackground { [self] (objects: [PFObject]?, error: Error?) in
             if let error = error {

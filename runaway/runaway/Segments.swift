@@ -24,6 +24,7 @@ class Segments
     //var end_lat: Double = 0.0
     //var end_long: Double = 0.0
     var climbPriority: Int
+    var popularity: Int
     
     init(stravaDataId: Int, routeName: String, distance: Double, distanceAway: Double, start: CLLocation, end:CLLocation, climb: Int) {
         self.stravaDataId = stravaDataId
@@ -33,8 +34,13 @@ class Segments
         self.startLoc = start
         self.endLoc = end
         self.climbPriority = climb
+        self.popularity = 0
         //end_long = elong
         //startLoc = startLatLong
        }
+    
+    func setPopularity(pop: Int){
+        self.popularity = pop
+    }
 
 }
