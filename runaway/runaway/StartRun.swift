@@ -176,7 +176,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                     self.oldPrevButton.isHidden = true
                     self.oldNextButton.isHidden = true
                     self.oldRouteNameLabel.isHidden = true
-                    self.oldRouteDistanceLabel.isHidden = true 
+                    self.oldRouteDistanceLabel.isHidden = true
                 }
                 else{
                     
@@ -388,8 +388,20 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
             
             //convert meters to miles
             let distanceInMiles = r.distance / 1000 * 0.621371
+            if distance > 2{
+                
+                if (distanceInMiles > Double(distance - 2))
+                {
+                    if (distanceInMiles <= distance) {
+                    filteredRouteSegments.append(r)
+                    }
+                }
+
+            }
+            else{
             if distanceInMiles <= distance{
                 filteredRouteSegments.append(r)
+            }
             }
         }
     }
