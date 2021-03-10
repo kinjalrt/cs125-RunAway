@@ -325,10 +325,31 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                     self.getPopularity(routeName: routeName, seg: curr_seg)
 
                 
-                    //let curr_seg = Segments(d:dist, slat: s[0] as! Double, slong: s[1] as! Double, elat: e[0] as! Double, elong: e[1] as! Double)
-                    self.routesSegments.append(curr_seg)
-                    self.routesSegmentIds.append(id)
-                    count+=1
+                    //check if user has already run this route
+                    //only add if its not in user history
+                    let query = PFQuery(className: "Ranking")
+                    query.whereKey("routeName",equalTo:routeName)
+                    query.whereKey("user",equalTo:PFUser.current())
+                    query.findObjectsInBackground{ (objects: [PFObject]?, error: Error?) in
+                        if let error = error {
+                            print("error: \(error)")
+                            
+                        }
+                        else if let objects = objects{
+                            print("checking past for \(routeName)")
+                            if objects.count == 0 {
+                                self.routesSegments.append(curr_seg)
+                                self.routesSegmentIds.append(id)
+                                count+=1
+                            }
+                            else { print("user has already run ")}
+                            
+                        }
+                    }
+                    
+                    
+                    
+                    
                     
                 }
             self.sortSegments()
