@@ -25,7 +25,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     @IBOutlet weak var routeDistanceLabel: UILabel!
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var map: MKMapView!
-    
+    @IBOutlet weak var routeRatingLabel: UILabel!
     
     // Logic Components
     var suggestedRoutes: [CLLocationCoordinate2D] = []
@@ -59,7 +59,6 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         let query = PFQuery(className: "Route")
         query.whereKey("stravaDataId", equalTo: s.stravaDataId)
         query.findObjectsInBackground{ (routes, error) in
-            //var routeId = ""
             if error != nil {
                 print(error!)
                 return
@@ -245,6 +244,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
             self.nextButton.isHidden = true
             self.routeNameLabel.text = "no routes to show, please select a distance!"
             self.routeDistanceLabel.isHidden = true
+            self.routeRatingLabel.isHidden = true
             self.startButton.isHidden = true
             return
         }
@@ -257,6 +257,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         self.routeNameLabel.text = filteredRouteSegments[currIndex].routeName
         self.routeDistanceLabel.text = String(
             format: "%.2f miles", filteredRouteSegments[currIndex].distance / 1000 * 0.621371)
+        //add popularity label
         self.routeDistanceLabel.isHidden = false
         self.startButton.isHidden = false
         self.map.isHidden = false

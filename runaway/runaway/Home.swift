@@ -24,12 +24,13 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     @IBOutlet weak var weatherSummary: UILabel!
     @IBOutlet weak var map: MKMapView!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         map.delegate = self
         setUpLocation()
         
-        let homeRandomNumber = Int.random(in: 0...homeMotivationalPhrasesBank.count) - 1
+        let homeRandomNumber = Int.random(in: 0...homeMotivationalPhrasesBank.count-1) 
         homeMotivationalPhrase.text = homeMotivationalPhrasesBank[homeRandomNumber]
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -133,6 +134,24 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         render.lineWidth = 10
         render.strokeColor = .blue
         return render
+    }
+    
+    func suggestRoute(){
+        let query = PFQuery(className:"Ranking")
+        query.whereKey("user", equalTo: PFUser.current())
+        query.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+            if let error = error {
+                // Log details of the failure
+                print(error.localizedDescription)
+            } else if let objects = objects {
+                // The find succeeded.
+                print("Successfully retrieved \(objects.count) scores.")
+                // Do something with the found objects
+                for object in objects {
+                    print(object.objectId as Any)
+                }
+            }
+        }
     }
     
     @IBAction func logout(_ sender: Any) {

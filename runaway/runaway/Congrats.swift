@@ -23,7 +23,7 @@ class Congrats: UIViewController {
         confettiView.startConfetti()
         confettiView.isUserInteractionEnabled = false
         
-        let randomNumber = Int.random(in: 0...motivationalPhrasesBank.count) - 1
+        let randomNumber = Int.random(in: 0...motivationalPhrasesBank.count-1)
         motivationalPhrase.text = motivationalPhrasesBank[randomNumber]
     }
     
