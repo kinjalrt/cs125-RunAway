@@ -25,6 +25,9 @@ class History : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let nib = UINib(nibName: "RunTableViewCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: "RunTableViewCell")
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -34,19 +37,38 @@ class History : UIViewController, UITableViewDelegate, UITableViewDataSource
         getRunHistory()
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return sample.count
-        //print(userRunHistory.count)
         return userRunHistory.count
         
     }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "RunTableViewCell", for: indexPath) as! RunTableViewCell
         
-//        cell.textLabel?.text = sample[indexPath.row]
-        cell.textLabel?.text = userRunHistory[indexPath.row]["runName"] as! String
+        // Set Run Name
+        cell.nameLabel.text = userRunHistory[indexPath.row]["runName"] as! String
+        
+        // Set Distance
+        let miles = (userRunHistory[indexPath.row]["totalDistance"] as! Double) / 1000 * 0.621371
+        cell.distanceLabel.text = String(format: "%.2f miles", miles)
+        
+        // Set Time
+        cell.timeLabel.text = String(format: "%.2f sec", userRunHistory[indexPath.row]["elapsedTime"] as! TimeInterval)
+        
+        // Set Date
+        let d = userRunHistory[indexPath.row]["startTimeStamp"] as! Date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        dateFormatter.locale = Locale(identifier: "en_US")
+        cell.dateLabel.text = dateFormatter.string(from: d) // Jan 2, 2001
+        
         return cell
     }
+    
+    
     
 //    override func viewDidAppear(_ animated: Bool) {
 //        super.viewDidAppear(animated)
