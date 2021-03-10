@@ -81,7 +81,6 @@ class PostRunSurvey: UIViewController {
         
         print("Ave heartrate = \(self.heartRate)")
         print("Burnt calories = \(self.calories)")
-        createRun()
         
         //exit page
         let vc = self.storyboard?.instantiateViewController(identifier: "Congrats" ) as! Congrats
