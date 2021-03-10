@@ -40,11 +40,17 @@ class Congrats: UIViewController {
     }
     
     @IBAction func returnHome(_ sender: Any) {
+        
         self.navigationController?.popToRootViewController(animated: true)
-        let resetStartRun = self.navigationController?.topViewController as! StartRun
-        resetStartRun.distanceSlider.setValue(0.0, animated: false)
-        resetStartRun.distanceSliderValueChanged(resetStartRun.distanceSlider)
-        resetStartRun.distanceSliderValueChosen(resetStartRun.distanceSlider)
+        if let s = self.navigationController?.topViewController as? [StartRun] {
+            // obj is a string array. Do something with stringArray
+            let resetStartRun = self.navigationController?.topViewController as! StartRun
+            resetStartRun.distanceSlider.setValue(0.0, animated: false)
+            resetStartRun.distanceSliderValueChanged(resetStartRun.distanceSlider)
+            resetStartRun.distanceSliderValueChosen(resetStartRun.distanceSlider)
+        }
+       
+        
     }
     
     
