@@ -596,12 +596,16 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="popularity " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="av7-Sa-FfA">
-                                <rect key="frame" x="166" y="713" width="91" height="21"/>
+                                <rect key="frame" x="83" y="713" width="300" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icons8-star-48" translatesAutoresizingMaskIntoConstraints="NO" id="jRh-BR-Io5">
+                                <rect key="frame" x="37" y="706" width="49" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="8xG-UW-gz3"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -616,6 +620,7 @@
                         <outlet property="routeDistanceLabel" destination="D9y-Di-19D" id="rtM-KP-pYk"/>
                         <outlet property="routeNameLabel" destination="OpG-6c-1sk" id="0qw-P5-nDA"/>
                         <outlet property="routeRatingLabel" destination="av7-Sa-FfA" id="pM5-Yn-0J0"/>
+                        <outlet property="starImg" destination="jRh-BR-Io5" id="Tmm-pg-A5X"/>
                         <outlet property="startButton" destination="xWh-e5-I22" id="tJv-vF-vjX"/>
                     </connections>
                 </viewController>
@@ -1008,7 +1013,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="HomeWallpaper" width="316" height="683"/>
+        <image name="HomeWallpaper" width="351" height="764"/>
         <image name="Screen Shot 2021-02-23 at 10.07.07 PM" width="526" height="1182"/>
         <image name="Screen Shot 2021-02-23 at 2.50.07 PM" width="367" height="798"/>
         <image name="Screen Shot 2021-02-24 at 11.17.35 AM" width="416" height="910"/>
@@ -1021,6 +1026,7 @@
         <image name="clock.fill" catalog="system" width="128" height="121"/>
         <image name="heartrateinstructions" width="737" height="370"/>
         <image name="house.fill" catalog="system" width="128" height="106"/>
+        <image name="icons8-star-48" width="48" height="48"/>
         <image name="map" catalog="system" width="128" height="110"/>
         <image name="multiply" catalog="system" width="128" height="111"/>
         <image name="plus" catalog="system" width="128" height="113"/>
