@@ -10,48 +10,113 @@ import Foundation
 import UIKit
 import Parse
 
-class History:UIViewController
+class History : UIViewController, UITableViewDelegate, UITableViewDataSource
 {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-    
-    
     @IBOutlet weak var runTable: UITableView!
     @IBOutlet weak var username: UILabel!
     @IBOutlet weak var runsCompleted: UILabel!
     @IBOutlet weak var timeCompleted: UILabel!
     @IBOutlet weak var distCompleted: UILabel!
+    @IBOutlet var tableView: UITableView!
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        let currentUser = User(user: PFUser.current()!)
-//        let listOfruns = currentUser["listOfRuns"] as! [Run]
-//        for run in listOfruns{
-//            let r = Run(objectId: run.objectId!)
-//
-//        }
+    var sample = ["this", "is", "a", "sample", "list"]
+    var userRunHistory : [PFObject] = []
+    let currentUser = PFUser.current()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        //set up greeting
-        var greeting="Hello "
-        greeting+=currentUser.firstName
-        username.text=greeting
-        
-        //runs
-        runsCompleted.text = String(format: "%d  completed", currentUser.totalRuns)
-        
-        //time
-        let seconds = currentUser.totalTime
-        timeCompleted.text = String(format: "%.1f  seconds", seconds)
-        
-        //distance
-        distCompleted.text = String(format: "%.2f  miles", currentUser.totalMiles)
-        
+        let nib = UINib(nibName: "RunTableViewCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: "RunTableViewCell")
+        tableView.delegate = self
+        tableView.dataSource = self
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
+        getRunHistory()
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return userRunHistory.count
+        
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "RunTableViewCell", for: indexPath) as! RunTableViewCell
+        
+        // Set Run Name
+        cell.nameLabel.text = userRunHistory[indexPath.row]["runName"] as! String
+        
+        // Set Distance
+        let miles = (userRunHistory[indexPath.row]["totalDistance"] as! Double) / 1000 * 0.621371
+        cell.distanceLabel.text = String(format: "%.2f miles", miles)
+        
+        // Set Time
+        cell.timeLabel.text = String(format: "%.2f sec", userRunHistory[indexPath.row]["elapsedTime"] as! TimeInterval)
+        
+        // Set Date
+        let d = userRunHistory[indexPath.row]["startTimeStamp"] as! Date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        dateFormatter.locale = Locale(identifier: "en_US")
+        cell.dateLabel.text = dateFormatter.string(from: d) // Jan 2, 2001
+        
+        return cell
+    }
+    
+    
+    
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        updateUIComponents()
+//    }
+    
+    
+    func getRunHistory(){
+        userRunHistory = []
+        for run in self.currentUser?["listOfRuns"] as! [PFObject]{
+            //print(run.objectId!)
+            let q = PFQuery(className: "Run")
+            q.getObjectInBackground(withId: run.objectId!, block: { (run, error) in
+                if error != nil {
+                    print("Error: Could not find run in database.")
+                }
+                else {
+//                    print(run!)
+                    self.userRunHistory.append(run!)
+                    self.userRunHistory.sort { (run1, run2) -> Bool in
+                        let d1 = run1["startTimeStamp"] as! Date
+                        let d2 = run2["startTimeStamp"] as! Date
+                        return d1.compare(d2) == .orderedDescending
+                    }
+                    self.updateUIComponents()
+                }
+            })
+            
+        }
+    }
+    func updateUIComponents(){
+        self.tableView.reloadData()
+        print(userRunHistory)
+        
+        //set up greeting
+        var greeting="Hello "
+        greeting+=self.currentUser?["firstname"] as! String
+        username.text=greeting
+        
+        //runs
+        runsCompleted.text = String(format: "%d  completed", self.currentUser?["totalRuns"] as! Int)
+        
+        //time
+        let seconds = self.currentUser?["totalTime"] as! TimeInterval
+        timeCompleted.text = String(format: "%.1f  seconds", seconds)
+        
+        //distance
+        distCompleted.text = String(format: "%.2f  miles", self.currentUser?["totalMiles"] as! Double)
     }
 
     @IBAction func logout(_ sender: Any) {

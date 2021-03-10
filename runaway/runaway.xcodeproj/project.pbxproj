@@ -43,6 +43,8 @@
 		ED5C128F25F47152001A615F /* PostRunSurvey.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5C128E25F47152001A615F /* PostRunSurvey.swift */; };
 		ED68387725D752AE00D5A561 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED68387625D752AE00D5A561 /* Route.swift */; };
 		ED68387925D7530900D5A561 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED68387825D7530900D5A561 /* User.swift */; };
+		EDB31C1B25F86C61007044D8 /* RunTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB31C1925F86C61007044D8 /* RunTableViewCell.swift */; };
+		EDB31C1C25F86C61007044D8 /* RunTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EDB31C1A25F86C61007044D8 /* RunTableViewCell.xib */; };
 		EDE06A2F25E1ACB500ED7648 /* Run.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE06A2E25E1ACB500ED7648 /* Run.swift */; };
 		EDE06A3125E1B9F000ED7648 /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE06A3025E1B9F000ED7648 /* Rating.swift */; };
 		EDE283F625ECC90500217B2A /* Segments.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE283F525ECC90500217B2A /* Segments.swift */; };
@@ -91,6 +93,8 @@
 		ED5C128E25F47152001A615F /* PostRunSurvey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRunSurvey.swift; sourceTree = "<group>"; };
 		ED68387625D752AE00D5A561 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		ED68387825D7530900D5A561 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		EDB31C1925F86C61007044D8 /* RunTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunTableViewCell.swift; sourceTree = "<group>"; };
+		EDB31C1A25F86C61007044D8 /* RunTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RunTableViewCell.xib; sourceTree = "<group>"; };
 		EDE06A2E25E1ACB500ED7648 /* Run.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Run.swift; sourceTree = "<group>"; };
 		EDE06A3025E1B9F000ED7648 /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
 		EDE283F525ECC90500217B2A /* Segments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Segments.swift; sourceTree = "<group>"; };
@@ -195,6 +199,8 @@
 				ED68387825D7530900D5A561 /* User.swift */,
 				EDE06A2E25E1ACB500ED7648 /* Run.swift */,
 				EDE06A3025E1B9F000ED7648 /* Rating.swift */,
+				EDB31C1925F86C61007044D8 /* RunTableViewCell.swift */,
+				EDB31C1A25F86C61007044D8 /* RunTableViewCell.xib */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -273,6 +279,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ADC035B625E9A81B00204F75 /* Montserrat-SemiBoldItalic.ttf in Resources */,
+				EDB31C1C25F86C61007044D8 /* RunTableViewCell.xib in Resources */,
 				ADC035B725E9A81B00204F75 /* Montserrat-Thin.ttf in Resources */,
 				ADC035B325E9A81B00204F75 /* Montserrat-Black.ttf in Resources */,
 				ADC035A625E9A81B00204F75 /* Montserrat-BlackItalic.ttf in Resources */,
@@ -363,6 +370,7 @@
 				EDE283F625ECC90500217B2A /* Segments.swift in Sources */,
 				EDE06A2F25E1ACB500ED7648 /* Run.swift in Sources */,
 				ED68387925D7530900D5A561 /* User.swift in Sources */,
+				EDB31C1B25F86C61007044D8 /* RunTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

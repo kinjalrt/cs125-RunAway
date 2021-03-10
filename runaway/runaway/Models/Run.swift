@@ -22,7 +22,8 @@ class Run : PFObject, PFSubclassing{
     @NSManaged var totalDistance: Double
     @NSManaged var elapsedTime: Double
     @NSManaged var runName: String
-
+//    @NSManaged var averageHeartRate: Int
+//    @NSManaged var caloriesBurnt: Int
     //idky but this is required
     override init(){
         super.init()
@@ -68,6 +69,8 @@ class Run : PFObject, PFSubclassing{
                 self.user = runs![0]["user"] as! User
                 self.startTimeStamp = runs![0]["startTimeStamp"] as! NSDate
                 self.runName = runs![0]["runName"] as! String
+//                self.averageHeartRate = runs![0]["averageHeartRate"] as! Int
+//                self.caloriesBurnt = runs![0]["caloriesBurnt"] as! Int
             }
         }
     }

@@ -70,13 +70,6 @@ class PostRunSurvey: UIViewController {
     }
     
     
-    
-    
-    
-    
-    
-    
-    
     @IBAction func completeSurvey(_ sender: Any) {
         //get heart rate and calories from user import
         self.heartRate = Int(heartRateField.text ??  "0") ?? 0
@@ -93,7 +86,6 @@ class PostRunSurvey: UIViewController {
         let vc = self.storyboard?.instantiateViewController(identifier: "Congrats" ) as! Congrats
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
     
     
     func calculateScore(){
@@ -203,16 +195,16 @@ class PostRunSurvey: UIViewController {
     
     func createRun() {
         self.route.incrementKey("totalRuns")
-        let endTime = NSDate()
-        let elapsedTime = endTime.timeIntervalSince(self.startTime as Date)
         
         let run = PFObject(className: "Run")
         run["route"] = self.route
         run["user"] = PFUser.current()!
         run["startTimeStamp"] = self.startTime
         run["totalDistance"] = self.route["distance"] as! Double
-        run["elapsedTime"] = elapsedTime
+        run["elapsedTime"] = self.totaltime
         run["runName"] = self.routeName
+        //run["averageHeartRate"] = self.heartRate
+        //run["caloriesBurnt"] = self.calories
         run.saveInBackground{
             (success: Bool, error: Error?) in
             if (success) {
@@ -220,7 +212,7 @@ class PostRunSurvey: UIViewController {
                 let user = PFUser.current() as! User
                 user.add(run, forKey: "listOfRuns")
                 user.incrementKey("totalRuns")
-                user.incrementKey("totalTime", byAmount: elapsedTime as NSNumber)
+                user.incrementKey("totalTime", byAmount: self.totaltime as NSNumber)
                 user.incrementKey("totalMiles", byAmount: (self.route["distance"] as! Double / 1000 * 0.621371) as NSNumber)
                 user.saveInBackground {
                   (success: Bool, error: Error?) in
