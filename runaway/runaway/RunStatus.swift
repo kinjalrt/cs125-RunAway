@@ -69,7 +69,7 @@ class RunStatus: UIViewController {
     @objc func UpdateTimer() {
         //update time and format for user display
         frac+=1
-        if frac > 99 {
+        if frac > 60 {
             seconds+=1
             frac=0
         }

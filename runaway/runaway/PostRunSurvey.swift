@@ -125,6 +125,7 @@ class PostRunSurvey: UIViewController {
         print( " avg cal \(calPerMile) and users cak is \(self.calories) hence score is \(score)")
         
         // calculate score based on how often they run the route
+        //done in updateScore function
         
         
     }
@@ -145,6 +146,7 @@ class PostRunSurvey: UIViewController {
                 // if object does not exist create new rank
                 if objects.count == 0 {
                     print("rank not found, create new")
+                    self.score += 0.5
                     let rank = PFObject(className: "Ranking")
                     rank["route"] = self.route
                     rank["routeName"] = self.routeName
@@ -171,6 +173,7 @@ class PostRunSurvey: UIViewController {
                     for object in objects{
                         object["liked"] = self.liked
                         let totalruns = Double(object["numRuns"] as! Int)
+                        self.score += (totalruns * 0.5)
                         let oldScore = (object["score"] as! Double) * Double(totalruns)
                         object["score"] =  ((oldScore + self.score) / (totalruns+1))
                         object.incrementKey("numRuns")

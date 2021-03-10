@@ -26,6 +26,9 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var routeRatingLabel: UILabel!
+    @IBOutlet weak var starImg: UIImageView!
+    
+    
     
     // Logic Components
     var suggestedRoutes: [CLLocationCoordinate2D] = []
@@ -37,6 +40,9 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     var filteredRouteSegments: [Segments] = []
     var userDifficulty = 0
     
+    //dictionary for routes and their ratings to keep data in sync
+    var routePopularity = [String : Bool]()
+        
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -158,6 +164,9 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                     let climb = key["climb_category"] as! Int
                     var climbPriority = self.convertClimbCategory(climbCat: climb) as! Int
                     
+                    //update route popularity
+                    self.getPopularity(routeName: routeName)
+                    
                     //making coords for starting and ending point
                     let start_loc = CLLocation(latitude: s[0] as! CLLocationDegrees, longitude: s[1] as! CLLocationDegrees)
                     let end_loc = CLLocation(latitude: e[0] as! CLLocationDegrees, longitude: e[1] as! CLLocationDegrees)
@@ -236,6 +245,45 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         }
     }
     
+    func getPopularity(routeName: String){
+        var numUsers=0
+        var totalLikes=0
+        
+        //create query to find route in ranking table
+        let query = PFQuery(className: "Ranking")
+        query.whereKey("routeName", equalTo: routeName)
+        query.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+            if let error = error {
+                // Log details of the failure
+                print(error.localizedDescription)
+            } else if let objects = objects
+            {
+                // The find succeeded.
+                print("Successfully retrieved \(objects.count) scores.")
+                // Do something with the found objects
+                for object in objects {
+                    //get number of user who have ran this route
+                    numUsers+=1
+                    //get number of users who have liked running this route
+                    if((object["liked"] as! Bool) == true){ totalLikes+=1  }
+                
+            }
+                //if route has more than 75% likes then it is considered a popular run
+                if(numUsers > 0){
+                    let pop_score = (totalLikes/numUsers) * 100
+                    if(pop_score >= 75)
+                    {
+                        self.routePopularity[routeName] = true
+                    }
+                    else {
+                        self.routePopularity[routeName] = false
+
+                    }
+                }
+            }
+        }
+    
+        }
     func updateCurrentSegmentUI(){
         // No routes
         if(filteredRouteSegments.count == 0){
@@ -246,6 +294,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
             self.routeDistanceLabel.isHidden = true
             self.routeRatingLabel.isHidden = true
             self.startButton.isHidden = true
+            self.starImg.isHidden = true
             return
         }
         // At Last route
@@ -254,10 +303,20 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         self.prevButton.isHidden = (self.currIndex == 0)
         map.removeOverlays(map.overlays)
         displayRoute()
-        self.routeNameLabel.text = filteredRouteSegments[currIndex].routeName
+        let currRoute = filteredRouteSegments[currIndex].routeName
+        self.routeNameLabel.text = currRoute //filteredRouteSegments[currIndex].routeName
         self.routeDistanceLabel.text = String(
             format: "%.2f miles", filteredRouteSegments[currIndex].distance / 1000 * 0.621371)
         //add popularity label
+        if (self.routePopularity[currRoute] == true){
+            self.routeRatingLabel.text = " Popular route among other users"
+            self.routeRatingLabel.isHidden = false
+            self.starImg.isHidden = false
+        }
+        else{
+            self.routeRatingLabel.isHidden = true
+            self.starImg.isHidden = true
+        }
         self.routeDistanceLabel.isHidden = false
         self.startButton.isHidden = false
         self.map.isHidden = false
