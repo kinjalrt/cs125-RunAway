@@ -119,10 +119,13 @@ class PostRunSurvey: UIViewController {
         print( " avg hr ifor age \(age) and users time is \(self.heartRate) hence score is \(score)")
         
         // calculate score based on calories % burnt per mile
-        //
         let calPerMile = (self.calories / self.routeDist) / 100
         score+=calPerMile
         print( " avg cal \(calPerMile) and users cak is \(self.calories) hence score is \(score)")
+        
+        //calculate score based of breaks taken during the run
+        let avgBreak = (Double(self.breaks) / self.routeDist)
+        score+=avgBreak
         
         // calculate score based on how often they run the route
         //done in updateScore function
