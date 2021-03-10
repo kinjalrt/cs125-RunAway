@@ -23,6 +23,9 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     @IBOutlet weak var temperature: UILabel!
     @IBOutlet weak var weatherSummary: UILabel!
     @IBOutlet weak var map: MKMapView!
+    @IBOutlet weak var suggestedRouteNameLabel: UILabel!
+    @IBOutlet weak var suggestedRouteDistanceLabel: UILabel!
+    var suggestedRoute: [String: CLLocationCoordinate2D] = [:]
     
     
     override func viewDidLoad() {
@@ -51,8 +54,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
             LocationManager.stopUpdatingLocation()
             displayCityForLocation()
             requestWeatherForLocation()
-            //findRoutes()
-            //displayRoutes()
+            suggestRoute()
         }
     }
     
@@ -93,6 +95,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     }
     
     func requestWeatherForLocation(){
+        // api request for weather parameters given current location
         guard let currentLocation = Home.currentLocation else{
             return
         }
@@ -129,6 +132,43 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     }
     
     
+    func displayRoutes(){
+         //display highest scored run on map
+         let sourceCoordinates = self.suggestedRoute["source"]! as CLLocationCoordinate2D
+         let destCoordinates = self.suggestedRoute["dest"]! as CLLocationCoordinate2D
+
+         let sourcePlacemark = MKPlacemark(coordinate:sourceCoordinates)
+         let destPlacemark = MKPlacemark(coordinate:destCoordinates)
+
+         let sourceItem = MKMapItem(placemark: sourcePlacemark)
+         let destItem =  MKMapItem(placemark: destPlacemark)
+
+         let destinationRequest = MKDirections.Request()
+         destinationRequest.source = sourceItem
+         destinationRequest.destination = destItem
+         destinationRequest.transportType = .walking
+         destinationRequest.requestsAlternateRoutes = true
+
+         let directions = MKDirections(request: destinationRequest)
+         directions.calculate{(response, error) in
+             guard let response = response else{
+                 if let error = error{
+                     print("something is wrong ): \(error)")
+                 }
+                 return
+             }
+             let route = response.routes[0]
+             self.map.addOverlay(route.polyline)
+//             self.map.setRegion(MKCoordinateRegion(route.polyline.boundingMapRect), animated: true)
+             self.map.setVisibleMapRect(route.polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15), animated: true)
+
+
+
+         }
+
+     }
+    
+    
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let render = MKPolylineRenderer(overlay: overlay as! MKPolyline)
         render.lineWidth = 10
@@ -137,22 +177,46 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     }
     
     func suggestRoute(){
+        // fetch current user's highest scored run from database
         let query = PFQuery(className:"Ranking")
         query.whereKey("user", equalTo: PFUser.current())
-        query.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+        query.order(byDescending: "score")
+        query.findObjectsInBackground { [self] (objects: [PFObject]?, error: Error?) in
             if let error = error {
-                // Log details of the failure
                 print(error.localizedDescription)
             } else if let objects = objects {
-                // The find succeeded.
-                print("Successfully retrieved \(objects.count) scores.")
-                // Do something with the found objects
-                for object in objects {
-                    print(object.objectId as Any)
+                
+                let object = objects[0]
+                let bestRoute = object["route"] as? PFObject
+                do {
+                    try bestRoute!.fetchIfNeeded()
+                } catch _ {
+                   print("There was an error ):")
+                }
+                let sourceLat = bestRoute!["startLat"] as! Double
+                let sourceLng = bestRoute!["startLng"] as! Double
+                let destLat = bestRoute!["endLat"] as! Double
+                let destLong = bestRoute!["endLng"] as! Double
+                let name = bestRoute!["routeName"] as! String
+                let distance = bestRoute!["distance"] as! Double
+                let sourceCoordinates = CLLocationCoordinate2D(latitude: sourceLat,longitude: sourceLng)
+                let destCoordinates = CLLocationCoordinate2D(latitude: destLat,longitude: destLong)
+                self.suggestedRoute["source"] = sourceCoordinates
+                self.suggestedRoute["dest"] = destCoordinates
+                
+                //display name and distance labels
+                self.suggestedRouteNameLabel.text = name
+                self.suggestedRouteDistanceLabel.text = String(
+                    format: "%.2f miles", distance / 1000 * 0.621371)
+
+                // display retrived route on map
+                self.displayRoutes()
+
                 }
             }
         }
-    }
+        
+    
     
     @IBAction func logout(_ sender: Any) {
         PFUser.logOutInBackground(block: { (error) in
