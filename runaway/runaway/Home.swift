@@ -27,6 +27,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     @IBOutlet weak var suggestedRouteDistanceLabel: UILabel!
     var suggestedRoute: [String: CLLocationCoordinate2D] = [:]
     
+    @IBOutlet weak var basisLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -185,32 +186,41 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
             if let error = error {
                 print(error.localizedDescription)
             } else if let objects = objects {
-                
-                let object = objects[0]
-                let bestRoute = object["route"] as? PFObject
-                do {
-                    try bestRoute!.fetchIfNeeded()
-                } catch _ {
-                   print("There was an error ):")
+                //if user has no past runs, display error message 
+                if objects.count == 0 {
+                    self.basisLabel.text = "No past runs. Checkout a new run to get started ! :)"
+                    self.suggestedRouteNameLabel.isHidden = true
+                    self.suggestedRouteDistanceLabel.isHidden = true
                 }
-                let sourceLat = bestRoute!["startLat"] as! Double
-                let sourceLng = bestRoute!["startLng"] as! Double
-                let destLat = bestRoute!["endLat"] as! Double
-                let destLong = bestRoute!["endLng"] as! Double
-                let name = bestRoute!["routeName"] as! String
-                let distance = bestRoute!["distance"] as! Double
-                let sourceCoordinates = CLLocationCoordinate2D(latitude: sourceLat,longitude: sourceLng)
-                let destCoordinates = CLLocationCoordinate2D(latitude: destLat,longitude: destLong)
-                self.suggestedRoute["source"] = sourceCoordinates
-                self.suggestedRoute["dest"] = destCoordinates
-                
-                //display name and distance labels
-                self.suggestedRouteNameLabel.text = name
-                self.suggestedRouteDistanceLabel.text = String(
-                    format: "%.2f miles", distance / 1000 * 0.621371)
+                else{
+                    let object = objects[0]
+                    let bestRoute = object["route"] as? PFObject
+                    do {
+                        try bestRoute!.fetchIfNeeded()
+                    } catch _ {
+                       print("There was an error ):")
+                    }
+                    let sourceLat = bestRoute!["startLat"] as! Double
+                    let sourceLng = bestRoute!["startLng"] as! Double
+                    let destLat = bestRoute!["endLat"] as! Double
+                    let destLong = bestRoute!["endLng"] as! Double
+                    let name = bestRoute!["routeName"] as! String
+                    let distance = bestRoute!["distance"] as! Double
+                    let sourceCoordinates = CLLocationCoordinate2D(latitude: sourceLat,longitude: sourceLng)
+                    let destCoordinates = CLLocationCoordinate2D(latitude: destLat,longitude: destLong)
+                    self.suggestedRoute["source"] = sourceCoordinates
+                    self.suggestedRoute["dest"] = destCoordinates
+                    
+                    //display name and distance labels
+                    self.suggestedRouteNameLabel.text = name
+                    self.suggestedRouteDistanceLabel.text = String(
+                        format: "%.2f miles", distance / 1000 * 0.621371)
 
-                // display retrived route on map
-                self.displayRoutes()
+                    // display retrived route on map
+                    self.displayRoutes()
+                }
+                
+                
 
                 }
             }

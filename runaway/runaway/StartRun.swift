@@ -47,6 +47,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     var routesSegmentIds: [Int] = []
     var filteredRouteSegments: [Segments] = []
     var userDifficulty = 0
+    var userExperience = "Newbie (1-3 miles/week)"
     
     //dictionary for routes and their ratings to keep data in sync
     var routePopularity = [String : Bool]()
@@ -61,11 +62,9 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         
         let currentUser = User(user: PFUser.current()!)
         self.userDifficulty = currentUser.difficultyTier
-<<<<<<< HEAD
+        self.userExperience = currentUser.experienceLevel
         print("users experince : \(currentUser)")
-=======
         getOldRoutes()
->>>>>>> fada61a3c60938b727e5745a523b5a8fd001c463
         getRoutes()
         updateCurrentSegmentUI()
     }
@@ -395,10 +394,22 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                     print("Successfully retrieved \(objects.count) scores.")
                     // Do something with the found objects
                     for object in objects {
-                        //get number of user who have ran this route
-                        numUsers+=1
-                        //get number of users who have liked running this route
-                        if((object["liked"] as! Bool) == true){ totalLikes+=1  }
+                        
+                        //get user of this route
+                        let routeUser = object["user"] as? PFObject
+                        do{
+                            try routeUser?.fetchIfNeeded()
+                        } catch _ {
+                            print("There was an error ):")
+                         }
+                        let routeUserLevel = routeUser!["experienceLevel"] as! String
+                        if routeUserLevel == self.userExperience{
+                            //get number of user who have ran this route
+                            numUsers+=1
+                            //get number of users who have liked running this route
+                            if((object["liked"] as! Bool) == true){ totalLikes+=1  }
+                        }
+                        
                     
                 }
                     //if route has more than 75% likes then it is considered a popular run
@@ -442,7 +453,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
             format: "%.2f miles", filteredRouteSegments[currIndex].distance / 1000 * 0.621371)
         //add popularity label
         if (self.routePopularity[currRoute] == true){
-            self.routeRatingLabel.text = " Popular route among other users"
+            self.routeRatingLabel.text = " Users in your level like this route"
             self.routeRatingLabel.isHidden = false
             self.starImg.isHidden = false
         }
