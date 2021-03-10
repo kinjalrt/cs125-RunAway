@@ -260,7 +260,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     @IBAction func nextOldRoute(_ sender: Any) {
         //next button for upper map
-        if(currIndexOldMap<=(self.oldRoutes.count-1)){
+        if((currIndexOldMap+1)<=(self.oldRoutes.count-1)){
             currIndexOldMap = currIndexOldMap+1
              oldPrevButton.isHidden = false
          }

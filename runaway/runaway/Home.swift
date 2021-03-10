@@ -182,27 +182,6 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
         self.navigationController?.pushViewController(runStatusPage, animated: true)
 
-       /* var route = PFObject(className: "Route")
-        let query = PFQuery(className: "Route")
-        query.whereKey("routeName", equalTo: self.routeName)
-        query.findObjectsInBackground{ (routes:[PFObject]?, error: Error?)
-            in
-            if error != nil {
-                print(error!)
-                return
-            }
-            else if let routes = routes{
-                for r in routes{
-                    let s = Route(stravaDataId: r["stravaDataId"] as! Int, routeName: self.routeName, startLat: r["startLat"] as! Double, startLng: r["startLng"] as! Double, endLat: r["endLat"] as! Double, endLng: r["endLng"] as! Double, distance: r["distance"] as! Double)
-                    self.selectedRoute =
-                    let runStatusPage = self.storyboard?.instantiateViewController(identifier: "RunStatus" ) as! RunStatus
-                    runStatusPage.route = selectedRoute
-                    runStatusPage.routeName = self.routeName
-                    runStatusPage.routeDist = ()
-                }
-                
-            }
-        }*/
         
     }
     
