@@ -34,6 +34,7 @@ class RunStatus: UIViewController {
         
         self.stopButton.isEnabled = true
         self.resumeButton.isHidden = true
+        //update time every 0.01 seconds using the update timer function
         self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(RunStatus.UpdateTimer), userInfo: nil, repeats: true)
         
     }
@@ -44,28 +45,18 @@ class RunStatus: UIViewController {
     }
         
     @IBAction func stopTimer(_ sender: AnyObject) {
+        //stop the timer and switch to post survey page
         timer.invalidate()
         print(self.breaks)
         let endTime = NSDate()
-
         self.elapsedTime = endTime.timeIntervalSince(self.startTime as Date)
-
-        
-        /*let vc = self.storyboard?.instantiateViewController(identifier: "PostRunSurvey" ) as! PostRunSurvey
-
-        vc.breaks = self.breaks
-        vc.totaltime = self.elapsedTime
-        vc.routeName = self.routeName
-        vc.route = self.route
-        vc.routeDist = self.routeDist*/
-
-        //self.navigationController?.pushViewController(vc, animated: true)
         
         performSegue(withIdentifier: "runComplete", sender: self)
        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        //send data from this page to post survey page to calculate score
         var vc = segue.destination as! PostRunSurvey
         vc.breaks = self.breaks
         vc.totaltime = self.elapsedTime
@@ -76,6 +67,7 @@ class RunStatus: UIViewController {
     }
     
     @objc func UpdateTimer() {
+        //update time and format for user display
         frac+=1
         if frac > 99 {
             seconds+=1
@@ -96,8 +88,10 @@ class RunStatus: UIViewController {
     }
     
     @IBAction func PauseTimer(_ sender: Any) {
+        //each time user pauses the timer, it counts as a break
         timer.invalidate()
         breaks+=1
+        //enable resume button so user can continue when ready
         self.resumeButton.isHidden = false
         self.pauseButton.isHidden = true
         
@@ -105,6 +99,7 @@ class RunStatus: UIViewController {
     }
     
     @IBAction func ResumeTimer(_ sender: Any) {
+        //restart timer from where it was stopped
         self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(RunStatus.UpdateTimer), userInfo: nil, repeats: true)
         self.pauseButton.isHidden = false
         self.resumeButton.isHidden = true
