@@ -12,6 +12,9 @@
         <array key="Montserrat-Bold.ttf">
             <string>Montserrat-Bold</string>
         </array>
+        <array key="Montserrat-BoldItalic.ttf">
+            <string>Montserrat-BoldItalic</string>
+        </array>
         <array key="Montserrat-ExtraBold.ttf">
             <string>Montserrat-ExtraBold</string>
         </array>
@@ -690,6 +693,13 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sq6-2E-9GA">
+                                <rect key="frame" x="45" y="209" width="335" height="23"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Montserrat-BoldItalic" family="Montserrat" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="8xG-UW-gz3"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -711,6 +721,7 @@
                         <outlet property="routeRatingLabel" destination="av7-Sa-FfA" id="pM5-Yn-0J0"/>
                         <outlet property="starImg" destination="jRh-BR-Io5" id="Tmm-pg-A5X"/>
                         <outlet property="startButton" destination="xWh-e5-I22" id="tJv-vF-vjX"/>
+                        <outlet property="upperErrorLabel" destination="Sq6-2E-9GA" id="6Jm-9j-jOD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mHW-kl-wek" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

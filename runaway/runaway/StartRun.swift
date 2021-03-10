@@ -32,6 +32,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     @IBOutlet weak var oldPrevButton: UIButton!
     @IBOutlet weak var oldRouteNameLabel: UILabel!
     @IBOutlet weak var oldRouteDistanceLabel: UILabel!
+    @IBOutlet weak var upperErrorLabel: UILabel!
     
     // Logic Components
     var currIndexOldMap = 0
@@ -59,7 +60,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         super.viewDidLoad()
         map.delegate = self
         oldMap.delegate = self
-        
+        self.upperErrorLabel.isHidden = true
         let currentUser = User(user: PFUser.current()!)
         self.userDifficulty = currentUser.difficultyTier
         self.userExperience = currentUser.experienceLevel
@@ -166,37 +167,53 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
             if let error = error {
                 print(error.localizedDescription)
             } else if let objects = objects {
-                
-                for object in objects{
-                    let route = object["route"] as? PFObject
-                    do {
-                        try route!.fetchIfNeeded()
-                    } catch _ {
-                       print("There was an error ):")
+                //user has no past runs, cannot suggest old routes
+                //display error message instead and hide old map
+                if objects.count == 0{
+                    self.upperErrorLabel.text = "No past runs. Try a new run to get started :)"
+                    self.upperErrorLabel.isHidden = false
+                    self.oldMap.isHidden = true
+                    self.oldPrevButton.isHidden = true
+                    self.oldNextButton.isHidden = true
+                    self.oldRouteNameLabel.isHidden = true
+                    self.oldRouteDistanceLabel.isHidden = true 
+                }
+                else{
+                    
+                    for object in objects{
+                        let route = object["route"] as? PFObject
+                        do {
+                            try route!.fetchIfNeeded()
+                        } catch _ {
+                           print("There was an error ):")
+                        }
+                        
+                        // append each route to oldRoutes array in correct order
+                        let sourceLat = route!["startLat"] as! Double
+                        let sourceLng = route!["startLng"] as! Double
+                        let destLat = route!["endLat"] as! Double
+                        let destLong = route!["endLng"] as! Double
+                        let name = route!["routeName"] as! String
+                        let distanceInMeters = route!["distance"] as! Double
+                        let distanceInMiles = distanceInMeters / 1000 * 0.621371
+                        let sourceCoordinates = CLLocationCoordinate2D(latitude: sourceLat,longitude: sourceLng)
+                        let destCoordinates = CLLocationCoordinate2D(latitude: destLat,longitude: destLong)
+                        self.oldRoutes.append([sourceCoordinates,destCoordinates])
+                        self.oldRoutesNames.append(name)
+                        self.oldRoutesDistances.append(distanceInMiles)
+                        
+                        
                     }
                     
-                    // append each route to oldRoutes array in correct order
-                    let sourceLat = route!["startLat"] as! Double
-                    let sourceLng = route!["startLng"] as! Double
-                    let destLat = route!["endLat"] as! Double
-                    let destLong = route!["endLng"] as! Double
-                    let name = route!["routeName"] as! String
-                    let distanceInMeters = route!["distance"] as! Double
-                    let distanceInMiles = distanceInMeters / 1000 * 0.621371
-                    let sourceCoordinates = CLLocationCoordinate2D(latitude: sourceLat,longitude: sourceLng)
-                    let destCoordinates = CLLocationCoordinate2D(latitude: destLat,longitude: destLong)
-                    self.oldRoutes.append([sourceCoordinates,destCoordinates])
-                    self.oldRoutesNames.append(name)
-                    self.oldRoutesDistances.append(distanceInMiles)
-                    
-                    
-                }
-
-                self.oldPrevButton.isHidden = true
-                if(self.oldRoutes.count==1){
                     self.oldPrevButton.isHidden = true
+                    if(self.oldRoutes.count==1){
+                        self.oldPrevButton.isHidden = true
+                    }
+                    self.displayOldRoutes()
+
+                    
                 }
-                self.displayOldRoutes()
+              
 
                 }
             }
