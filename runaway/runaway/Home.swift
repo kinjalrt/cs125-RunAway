@@ -16,7 +16,7 @@ import MapKit
 class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
     @IBOutlet weak var homeMotivationalPhrase: UILabel!
-    let homeMotivationalPhrasesBank = ["Practice makes perfect!", "Don't give up!", "Today is the first step!", "Believe in yourself!", "Never quit!", "Life is a journey not a race", "You get what you give", "No pressure, no diamonds", "Prove them wrong", "Doubt kills more dreams than failure ever will", "Dreams don't work unless you do", "The obstacle is the path", "The best revenge is massive success", "Today is your day!"]
+    let homeMotivationalPhrasesBank = ["Practice makes perfect!", "Don't give up!", "Today is the first step!", "Believe in yourself!", "Never quit!", "Life is a journey not a race", "You get what you give", "No pressure, no diamonds", "Prove them wrong", "Doubt kills more dreams than failure ever will", "Dreams don't work unless you do", "The obstacle is the path", "The best revenge is massive success", "Today is your day!", "It's about the journey, not the destination", "Slow and steady wins the race", "Focus on the step in front of you, not the whole staircase", "If it doesn't challenge you it won't change you", "Be stronger than your excuses","The only limit is your mind", "Excuses burn 0 calories",]
     let LocationManager = CLLocationManager()
     static var currentLocation: CLLocation?
     @IBOutlet weak var city: UILabel!
