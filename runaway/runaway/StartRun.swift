@@ -42,6 +42,8 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     //dictionary for routes and their ratings to keep data in sync
     var routePopularity = [String : Bool]()
+    
+
         
     
     override func viewDidLoad() {
@@ -49,6 +51,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         map.delegate = self
         let currentUser = User(user: PFUser.current()!)
         self.userDifficulty = currentUser.difficultyTier
+        print("users experince : \(currentUser)")
         getRoutes()
         updateCurrentSegmentUI()
     }
@@ -259,13 +262,32 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
             } else if let objects = objects
             {
                 // The find succeeded.
-                print("Successfully retrieved \(objects.count) scores.")
+                print("Successfully retrieved scores.")
                 // Do something with the found objects
                 for object in objects {
-                    //get number of user who have ran this route
-                    numUsers+=1
-                    //get number of users who have liked running this route
-                    if((object["liked"] as! Bool) == true){ totalLikes+=1  }
+                    
+                    // only count ratings of users in the same level as current user
+                    let routeUser = PFQuery(className:"User")
+                    routeUser.getObjectInBackground(withId: (object["user"] as AnyObject).objectId!) { (userObj, error) in
+                        if error == nil {
+                            let level = userObj?["difficultyLevel"] as! Int
+                            print("route users difficulty level is \(level)")
+                            if level == self.userDifficulty{
+                                //get number of user who have ran this route
+                                numUsers+=1
+
+                                //get number of users who have liked running this route
+                                if((object["liked"] as! Bool) == true){ totalLikes+=1  }
+                        
+                        } else {
+                            // Fail!
+                        }
+                    }
+
+                    
+                    }
+
+                    
                 
             }
                 //if route has more than 75% likes then it is considered a popular run
