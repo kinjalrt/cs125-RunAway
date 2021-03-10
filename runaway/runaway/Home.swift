@@ -26,14 +26,17 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     @IBOutlet weak var suggestedRouteNameLabel: UILabel!
     @IBOutlet weak var suggestedRouteDistanceLabel: UILabel!
     var suggestedRoute: [String: CLLocationCoordinate2D] = [:]
+    var selectedRoute:Route!
     
+    @IBOutlet weak var startRunBtn: UIButton!
+    
+  //  @IBOutlet weak var startRunBtn: UILabel!
     @IBOutlet weak var basisLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         map.delegate = self
         setUpLocation()
-        
         let homeRandomNumber = Int.random(in: 0...homeMotivationalPhrasesBank.count-1) 
         homeMotivationalPhrase.text = homeMotivationalPhrasesBank[homeRandomNumber]
     }
@@ -162,6 +165,8 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
              self.map.addOverlay(route.polyline)
 //             self.map.setRegion(MKCoordinateRegion(route.polyline.boundingMapRect), animated: true)
              self.map.setVisibleMapRect(route.polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15), animated: true)
+            self.startRunBtn.isHidden = false
+            self.startRunBtn.isEnabled = true
 
 
 
@@ -169,6 +174,37 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
      }
     
+    @IBAction func startRun(_ sender: Any) {
+        let runStatusPage = self.storyboard?.instantiateViewController(identifier: "RunStatus" ) as! RunStatus
+        runStatusPage.route = self.selectedRoute
+        runStatusPage.routeName = selectedRoute.routeName
+        runStatusPage.routeDist = selectedRoute.distance
+
+        self.navigationController?.pushViewController(runStatusPage, animated: true)
+
+       /* var route = PFObject(className: "Route")
+        let query = PFQuery(className: "Route")
+        query.whereKey("routeName", equalTo: self.routeName)
+        query.findObjectsInBackground{ (routes:[PFObject]?, error: Error?)
+            in
+            if error != nil {
+                print(error!)
+                return
+            }
+            else if let routes = routes{
+                for r in routes{
+                    let s = Route(stravaDataId: r["stravaDataId"] as! Int, routeName: self.routeName, startLat: r["startLat"] as! Double, startLng: r["startLng"] as! Double, endLat: r["endLat"] as! Double, endLng: r["endLng"] as! Double, distance: r["distance"] as! Double)
+                    self.selectedRoute =
+                    let runStatusPage = self.storyboard?.instantiateViewController(identifier: "RunStatus" ) as! RunStatus
+                    runStatusPage.route = selectedRoute
+                    runStatusPage.routeName = self.routeName
+                    runStatusPage.routeDist = ()
+                }
+                
+            }
+        }*/
+        
+    }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let render = MKPolylineRenderer(overlay: overlay as! MKPolyline)
@@ -192,6 +228,8 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                     self.basisLabel.text = "No past runs. Checkout a new run to get started ! :)"
                     self.suggestedRouteNameLabel.isHidden = true
                     self.suggestedRouteDistanceLabel.isHidden = true
+                    //self.startRunBtn.isHidden = true
+                    //self.startRunBtn.isEnabled = false
                 }
                 else{
                     let object = objects[0]
@@ -201,6 +239,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                     } catch _ {
                        print("There was an error ):")
                     }
+                    let stravaID = bestRoute!["stravaDataId"] as! Int
                     let sourceLat = bestRoute!["startLat"] as! Double
                     let sourceLng = bestRoute!["startLng"] as! Double
                     let destLat = bestRoute!["endLat"] as! Double
@@ -211,11 +250,17 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                     let destCoordinates = CLLocationCoordinate2D(latitude: destLat,longitude: destLong)
                     self.suggestedRoute["source"] = sourceCoordinates
                     self.suggestedRoute["dest"] = destCoordinates
+                    //save routeName
+
+                    //save route
+                    self.selectedRoute = Route(stravaDataId: stravaID, routeName: name, startLat: sourceLat, startLng: sourceLng, endLat: destLat, endLng: destLong, distance: distance)
                     
                     //display name and distance labels
                     self.suggestedRouteNameLabel.text = name
                     self.suggestedRouteDistanceLabel.text = String(
                         format: "%.2f miles", distance / 1000 * 0.621371)
+                    self.startRunBtn.isHidden = false
+                    
 
                     // display retrived route on map
                     self.displayRoutes()

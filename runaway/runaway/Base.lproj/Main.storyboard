@@ -377,7 +377,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="HomeWallpaper" translatesAutoresizingMaskIntoConstraints="NO" id="jeP-3A-eRX">
-                                <rect key="frame" x="0.0" y="7" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="-1" width="414" height="896"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="city" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bs5-sO-aQm">
@@ -421,7 +421,7 @@
                                 </connections>
                             </button>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Yc5-Ip-l4p">
-                                <rect key="frame" x="31" y="514" width="353" height="171"/>
+                                <rect key="frame" x="31" y="504" width="353" height="171"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </mapView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Suggested Run" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3L5-ce-EG7">
@@ -450,14 +450,14 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4PR-7u-KL7">
-                                <rect key="frame" x="38" y="494" width="219" height="21"/>
+                                <rect key="frame" x="38" y="486" width="219" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zga-pA-HxN">
-                                <rect key="frame" x="283" y="494" width="101" height="21"/>
+                                <rect key="frame" x="283" y="486" width="101" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -470,6 +470,18 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Qk-u3-bDe">
+                                <rect key="frame" x="291" y="408" width="109" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="22"/>
+                                <state key="normal" title="START">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="startRun:" destination="4lJ-b1-Far" eventType="touchUpInside" id="iJB-9D-Hi5"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="hgU-lQ-DdR"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -480,6 +492,7 @@
                         <outlet property="city" destination="bs5-sO-aQm" id="2Tk-oN-rSy"/>
                         <outlet property="homeMotivationalPhrase" destination="A7Q-RE-v9t" id="Z0k-aZ-QE2"/>
                         <outlet property="map" destination="Yc5-Ip-l4p" id="Ksp-Qn-n3N"/>
+                        <outlet property="startRunBtn" destination="0Qk-u3-bDe" id="obI-1X-PKg"/>
                         <outlet property="suggestedRouteDistanceLabel" destination="zga-pA-HxN" id="73G-Jo-Tv1"/>
                         <outlet property="suggestedRouteNameLabel" destination="4PR-7u-KL7" id="QuT-Eq-LYR"/>
                         <outlet property="temperature" destination="IOY-aQ-98x" id="v3X-ue-ppD"/>

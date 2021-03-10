@@ -346,10 +346,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                             
                         }
                     }
-                    
-                    
-                    
-                    
+                  
                     
                 }
             self.sortSegments()
