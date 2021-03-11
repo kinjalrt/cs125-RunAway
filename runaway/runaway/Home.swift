@@ -188,13 +188,16 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let render = MKPolylineRenderer(overlay: overlay as! MKPolyline)
-        render.lineWidth = 10
-        render.strokeColor = .blue
+        render.lineWidth = 6
+        render.strokeColor = .systemBlue
         return render
     }
     
     func suggestRoute(){
         print("entered suggest route")
+        
+        // Let user data load (signin/signup)
+        while(PFUser.current() == nil) {}
         
         // fetch current user's highest scored run from database
         let query = PFQuery(className:"Ranking")
@@ -208,11 +211,12 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                 //if user has no past runs, display error message 
                 if objects.count == 0 {
                     print("[  no prev routes  ]")
-                    self.basisLabel.text = "No past runs. Checkout a new run to get started ! :)"
+                    self.basisLabel.text = "No past runs. Checkout a new run to get started! :)"
                     self.suggestedRouteNameLabel.isHidden = true
                     self.suggestedRouteDistanceLabel.isHidden = true
                     self.startRunBtn.isHidden = true
                     self.startRunBtn.isEnabled = false
+                    self.map.isHidden = true
                 }
                 else{
                     let r = objects[0]["route"] as! PFObject
@@ -232,6 +236,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                             self.suggestedRouteDistanceLabel.text = String(
                                 format: "%.2f miles", route!["distance"] as! Double / 1000 * 0.621371)
                             self.startRunBtn.isHidden = false
+                            self.map.isHidden = false
                             self.selectedRoute = route!
         
                             //set suggestedRoute coordinates for map

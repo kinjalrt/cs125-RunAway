@@ -642,10 +642,10 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-             let render = MKPolylineRenderer(overlay: overlay as! MKPolyline)
-             render.lineWidth = 10
-             render.strokeColor = .blue
-             return render
+        let render = MKPolylineRenderer(overlay: overlay as! MKPolyline)
+        render.lineWidth = 6
+        render.strokeColor = .systemBlue
+         return render
     }
     
     
