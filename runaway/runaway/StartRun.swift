@@ -33,12 +33,12 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     @IBOutlet weak var oldRouteNameLabel: UILabel!
     @IBOutlet weak var oldRouteDistanceLabel: UILabel!
     @IBOutlet weak var upperErrorLabel: UILabel!
+    @IBOutlet weak var oldRunStartBtn: UIButton!
+    
     
     // Logic Components
     var currIndexOldMap = 0
-    var oldRoutesNames : [String] = []
-    var oldRoutesDistances : [Double] = []
-    var oldRoutes: [[CLLocationCoordinate2D]] = []
+    var oldRoutes: [Route] = []
     
     var suggestedRoutes: [CLLocationCoordinate2D] = []
     var currIndex = 0
@@ -70,7 +70,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         
         //fill up  UI components
         self.upperErrorLabel.isHidden = true
-        getOldRoutes()
+//        getOldRoutes()
         getRoutes()
         updateCurrentSegmentUI()
     }
@@ -81,16 +81,19 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         distanceSlider.setValue(0.0, animated: false)
         distanceSliderValueChanged(distanceSlider)
         distanceSliderValueChosen(distanceSlider)
+        self.oldRoutes = []
+        self.currIndexOldMap = 0
         getOldRoutes()
         
     }
     
     
    //Displaying old routes
-    
-    
     //find routes
     func getOldRoutes(){
+        self.oldRoutes = []
+        self.currIndexOldMap = 0
+        
         // fetch current user's old runs from database and rank them by score
         let query = PFQuery(className:"Ranking")
         query.whereKey("user", equalTo: PFUser.current())
@@ -109,9 +112,9 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                     self.oldNextButton.isHidden = true
                     self.oldRouteNameLabel.isHidden = true
                     self.oldRouteDistanceLabel.isHidden = true
+                    self.oldRunStartBtn.isHidden = true
                 }
                 else{
-                    
                     
                     for object in objects{
                         let route = object["route"] as? PFObject
@@ -125,19 +128,23 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                         self.oldNextButton.isHidden = false
                         self.oldRouteNameLabel.isHidden = false
                         self.oldRouteDistanceLabel.isHidden = false
+                        
                         // append each route to oldRoutes array in correct order
+                        let stravaID = route!["stravaDataId"] as! Int
                         let sourceLat = route!["startLat"] as! Double
                         let sourceLng = route!["startLng"] as! Double
                         let destLat = route!["endLat"] as! Double
                         let destLong = route!["endLng"] as! Double
                         let name = route!["routeName"] as! String
-                        let distanceInMeters = route!["distance"] as! Double
-                        let distanceInMiles = distanceInMeters / 1000 * 0.621371
-                        let sourceCoordinates = CLLocationCoordinate2D(latitude: sourceLat,longitude: sourceLng)
-                        let destCoordinates = CLLocationCoordinate2D(latitude: destLat,longitude: destLong)
-                        self.oldRoutes.append([sourceCoordinates,destCoordinates])
-                        self.oldRoutesNames.append(name)
-                        self.oldRoutesDistances.append(distanceInMiles)
+                        let distance = route!["distance"] as! Double
+                        let totalRuns = route!["totalRuns"] as! Int
+                        let difficulty = route!["difficultyTier"] as! Int
+                        let ratings = route!["ratingByTier"] as! [Double]
+                        
+                        let routeObj = Route(objectId: "", stravaDataId: stravaID, routeName: name, startLat: sourceLat, startLng: sourceLng, endLat: destLat, endLng: destLong, distance: distance, totalRuns: totalRuns, difficultyTier: difficulty, ratingByTier: ratings)
+                        
+                        self.oldRoutes.append(routeObj)
+                        
                     }
                     
                     self.oldPrevButton.isHidden = true
@@ -157,8 +164,12 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     //display past runs on the page
     func displayOldRoutes(){
         //display user's ranked, old runs on upper map
-        let sourceCoordinates = self.oldRoutes[currIndexOldMap][0] as CLLocationCoordinate2D
-        let destCoordinates = self.oldRoutes[currIndexOldMap][1] as CLLocationCoordinate2D
+        let currentRoute = self.oldRoutes[currIndexOldMap]
+        let sc = CLLocationCoordinate2D(latitude: currentRoute.startLat,longitude: currentRoute.startLng)
+        let dc = CLLocationCoordinate2D(latitude: currentRoute.endLat,longitude: currentRoute.endLng)
+        
+        let sourceCoordinates = sc as CLLocationCoordinate2D
+        let destCoordinates = dc as CLLocationCoordinate2D
 
         let sourcePlacemark = MKPlacemark(coordinate:sourceCoordinates)
         let destPlacemark = MKPlacemark(coordinate:destCoordinates)
@@ -185,11 +196,23 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
             self.oldMap.setVisibleMapRect(route.polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15), animated: true)
             
             // set labels for current old route name and distance
-            self.oldRouteNameLabel.text = self.oldRoutesNames[self.currIndexOldMap]
+            self.oldRouteNameLabel.text = currentRoute.routeName
             self.oldRouteDistanceLabel.text = String(
-                format: "%.2f miles", self.oldRoutesDistances[self.currIndexOldMap])
+                format: "%.2f miles", currentRoute.distance / 1000 * 0.621371)
 
         }
+    }
+    
+    
+    @IBAction func startOldRun(_ sender: Any) {
+        let selectedRoute = self.oldRoutes[currIndexOldMap]
+        let runStatusPage = self.storyboard?.instantiateViewController(identifier: "RunStatus" ) as! RunStatus
+        runStatusPage.route = selectedRoute
+        runStatusPage.routeName = selectedRoute.routeName
+        runStatusPage.routeDist = selectedRoute.distance
+        runStatusPage.parentPage = "runpage"
+
+        self.navigationController?.pushViewController(runStatusPage, animated: true)
     }
     
     
@@ -318,7 +341,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         AF.request("https://www.strava.com/api/v3/segments/explore", method: .get, parameters: parameters).response { response in
             guard let data = response.data else { return }
             let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-            print("ALL NEW SEGMENTS IN \(directionString) AREA: ")
+            print("all new segments in \(directionString) area: ")
             var count=0
             let seg = dataDictionary["segments"] as! [AnyObject]
                 for key in seg{
