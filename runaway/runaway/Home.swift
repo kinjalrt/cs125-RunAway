@@ -178,6 +178,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         runStatusPage.route = self.selectedRoute
         runStatusPage.routeName = selectedRoute.routeName
         runStatusPage.routeDist = selectedRoute.distance
+        runStatusPage.parentPage = "home"
 
         self.navigationController?.pushViewController(runStatusPage, animated: true)
 

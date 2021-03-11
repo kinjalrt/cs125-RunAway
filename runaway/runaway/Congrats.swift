@@ -12,6 +12,7 @@ import SAConfettiView
 
 
 class Congrats: UIViewController {
+    var parentPage:String!
     @IBOutlet weak var motivationalPhrase: UILabel!
     let motivationalPhrasesBank = ["\"Don’t be afraid of failure. This is the way to succeed.\"- LeBron James", "\"It’s going to be a journey. It’s not a sprint to get in shape.\" —Kerri Walsh Jennings", "\"Champions keep playing until they get it right\" – Billie Jean King", "\"Nobody who ever gave his best regretted it.\" – George Halas", "\"Nothing, not even pain, lasts forever.\" - Kim Cowart", "\"There will come a day when I can no longer run. Today is not that day.\" - Unknown", "\"Pain is the body's way of ridding itself of weakness.\" - Dean Karnazes", "\"I don’t run to add days to my life, I run to add life to my days.\" – Ronald Rook", "\"If it doesn’t challenge you, it won’t change you.\" – Fred DeVito", "\"The man who moves a mountain begins by carrying away small stones.\" – Confucius",]
 
@@ -41,8 +42,9 @@ class Congrats: UIViewController {
     
     @IBAction func returnHome(_ sender: Any) {
         
+        
         self.navigationController?.popToRootViewController(animated: true)
-        if let s = self.navigationController?.topViewController as? [StartRun] {
+        if self.parentPage != "home"{
             // obj is a string array. Do something with stringArray
             let resetStartRun = self.navigationController?.topViewController as! StartRun
             resetStartRun.distanceSlider.setValue(0.0, animated: false)

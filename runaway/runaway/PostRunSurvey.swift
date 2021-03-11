@@ -17,6 +17,7 @@ class PostRunSurvey: UIViewController {
     var route = PFObject(className: "Route")
     var routeName = ""
     var routeDist = 0.0
+    var parentPage:String!
     
     
     var startTime = NSDate()
@@ -82,8 +83,12 @@ class PostRunSurvey: UIViewController {
         print("Ave heartrate = \(self.heartRate)")
         print("Burnt calories = \(self.calories)")
         
+
+        
+        
         //exit page
         let vc = self.storyboard?.instantiateViewController(identifier: "Congrats" ) as! Congrats
+        vc.parentPage = self.parentPage
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

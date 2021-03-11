@@ -21,6 +21,7 @@ class RunStatus: UIViewController, CLLocationManagerDelegate {
     var breaks = 0
     var (minutes,seconds,frac)=(0,0,0)
     let LocationManager = CLLocationManager()
+    var parentPage:String!
     
     @IBOutlet weak var temperature: UILabel!
     @IBOutlet weak var fracLabel: UILabel!
@@ -104,6 +105,7 @@ class RunStatus: UIViewController, CLLocationManagerDelegate {
         vc.routeName = self.routeName
         vc.route = self.route
         vc.routeDist = self.routeDist
+        vc.parentPage = self.parentPage
     }
     
     //update time and format for user display
