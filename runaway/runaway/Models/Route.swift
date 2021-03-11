@@ -77,7 +77,7 @@ class Route : PFObject, PFSubclassing{
                 self.distance = routes![0]["distance"] as! Double
                 self.totalRuns = routes![0]["totalRuns"] as! Int
                 self.difficultyTier = routes![0]["difficultyTier"] as! Int
-                self.ratingByTier = routes![0]["ratingByLevel"] as! [Double]
+                //self.ratingByTier = routes![0]["ratingByLevel"] as! [Double]
                 //self.listsOfRatingsByTier = routes![0]["listOfRating"] as! [[Rating]]
             }
         }

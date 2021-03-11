@@ -26,7 +26,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     @IBOutlet weak var suggestedRouteNameLabel: UILabel!
     @IBOutlet weak var suggestedRouteDistanceLabel: UILabel!
     var suggestedRoute: [String: CLLocationCoordinate2D] = [:]
-    var selectedRoute:Route!
+    var selectedRoute: PFObject = PFObject(className: "Route")
     
     @IBOutlet weak var startRunBtn: UIButton!
     
@@ -180,8 +180,8 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     @IBAction func startRun(_ sender: Any) {
         let runStatusPage = self.storyboard?.instantiateViewController(identifier: "RunStatus" ) as! RunStatus
         runStatusPage.route = self.selectedRoute
-        runStatusPage.routeName = selectedRoute.routeName
-        runStatusPage.routeDist = selectedRoute.distance
+        runStatusPage.routeName = selectedRoute["routeName"] as! String
+        runStatusPage.routeDist = selectedRoute["distance"] as! Double
         runStatusPage.parentPage = "home"
 
         self.navigationController?.pushViewController(runStatusPage, animated: true)
@@ -210,6 +210,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
             } else if let objects = objects {
                 //if user has no past runs, display error message 
                 if objects.count == 0 {
+                    print("[  no prev routes  ]")
                     self.basisLabel.text = "No past runs. Checkout a new run to get started ! :)"
                     self.suggestedRouteNameLabel.isHidden = true
                     self.suggestedRouteDistanceLabel.isHidden = true
@@ -217,49 +218,80 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                     self.startRunBtn.isEnabled = false
                 }
                 else{
-                    print("suggestons on home page enetered")
-                    let object = objects[0]
-                    let bestRoute = object["route"] as? PFObject
-                    do {
-                        try bestRoute!.fetchIfNeeded()
-                    } catch _ {
-                       print("There was an error ):")
-                    }
-                    //let objId = bestRoute!["objectId"] as! String
-                    let stravaID = bestRoute!["stravaDataId"] as! Int
-                    let sourceLat = bestRoute!["startLat"] as! Double
-                    let sourceLng = bestRoute!["startLng"] as! Double
-                    let destLat = bestRoute!["endLat"] as! Double
-                    let destLong = bestRoute!["endLng"] as! Double
-                    let name = bestRoute!["routeName"] as! String
-                    let distance = bestRoute!["distance"] as! Double
-                    let totalRuns = bestRoute!["totalRuns"] as! Int
-                    let difficulty = bestRoute!["difficultyTier"] as! Int
-                    let ratings = bestRoute!["ratingByTier"] as! [Double]
-                    let sourceCoordinates = CLLocationCoordinate2D(latitude: sourceLat,longitude: sourceLng)
-                    let destCoordinates = CLLocationCoordinate2D(latitude: destLat,longitude: destLong)
-                    self.suggestedRoute["source"] = sourceCoordinates
-                    self.suggestedRoute["dest"] = destCoordinates
-                    //save routeName
-
-                    //save route
-                 
-                    //self.selectedRoute = Route(routeName: name, startLat: sourceLat, startLng: sourceLat, endLat: sourceLat, endLng: destLat, distance: distance)
+                    let r = objects[0]["route"] as! PFObject
+                    print(r)
+                    let query2 = PFQuery(className: "Route")
+                    print(r.objectId!)
+                    query2.getObjectInBackground(withId: r.objectId!, block: { (route, error) in
+                        if error != nil {
+                            print("Error: Could not find run in database.")
+                        }
+                        else {
+                            //display name and distance labels
+                            self.basisLabel.text = "Based on previous performances"
+                            self.suggestedRouteNameLabel.isHidden = false
+                            self.suggestedRouteDistanceLabel.isHidden = false
+                            self.suggestedRouteNameLabel.text = route!["routeName"] as? String
+                            self.suggestedRouteDistanceLabel.text = String(
+                                format: "%.2f miles", route!["distance"] as! Double / 1000 * 0.621371)
+                            self.startRunBtn.isHidden = false
+                            self.selectedRoute = route!
+        
+                            //set suggestedRoute coordinates for map
+                            self.suggestedRoute["source"] =
+                                CLLocationCoordinate2D(latitude: route!["startLat"] as! Double,longitude: route!["startLng"] as! Double)
+                            self.suggestedRoute["dest"] =
+                                CLLocationCoordinate2D(latitude: route!["endLat"] as! Double,longitude: route!["endLng"] as! Double)
+                            
+                            // display retrieved route on map
+                            self.displayRoutes()
+                        }
+                    })
                     
-                    self.selectedRoute = Route(objectId: "", stravaDataId: stravaID, routeName: name, startLat: sourceLat, startLng: sourceLng, endLat: destLat, endLng: destLong, distance: distance, totalRuns: totalRuns, difficultyTier: difficulty, ratingByTier: ratings)
-                    //display name and distance labels
-                    self.basisLabel.text = "Based on previous performances"
-                    self.suggestedRouteNameLabel.isHidden = false
-                    self.suggestedRouteDistanceLabel.isHidden = false
-                    self.suggestedRouteNameLabel.text = name
-                    self.suggestedRouteDistanceLabel.text = String(
-                        format: "%.2f miles", distance / 1000 * 0.621371)
-                    
-                    self.startRunBtn.isHidden = false
-                    
-
-                    // display retrived route on map
-                    self.displayRoutes()
+//                    print("suggestons on home page enetered")
+//                    let object = objects[0]
+//                    let bestRoute = object["route"] as? PFObject
+//                    do {
+//                        try bestRoute!.fetchIfNeeded()
+//                    } catch _ {
+//                       print("There was an error ):")
+//                    }
+//                    //let objId = bestRoute!["objectId"] as! String
+//                    let stravaID = bestRoute!["stravaDataId"] as! Int
+//                    let sourceLat = bestRoute!["startLat"] as! Double
+//                    let sourceLng = bestRoute!["startLng"] as! Double
+//                    let destLat = bestRoute!["endLat"] as! Double
+//                    let destLong = bestRoute!["endLng"] as! Double
+//                    let name = bestRoute!["routeName"] as! String
+//                    let distance = bestRoute!["distance"] as! Double
+//                    let totalRuns = bestRoute!["totalRuns"] as! Int
+//                    let difficulty = bestRoute!["difficultyTier"] as! Int
+//                    let ratings = bestRoute!["ratingByTier"] as! [Double]
+//                    let sourceCoordinates = CLLocationCoordinate2D(latitude: sourceLat,longitude: sourceLng)
+//                    let destCoordinates = CLLocationCoordinate2D(latitude: destLat,longitude: destLong)
+//                    self.suggestedRoute["source"] = sourceCoordinates
+//                    self.suggestedRoute["dest"] = destCoordinates
+//                    //save routeName
+//
+//                    //save route
+//
+//                    //self.selectedRoute = Route(routeName: name, startLat: sourceLat, startLng: sourceLat, endLat: sourceLat, endLng: destLat, distance: distance)
+//
+//
+//                    self.selectedRoute = Route(objectId: "", stravaDataId: stravaID, routeName: name, startLat: sourceLat, startLng: sourceLng, endLat: destLat, endLng: destLong, distance: distance, totalRuns: totalRuns, difficultyTier: difficulty, ratingByTier: ratings)
+//                    //display name and distance labels
+//                    self.basisLabel.text = "Based on previous performances"
+//                    self.suggestedRouteNameLabel.isHidden = false
+//                    self.suggestedRouteDistanceLabel.isHidden = false
+//                    self.suggestedRouteNameLabel.text = name
+//                    self.suggestedRouteDistanceLabel.text = String(
+//                        format: "%.2f miles", distance / 1000 * 0.621371)
+//
+//                    self.startRunBtn.isHidden = false
+//
+//
+//                    // display retrived route on map
+//                    self.displayRoutes()
                 }
                 
                 
