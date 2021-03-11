@@ -21,7 +21,7 @@ class History : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     var sample = ["this", "is", "a", "sample", "list"]
     var userRunHistory : [PFObject] = []
-    let currentUser = PFUser.current()
+    var currentUser = PFUser.current()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +34,7 @@ class History : UIViewController, UITableViewDelegate, UITableViewDataSource
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
+        self.currentUser = PFUser.current()
         getRunHistory()
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
