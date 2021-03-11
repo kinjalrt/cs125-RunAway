@@ -44,6 +44,8 @@ class Congrats: UIViewController {
         
         
         self.navigationController?.popToRootViewController(animated: true)
+        print("return to home page ")
+
         /*if self.parentPage != "home"{
             // reset and update runs on start run page
             let resetStartRun = self.navigationController?.topViewController as! StartRun
