@@ -42,6 +42,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
+        self.suggestRoute()
     }
     
     // Location
@@ -193,6 +194,8 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     }
     
     func suggestRoute(){
+        print("entered suggest route")
+        
         // fetch current user's highest scored run from database
         let query = PFQuery(className:"Ranking")
         query.whereKey("user", equalTo: PFUser.current())
@@ -211,6 +214,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                     self.startRunBtn.isEnabled = false
                 }
                 else{
+                    print("suggestons on home page enetered")
                     let object = objects[0]
                     let bestRoute = object["route"] as? PFObject
                     do {

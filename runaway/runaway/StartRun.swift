@@ -79,6 +79,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
+        getOldRoutes()
     }
     
     
@@ -109,6 +110,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                 }
                 else{
                     
+                    
                     for object in objects{
                         let route = object["route"] as? PFObject
                         do {
@@ -116,7 +118,11 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                         } catch _ {
                            print("There was an error ):")
                         }
-                        
+                        self.upperErrorLabel.isHidden = true
+                        self.oldMap.isHidden = false
+                        self.oldNextButton.isHidden = false
+                        self.oldRouteNameLabel.isHidden = false
+                        self.oldRouteDistanceLabel.isHidden = false
                         // append each route to oldRoutes array in correct order
                         let sourceLat = route!["startLat"] as! Double
                         let sourceLng = route!["startLng"] as! Double

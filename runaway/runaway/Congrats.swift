@@ -45,12 +45,20 @@ class Congrats: UIViewController {
         
         self.navigationController?.popToRootViewController(animated: true)
         if self.parentPage != "home"{
-            // obj is a string array. Do something with stringArray
+            // reset and update runs on start run page
             let resetStartRun = self.navigationController?.topViewController as! StartRun
             resetStartRun.distanceSlider.setValue(0.0, animated: false)
             resetStartRun.distanceSliderValueChanged(resetStartRun.distanceSlider)
             resetStartRun.distanceSliderValueChosen(resetStartRun.distanceSlider)
-            resetStartRun.getOldRoutes()
+            print("back to run page")
+          
+            
+        }
+        else{
+            //update suggested route on home page to account for this run
+            print("return to home page ")
+            let resetHome = self.navigationController?.topViewController as! Home
+           
         }
        
         
