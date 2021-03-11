@@ -222,6 +222,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                     } catch _ {
                        print("There was an error ):")
                     }
+                    //let objId = bestRoute!["objectId"] as! String
                     let stravaID = bestRoute!["stravaDataId"] as! Int
                     let sourceLat = bestRoute!["startLat"] as! Double
                     let sourceLng = bestRoute!["startLng"] as! Double
@@ -229,6 +230,9 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                     let destLong = bestRoute!["endLng"] as! Double
                     let name = bestRoute!["routeName"] as! String
                     let distance = bestRoute!["distance"] as! Double
+                    let totalRuns = bestRoute!["totalRuns"] as! Int
+                    let difficulty = bestRoute!["difficultyTier"] as! Int
+                    let ratings = bestRoute!["ratingByTier"] as! [Double]
                     let sourceCoordinates = CLLocationCoordinate2D(latitude: sourceLat,longitude: sourceLng)
                     let destCoordinates = CLLocationCoordinate2D(latitude: destLat,longitude: destLong)
                     self.suggestedRoute["source"] = sourceCoordinates
@@ -236,15 +240,18 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                     //save routeName
 
                     //save route
-                        //(objectId: String, stravaDataId: Int, routeName: String, startLat: Double, startLng: Double, endLat: Double, endLng: Double, distance: Double, totalRuns: Int, difficultyTier: Int, ratingByTier: [Double])
+                 
+                    //self.selectedRoute = Route(routeName: name, startLat: sourceLat, startLng: sourceLat, endLat: sourceLat, endLng: destLat, distance: distance)
                     
-                    //self.selectedRoute = Route(stravaDataId: stravaID, routeName: name, startLat: sourceLat, startLng: sourceLat, endLat: destLat, endLng: destLong, distance: distance)
-                    self.selectedRoute = Route(routeName: name, startLat: sourceLat, startLng: sourceLat, endLat: sourceLat, endLng: destLat, distance: distance)
-                    
+                    self.selectedRoute = Route(objectId: "", stravaDataId: stravaID, routeName: name, startLat: sourceLat, startLng: sourceLng, endLat: destLat, endLng: destLong, distance: distance, totalRuns: totalRuns, difficultyTier: difficulty, ratingByTier: ratings)
                     //display name and distance labels
+                    self.basisLabel.text = "Based on previous performances"
+                    self.suggestedRouteNameLabel.isHidden = false
+                    self.suggestedRouteDistanceLabel.isHidden = false
                     self.suggestedRouteNameLabel.text = name
                     self.suggestedRouteDistanceLabel.text = String(
                         format: "%.2f miles", distance / 1000 * 0.621371)
+                    
                     self.startRunBtn.isHidden = false
                     
 

@@ -59,7 +59,6 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     override func viewDidLoad() {
     
         super.viewDidLoad()
-        print("entered start run page")
         //initialize maps
         map.delegate = self
         oldMap.delegate = self
@@ -89,7 +88,6 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     //find routes
     func getOldRoutes(){
         // fetch current user's old runs from database and rank them by score
-        print("get older routes")
         let query = PFQuery(className:"Ranking")
         query.whereKey("user", equalTo: PFUser.current())
         query.order(byDescending: "score")
@@ -258,7 +256,6 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     @IBAction func distanceSliderValueChosen(_ sender: UISlider) {
         filterRoutesByDistance(distance: Double(sender.value) )
-        print("\nFiltered Routes (Id, TotalDistance, DistanceAway):")
         for r in filteredRouteSegments{
             let distanceInMiles = r.distance / 1000 * 0.621371
             let distanceAway = r.distanceAway / 1000 * 0.621371
@@ -359,13 +356,11 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                             
                         }
                         else if let objects = objects{
-                            print("checking past for \(routeName)")
                             if objects.count == 0 {
                                 self.routesSegments.append(curr_seg)
                                 self.routesSegmentIds.append(id)
                                 count+=1
                             }
-                            else { print("user has already run ")}
                             
                         }
                     }
@@ -420,7 +415,6 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
        let sortedSegs = self.routesSegments.sorted(by: {$0.distanceAway < $1.distanceAway})
         self.routesSegments = sortedSegs
-        print("\tsorted count = \(sortedSegs.count) normal count = \(self.routesSegments.count)")
     }
     
     func filterRoutesByDistance(distance: Double){
@@ -463,7 +457,6 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                 } else if let objects = objects
                 {
                     // The find succeeded.
-                    print("Successfully retrieved \(objects.count) scores.")
                     // Do something with the found objects
                     for object in objects {
                         
@@ -489,7 +482,6 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                         let pop_score = (totalLikes/numUsers) * 100
                         self.routePopularity[routeName] = pop_score
                         seg.setPopularity(pop: pop_score)
-                        print("curr seg pop \(seg.routeName) is \(seg.popularity)")
                     }
                     
                 }
