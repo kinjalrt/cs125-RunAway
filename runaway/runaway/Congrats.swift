@@ -44,7 +44,9 @@ class Congrats: UIViewController {
         
         
         self.navigationController?.popToRootViewController(animated: true)
-        if self.parentPage != "home"{
+        print("return to home page ")
+
+        /*if self.parentPage != "home"{
             // reset and update runs on start run page
             let resetStartRun = self.navigationController?.topViewController as! StartRun
             resetStartRun.distanceSlider.setValue(0.0, animated: false)
@@ -59,7 +61,7 @@ class Congrats: UIViewController {
             print("return to home page ")
             let resetHome = self.navigationController?.topViewController as! Home
            
-        }
+        }*/
        
         
     }

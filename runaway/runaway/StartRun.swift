@@ -78,7 +78,11 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
+        distanceSlider.setValue(0.0, animated: false)
+        distanceSliderValueChanged(distanceSlider)
+        distanceSliderValueChosen(distanceSlider)
         getOldRoutes()
+        
     }
     
     
