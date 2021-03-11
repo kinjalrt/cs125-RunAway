@@ -125,7 +125,7 @@ class LogIn: UIViewController, ASWebAuthenticationPresentationContextProviding {
 }
 
 
-extension ViewController: ASWebAuthenticationPresentationContextProviding {
+extension WelcomeView: ASWebAuthenticationPresentationContextProviding {
 
     func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         UIApplication.shared.windows[0]

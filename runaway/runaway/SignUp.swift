@@ -81,13 +81,6 @@ class SignUp: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, AS
     }
     
     
-    @IBAction func closePage(_ sender: Any) {
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let mainPage = storyBoard.instantiateViewController(withIdentifier: "initialPage") as! ViewController
-        self.present(mainPage, animated: true, completion:nil)
-
-            //self.present(myTabBar, animated: true, completion: nil)
-    }
     
   
     @IBAction func signUp(_ sender: UIButton) {
@@ -118,10 +111,21 @@ class SignUp: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, AS
         //    self.displayErrorMessage(message: ("Please enter your name!"))
         //}
         
-        self.presentStrava()
         let sv = UIViewController.displaySpinner(onView: self.view)
         user.signUpInBackground { (success, error) in
             UIViewController.removeSpinner(spinner: sv)
+            
+            PFUser.logInWithUsername(inBackground: user.username!, password: user.password!) { (user, error) in
+                UIViewController.removeSpinner(spinner: sv)
+                if user != nil {
+                    self.presentStrava()
+                }else{
+                    if let descrip = error?.localizedDescription{
+                        self.displayErrorMessage(message: (descrip))
+                    }
+                }
+            }
+            
         }
     }
     

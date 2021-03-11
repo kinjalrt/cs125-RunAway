@@ -263,12 +263,12 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     @IBAction func logout(_ sender: Any) {
         PFUser.logOutInBackground(block: { (error) in
         if error == nil {
-            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                      //let Home = storyBoard.instantiateViewController(withIdentifier: "Home") as! Home
-            let login=self.storyboard?.instantiateViewController(identifier:"LogIn" ) as! LogIn
-            
-        
-            self.present(login, animated: true, completion:nil)
+//            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//                      //let Home = storyBoard.instantiateViewController(withIdentifier: "Home") as! Home
+//            let login=self.storyboard?.instantiateViewController(identifier:"LogIn" ) as! LogIn
+//            
+//        
+//            self.present(login, animated: true, completion:nil)
                
             }})
     }
