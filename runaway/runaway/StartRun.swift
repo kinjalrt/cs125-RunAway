@@ -242,6 +242,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
             runStatusPage.route = route
             runStatusPage.routeName = s.routeName
             runStatusPage.routeDist = (s.distance)
+            runStatusPage.parentPage = "runpage"
 
             self.navigationController?.pushViewController(runStatusPage, animated: true)
             

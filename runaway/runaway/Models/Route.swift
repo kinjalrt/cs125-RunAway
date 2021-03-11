@@ -83,6 +83,18 @@ class Route : PFObject, PFSubclassing{
         }
     }
     
+    //USE CONSTRUCTOR WHEN BUILDING MAPS
+    init (routeName: String, startLat: Double, startLng: Double, endLat: Double, endLng: Double, distance: Double){
+        super.init()
+        self.routeName = routeName
+        self.startLat = startLat
+        self.startLng = startLng
+        self.endLat = endLat
+        self.endLng = endLng
+        self.distance = distance
+        
+    }
+    
     // USE CONSTRUCTOR WHEN MANUALLY CONSTRUCTING
     init(stravaDataId: Int, routeName: String, startLat: Double, startLng: Double, endLat: Double, endLng: Double, distance: Double){
         

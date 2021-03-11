@@ -236,7 +236,10 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                     //save routeName
 
                     //save route
-                    self.selectedRoute = Route(stravaDataId: stravaID, routeName: name, startLat: sourceLat, startLng: sourceLng, endLat: destLat, endLng: destLong, distance: distance)
+                        //(objectId: String, stravaDataId: Int, routeName: String, startLat: Double, startLng: Double, endLat: Double, endLng: Double, distance: Double, totalRuns: Int, difficultyTier: Int, ratingByTier: [Double])
+                    
+                    //self.selectedRoute = Route(stravaDataId: stravaID, routeName: name, startLat: sourceLat, startLng: sourceLat, endLat: destLat, endLng: destLong, distance: distance)
+                    self.selectedRoute = Route(routeName: name, startLat: sourceLat, startLng: sourceLat, endLat: sourceLat, endLng: destLat, distance: distance)
                     
                     //display name and distance labels
                     self.suggestedRouteNameLabel.text = name
