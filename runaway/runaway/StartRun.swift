@@ -128,7 +128,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
                         self.oldNextButton.isHidden = false
                         self.oldRouteNameLabel.isHidden = false
                         self.oldRouteDistanceLabel.isHidden = false
-                        
+                        self.oldRunStartBtn.isHidden = false
                         // append each route to oldRoutes array in correct order
                         let stravaID = route!["stravaDataId"] as! Int
                         let sourceLat = route!["startLat"] as! Double
