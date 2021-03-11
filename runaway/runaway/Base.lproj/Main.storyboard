@@ -327,12 +327,12 @@
         <scene sceneID="spo-V6-rej">
             <objects>
                 <tabBarController storyboardIdentifier="myTabBar" modalPresentationStyle="fullScreen" id="Z46-1Z-n1r" customClass="myTabBar" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="9Jv-Dk-Z1V">
+                    <tabBar key="tabBar" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="9Jv-Dk-Z1V">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="labelColor"/>
                         <color key="barTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="selectedImageTintColor" systemColor="lightTextColor"/>
+                        <color key="selectedImageTintColor" red="0.95230883359999996" green="0.93634736539999996" blue="0.3082369566" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="GlI-kP-cNP" kind="relationship" relationship="viewControllers" id="775-O9-Mgc"/>
@@ -344,11 +344,13 @@
             </objects>
             <point key="canvasLocation" x="4288" y="-816"/>
         </scene>
-        <!--Home-->
+        <!--Navigation Controller-->
         <scene sceneID="NJc-Uc-HSP">
             <objects>
                 <navigationController modalPresentationStyle="fullScreen" navigationBarHidden="YES" id="GlI-kP-cNP" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" image="house.fill" catalog="system" id="Pyq-gb-iv9"/>
+                    <tabBarItem key="tabBarItem" title="" image="home" selectedImage="home.fill" id="Pyq-gb-iv9">
+                        <inset key="imageInsets" minX="0.0" minY="250" maxX="0.0" maxY="230"/>
+                    </tabBarItem>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="4PG-Y9-p22">
                         <rect key="frame" x="0.0" y="-54" width="0.0" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -366,11 +368,14 @@
             <objects>
                 <viewController storyboardIdentifier="Home" title="Home" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4lJ-b1-Far" customClass="Home" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="U6E-WJ-Vqq">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="759"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HomeWallpaper" translatesAutoresizingMaskIntoConstraints="NO" id="jeP-3A-eRX">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="HomeWallpaper" translatesAutoresizingMaskIntoConstraints="NO" id="jeP-3A-eRX">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="873"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="873" id="eXn-gq-yf7"/>
+                                </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="city" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bs5-sO-aQm">
                                 <rect key="frame" x="38" y="237" width="356" height="51"/>
@@ -480,8 +485,6 @@
                         <constraints>
                             <constraint firstItem="jeP-3A-eRX" firstAttribute="leading" secondItem="hgU-lQ-DdR" secondAttribute="leading" id="AUm-6y-CGe"/>
                             <constraint firstItem="jeP-3A-eRX" firstAttribute="trailing" secondItem="hgU-lQ-DdR" secondAttribute="trailing" id="pdC-E1-ZiA"/>
-                            <constraint firstAttribute="bottom" secondItem="jeP-3A-eRX" secondAttribute="bottom" id="sIt-Zg-jKT"/>
-                            <constraint firstItem="jeP-3A-eRX" firstAttribute="top" secondItem="U6E-WJ-Vqq" secondAttribute="top" id="wKH-j2-Z23"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ThY-3w-rDt"/>
@@ -506,11 +509,14 @@
             <objects>
                 <viewController storyboardIdentifier="Start run" title="Start Run" modalPresentationStyle="fullScreen" id="vIW-ng-Y1l" customClass="StartRun" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mLd-PH-lux">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="759"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StartRunWallpaper" translatesAutoresizingMaskIntoConstraints="NO" id="l3N-2P-0ye">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="StartRunWallpaper" translatesAutoresizingMaskIntoConstraints="NO" id="l3N-2P-0ye">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="873"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="873" id="3At-8G-L9P"/>
+                                </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="40i-ZK-2Yi">
                                 <rect key="frame" x="-11" y="-25" width="30" height="22"/>
@@ -521,17 +527,6 @@
                                 </state>
                                 <connections>
                                     <action selector="displayNextRun:" destination="vIW-ng-Y1l" eventType="touchUpInside" id="WDQ-qV-Lpr"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jkv-og-6cU">
-                                <rect key="frame" x="-1" y="-15" width="30" height="22"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal">
-                                    <imageReference key="image" image="arrow.forward" catalog="system" symbolScale="large"/>
-                                </state>
-                                <connections>
-                                    <action selector="displayNextRun:" destination="vIW-ng-Y1l" eventType="touchUpInside" id="Cgx-Xg-gJ2"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a4q-bo-qO0">
@@ -700,10 +695,8 @@
                         <viewLayoutGuide key="safeArea" id="8xG-UW-gz3"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="l3N-2P-0ye" firstAttribute="top" secondItem="mLd-PH-lux" secondAttribute="top" id="3Gn-LV-5p4"/>
                             <constraint firstItem="l3N-2P-0ye" firstAttribute="leading" secondItem="mLd-PH-lux" secondAttribute="leading" id="BdG-l4-Irm"/>
                             <constraint firstAttribute="trailing" secondItem="l3N-2P-0ye" secondAttribute="trailing" id="OC6-Kx-Z2N"/>
-                            <constraint firstAttribute="bottom" secondItem="l3N-2P-0ye" secondAttribute="bottom" id="nLx-e9-urM"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="TNe-TH-kYW"/>
@@ -1020,7 +1013,7 @@
             <objects>
                 <viewController storyboardIdentifier="History" title="History" modalPresentationStyle="fullScreen" id="y82-1d-Obi" customClass="History" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="K1A-34-Wwq">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dec-Go-S5q">
@@ -1028,7 +1021,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Screen Shot 2021-02-24 at 11.17.35 AM" translatesAutoresizingMaskIntoConstraints="NO" id="VTN-jy-xHJ">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Your Progress" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7R-TX-9VV">
                                 <rect key="frame" x="43" y="156" width="129" height="22"/>
@@ -1120,11 +1113,13 @@
             </objects>
             <point key="canvasLocation" x="5198.5507246376819" y="993.75"/>
         </scene>
-        <!--run-->
+        <!--Navigation Controller-->
         <scene sceneID="Igj-oM-GYr">
             <objects>
                 <navigationController navigationBarHidden="YES" id="IIY-Wf-pY2" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="run" image="plus" catalog="system" id="bFE-xa-2am"/>
+                    <tabBarItem key="tabBarItem" title="" image="Run Button" selectedImage="Run Button" id="bFE-xa-2am">
+                        <color key="badgeColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBarItem>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="p4l-3G-ces">
                         <rect key="frame" x="0.0" y="-54" width="0.0" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1137,11 +1132,13 @@
             </objects>
             <point key="canvasLocation" x="4291" y="210"/>
         </scene>
-        <!--History-->
+        <!--Navigation Controller-->
         <scene sceneID="ALo-VE-sxH">
             <objects>
                 <navigationController navigationBarHidden="YES" id="Is6-k8-OOW" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="History" image="clock.fill" catalog="system" id="ZnD-Q9-Blm"/>
+                    <tabBarItem key="tabBarItem" title="" image="statistical" selectedImage="statistical.fill" id="ZnD-Q9-Blm">
+                        <inset key="imageInsets" minX="0.0" minY="250" maxX="0.0" maxY="230"/>
+                    </tabBarItem>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="fHc-Rb-M7T">
                         <rect key="frame" x="0.0" y="-54" width="0.0" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1158,6 +1155,7 @@
     <resources>
         <image name="1f3c6" width="512" height="512"/>
         <image name="HomeWallpaper" width="351" height="764"/>
+        <image name="Run Button" width="86" height="86"/>
         <image name="Screen Shot 2021-02-23 at 10.07.07 PM" width="526" height="1182"/>
         <image name="Screen Shot 2021-02-23 at 2.50.07 PM" width="367" height="798"/>
         <image name="Screen Shot 2021-02-24 at 11.17.35 AM" width="416" height="910"/>
@@ -1168,21 +1166,19 @@
         <image name="arrow.forward" catalog="system" width="128" height="98"/>
         <image name="checkmark" catalog="system" width="128" height="114"/>
         <image name="clock" catalog="system" width="128" height="121"/>
-        <image name="clock.fill" catalog="system" width="128" height="121"/>
         <image name="heartrateinstructions" width="737" height="370"/>
-        <image name="house.fill" catalog="system" width="128" height="106"/>
+        <image name="home" width="512" height="512"/>
+        <image name="home.fill" width="512" height="512"/>
         <image name="icons8-star-48" width="48" height="48"/>
         <image name="map" catalog="system" width="128" height="110"/>
-        <image name="plus" catalog="system" width="128" height="113"/>
         <image name="ra_logo" width="2048" height="2048"/>
         <image name="ralogo_circle" width="996" height="652"/>
+        <image name="statistical" width="512" height="512"/>
+        <image name="statistical.fill" width="512" height="512"/>
         <image name="thumbsdown" width="362" height="351"/>
         <image name="thumbsup" width="365" height="360"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="lightTextColor">
-            <color white="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondarySystemBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
