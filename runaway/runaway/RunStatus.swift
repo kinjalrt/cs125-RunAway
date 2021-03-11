@@ -47,7 +47,6 @@ class RunStatus: UIViewController, CLLocationManagerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = true
     }
     
     // Get location so we can call the API to get the weather

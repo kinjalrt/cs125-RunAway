@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1cY-RH-kaq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1cY-RH-kaq">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -327,7 +327,7 @@
         <scene sceneID="spo-V6-rej">
             <objects>
                 <tabBarController storyboardIdentifier="myTabBar" modalPresentationStyle="fullScreen" id="Z46-1Z-n1r" customClass="myTabBar" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBar key="tabBar" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="9Jv-Dk-Z1V">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="9Jv-Dk-Z1V">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" systemColor="labelColor"/>
@@ -347,7 +347,7 @@
         <!--Navigation Controller-->
         <scene sceneID="NJc-Uc-HSP">
             <objects>
-                <navigationController modalPresentationStyle="fullScreen" navigationBarHidden="YES" id="GlI-kP-cNP" sceneMemberID="viewController">
+                <navigationController navigationBarHidden="YES" id="GlI-kP-cNP" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="home" selectedImage="home.fill" id="Pyq-gb-iv9">
                         <inset key="imageInsets" minX="0.0" minY="250" maxX="0.0" maxY="230"/>
                     </tabBarItem>
@@ -740,13 +740,17 @@
         <!--Run Status-->
         <scene sceneID="G7m-cM-O6V">
             <objects>
-                <viewController storyboardIdentifier="RunStatus" modalPresentationStyle="fullScreen" id="O59-3y-13r" customClass="RunStatus" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RunStatus" modalPresentationStyle="fullScreen" hidesBottomBarWhenPushed="YES" id="O59-3y-13r" customClass="RunStatus" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fOg-4a-oie">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Screen Shot 2021-03-10 at 1.11.34 PM" translatesAutoresizingMaskIntoConstraints="NO" id="8hK-lr-KWc">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Screen Shot 2021-03-10 at 1.11.34 PM" translatesAutoresizingMaskIntoConstraints="NO" id="8hK-lr-KWc">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="896" id="dzf-ho-qKg"/>
+                                    <constraint firstAttribute="width" constant="414" id="kqx-jt-w3y"/>
+                                </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00:00:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="50" translatesAutoresizingMaskIntoConstraints="NO" id="VyZ-5I-sqE">
                                 <rect key="frame" x="0.0" y="194" width="301" height="132"/>
@@ -811,7 +815,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="8hK-lr-KWc" firstAttribute="top" secondItem="fOg-4a-oie" secondAttribute="top" id="7Yn-hW-BZ6"/>
-                            <constraint firstAttribute="bottom" secondItem="8hK-lr-KWc" secondAttribute="bottom" id="x9z-9k-CKg"/>
+                            <constraint firstAttribute="bottom" secondItem="8hK-lr-KWc" secondAttribute="bottom" id="kTJ-fK-pcG"/>
                             <constraint firstItem="8hK-lr-KWc" firstAttribute="leading" secondItem="fOg-4a-oie" secondAttribute="leading" id="xjR-YE-kb3"/>
                             <constraint firstAttribute="trailing" secondItem="8hK-lr-KWc" secondAttribute="trailing" id="yXr-Vb-hbh"/>
                         </constraints>
@@ -833,7 +837,7 @@
         <!--Congrats-->
         <scene sceneID="NIL-v8-FcZ">
             <objects>
-                <viewController storyboardIdentifier="Congrats" modalPresentationStyle="fullScreen" id="MIU-mS-P19" customClass="Congrats" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Congrats" modalPresentationStyle="fullScreen" hidesBottomBarWhenPushed="YES" id="MIU-mS-P19" customClass="Congrats" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VTl-EQ-RzW">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -911,7 +915,7 @@
         <!--Post Run Survey-->
         <scene sceneID="00M-xZ-tyU">
             <objects>
-                <viewController storyboardIdentifier="PostRunSurvey" modalPresentationStyle="fullScreen" id="bVh-Vk-aIv" customClass="PostRunSurvey" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PostRunSurvey" modalPresentationStyle="fullScreen" hidesBottomBarWhenPushed="YES" id="bVh-Vk-aIv" customClass="PostRunSurvey" customModule="runaway" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="iR0-8Y-YKQ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1131,8 +1135,11 @@
         <scene sceneID="Igj-oM-GYr">
             <objects>
                 <navigationController navigationBarHidden="YES" id="IIY-Wf-pY2" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="Run Button" selectedImage="Run Button" id="bFE-xa-2am">
-                        <color key="badgeColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <tabBarItem key="tabBarItem" title="" id="bFE-xa-2am">
+                        <imageReference key="image" image="RunButton" symbolScale="large"/>
+                        <inset key="imageInsets" minX="0.0" minY="220" maxX="0.0" maxY="230"/>
+                        <inset key="largeContentSizeImageInsets" minX="0.0" minY="1" maxX="0.0" maxY="0.0"/>
+                        <imageReference key="selectedImage" image="RunButtonFill" symbolScale="large"/>
                     </tabBarItem>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="p4l-3G-ces">
                         <rect key="frame" x="0.0" y="-54" width="0.0" height="0.0"/>
@@ -1169,7 +1176,8 @@
     <resources>
         <image name="1f3c6" width="512" height="512"/>
         <image name="HomeWallpaper" width="351" height="764"/>
-        <image name="Run Button" width="86" height="86"/>
+        <image name="RunButton" width="356" height="356"/>
+        <image name="RunButtonFill" width="356" height="356"/>
         <image name="Screen Shot 2021-02-23 at 10.07.07 PM" width="526" height="1182"/>
         <image name="Screen Shot 2021-02-23 at 2.50.07 PM" width="367" height="798"/>
         <image name="Screen Shot 2021-02-24 at 11.17.35 AM" width="416" height="910"/>

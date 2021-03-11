@@ -40,7 +40,6 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("[====== HOME ======]")
-        self.tabBarController?.tabBar.isHidden = false
         setUpLocation()
         let homeRandomNumber = Int.random(in: 0...homeMotivationalPhrasesBank.count-1)
         homeMotivationalPhrase.text = homeMotivationalPhrasesBank[homeRandomNumber]
@@ -183,9 +182,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         runStatusPage.routeName = selectedRoute["routeName"] as! String
         runStatusPage.routeDist = selectedRoute["distance"] as! Double
         runStatusPage.parentPage = "home"
-
         self.navigationController?.pushViewController(runStatusPage, animated: true)
-
         
     }
     

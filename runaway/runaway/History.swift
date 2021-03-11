@@ -33,7 +33,6 @@ class History : UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = false
         self.currentUser = PFUser.current()
         getRunHistory()
         
