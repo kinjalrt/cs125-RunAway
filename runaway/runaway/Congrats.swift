@@ -50,6 +50,7 @@ class Congrats: UIViewController {
             resetStartRun.distanceSlider.setValue(0.0, animated: false)
             resetStartRun.distanceSliderValueChanged(resetStartRun.distanceSlider)
             resetStartRun.distanceSliderValueChosen(resetStartRun.distanceSlider)
+            resetStartRun.getOldRoutes()
         }
        
         
