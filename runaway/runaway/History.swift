@@ -36,6 +36,11 @@ class History : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.tabBarController?.tabBar.isHidden = false
         self.currentUser = PFUser.current()
         getRunHistory()
+        
+        let name = self.currentUser?["firstname"] as! String
+        var greeting="Hello, "
+        greeting+=name.lowercased().capitalized
+        username.text=greeting
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return userRunHistory.count
@@ -79,7 +84,8 @@ class History : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     func getRunHistory(){
         userRunHistory = []
-        for run in self.currentUser?["listOfRuns"] as! [PFObject]{
+        let list = self.currentUser?["listOfRuns"] as! [PFObject]
+        for run in list {
             //print(run.objectId!)
             let q = PFQuery(className: "Run")
             q.getObjectInBackground(withId: run.objectId!, block: { (run, error) in
@@ -103,11 +109,6 @@ class History : UIViewController, UITableViewDelegate, UITableViewDataSource
     func updateUIComponents(){
         self.tableView.reloadData()
         print(userRunHistory)
-        
-        //set up greeting
-        var greeting="Hello, "
-        greeting+=self.currentUser?["firstname"] as! String
-        username.text=greeting
         
         //runs
         runsCompleted.text = String(format: "%d runs completed", self.currentUser?["totalRuns"] as! Int)

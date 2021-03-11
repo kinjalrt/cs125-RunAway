@@ -35,13 +35,15 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         map.delegate = self
-        setUpLocation()
-        let homeRandomNumber = Int.random(in: 0...homeMotivationalPhrasesBank.count-1) 
-        homeMotivationalPhrase.text = homeMotivationalPhrasesBank[homeRandomNumber]
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("[====== HOME ======]")
         self.tabBarController?.tabBar.isHidden = false
+        setUpLocation()
+        let homeRandomNumber = Int.random(in: 0...homeMotivationalPhrasesBank.count-1)
+        homeMotivationalPhrase.text = homeMotivationalPhrasesBank[homeRandomNumber]
         self.suggestRoute()
     }
     
@@ -53,13 +55,14 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("in location manager.....")
         if !locations.isEmpty, Home.currentLocation==nil{
             Home.currentLocation = locations.first
             LocationManager.stopUpdatingLocation()
-            displayCityForLocation()
-            requestWeatherForLocation()
-            suggestRoute()
         }
+        displayCityForLocation()
+        requestWeatherForLocation()
+        suggestRoute()
     }
     
     func displayCityForLocation() {
@@ -198,7 +201,7 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         
         // fetch current user's highest scored run from database
         let query = PFQuery(className:"Ranking")
-        query.whereKey("user", equalTo: PFUser.current())
+        query.whereKey("user", equalTo: PFUser.current()!)
         query.whereKey("liked", equalTo: true)
         query.order(byDescending: "score")
         query.findObjectsInBackground { [self] (objects: [PFObject]?, error: Error?) in
@@ -268,16 +271,12 @@ class Home: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     
     @IBAction func logout(_ sender: Any) {
+        
         PFUser.logOutInBackground(block: { (error) in
         if error == nil {
-//            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//                      //let Home = storyBoard.instantiateViewController(withIdentifier: "Home") as! Home
-//            let login=self.storyboard?.instantiateViewController(identifier:"LogIn" ) as! LogIn
-//            
-//        
-//            self.present(login, animated: true, completion:nil)
-               
-            }})
+            print("logging out..")
+            self.tabBarController?.dismiss(animated: true, completion: nil)
+        }})
     }
     
  
