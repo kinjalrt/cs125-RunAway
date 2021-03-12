@@ -706,6 +706,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="No new routes match that criteria." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nYJ-aQ-xwV">
+                                <rect key="frame" x="53" y="551" width="310" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Montserrat-BoldItalic" family="Montserrat" pointSize="17"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="8xG-UW-gz3"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -716,6 +723,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="TNe-TH-kYW"/>
                     <connections>
+                        <outlet property="bottomErrorLabel" destination="nYJ-aQ-xwV" id="Gdj-4a-Zw6"/>
                         <outlet property="distanceLabel" destination="2WG-z7-b93" id="yko-g6-EmI"/>
                         <outlet property="distanceSlider" destination="UTr-pK-cLw" id="NL6-Q3-g1e"/>
                         <outlet property="map" destination="DNY-AR-2Ec" id="5vH-4g-EEY"/>

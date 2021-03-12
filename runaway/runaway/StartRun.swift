@@ -35,6 +35,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     @IBOutlet weak var upperErrorLabel: UILabel!
     @IBOutlet weak var oldRunStartBtn: UIButton!
     
+    @IBOutlet weak var bottomErrorLabel: UILabel!
     
     // Logic Components
     var currIndexOldMap = 0
@@ -72,6 +73,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         self.upperErrorLabel.isHidden = true
         getRoutes()
         updateCurrentSegmentUI()
+        self.bottomErrorLabel.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -87,6 +89,8 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         self.currIndexOldMap = 0
         getOldRoutes()
         updateOldRouteUIComponents()
+        self.bottomErrorLabel.isHidden = true
+
         
     }
     
@@ -572,6 +576,14 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
             self.routeRatingLabel.isHidden = true
             self.startButton.isHidden = true
             self.starImg.isHidden = true
+            
+            if(distanceLabel.text != "0"){
+                bottomErrorLabel.isHidden = false
+            }
+            
+            else{
+                bottomErrorLabel.isHidden = true
+            }
             return
         }
         // At Last route
