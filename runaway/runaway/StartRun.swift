@@ -579,11 +579,11 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
             self.starImg.isHidden = true
             
             if(distanceLabel.text != "0"){
-                bottomErrorLabel.isHidden = false
+                bottomErrorLabel.isHidden = true
             }
             
             else{
-                bottomErrorLabel.isHidden = true
+                bottomErrorLabel.isHidden = false
             }
             return
         }
