@@ -110,16 +110,31 @@ class PostRunSurvey: UIViewController {
         
         //values based on american heeart association recommendations for max target heart rate for age groups
         var targetHR = 0
-        if age < 30 { targetHR = 170}
-        if age >= 30 && age<35 { targetHR=162}
-        if age >= 35 && age < 40 { targetHR=157}
-        if age >= 40 && age < 45 { targetHR=153}
-        if age >= 45 && age < 50 { targetHR=149}
-        if age >= 50 && age<60 { targetHR=145}
-        if age >= 60 { targetHR=136}
+        var minHR=0
+        if age < 30 {
+            minHR = 100
+            targetHR = 170}
+        if age >= 30 && age<35 {
+            minHR = 95
+            targetHR=162}
+        if age >= 35 && age < 40 { minHR=93
+            targetHR=157}
+        if age >= 40 && age < 45 { minHR = 90
+            targetHR=153}
+        if age >= 45 && age < 50 { minHR=88
+            targetHR=149}
+        if age >= 50 && age<60 { minHR = 85
+            targetHR=145}
+        if age >= 60 { minHR = 80
+            targetHR=136}
         
         //if heart rate is below max then move up else move score down
-        if heartRate<=targetHR{score+=2}
+        if heartRate<=targetHR
+        {
+            if heartRate > minHR {score+=2}
+            else { score-=2}
+            
+        }
         if heartRate>targetHR{score-=2}
         print( " avg hr ifor age \(age) and users time is \(self.heartRate) hence score is \(score)")
         
@@ -130,7 +145,7 @@ class PostRunSurvey: UIViewController {
         
         //calculate score based of breaks taken during the run
         let avgBreak = (Double(self.breaks) / self.routeDist)
-        score+=avgBreak
+        score-=avgBreak
         
         // calculate score based on how often they run the route
         //done in updateScore function

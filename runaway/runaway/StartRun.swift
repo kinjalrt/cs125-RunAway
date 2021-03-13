@@ -567,6 +567,7 @@ class StartRun: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     func updateCurrentSegmentUI(){
         // No New Routes generated, hide New Route UI
+        bottomErrorLabel.isHidden = true
         if(filteredRouteSegments.count == 0){
             self.map.isHidden = true
             self.prevButton.isHidden = true
